@@ -1,0 +1,14 @@
+$redish : #e85c5c;
+$blueish: #44a5f4;
+$standardFonts: Helvetica, Arial, sans-serif;
+
+div {
+  font-family: $standardFonts;
+  color:$redish;
+  h1 {
+    color:$blueish;
+  }
+  h2 {
+    color: darken($blueish, 20%);
+  }
+}

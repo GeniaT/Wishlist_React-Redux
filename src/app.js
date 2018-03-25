@@ -3,11 +3,15 @@ import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import Item from './components/Item';
 import Items from './components/Items';
+import './styles/index.scss';
+import 'normalize.css';
+
+Modal.setAppElement('#app');
 
 class List extends React.Component {
   state = {
     elements: ["a", "b", "c"],
-    modalIsOpen: true
+    modalIsOpen: false
   }
 
   addItem = (e) => {
@@ -36,13 +40,33 @@ class List extends React.Component {
     }));
   }
 
+  openModal = (itemText) => {
+    this.setState(() => ({
+      modalIsOpen: true
+    }));
+  }
+  closeModal = () => {
+    this.setState(() => ({
+      modalIsOpen: false
+    }));
+  }
+
   render() {
     return (
       <div>
-      <h1>Whishlist App</h1>
-      <Modal isOpen={this.state.modalIsOpen} >
-        <p>TEST</p>
-      </Modal>
+        <h1>Wishlist App</h1>
+        <h2>Create and share your wishlist!</h2>
+        <Modal
+          isOpen={this.state.modalIsOpen}
+          onRequestClose={this.closeModal}
+          contentLabel="Item to modify"
+        >
+          <div>
+            <h1>Modaaaaal</h1>
+            <p>LoL</p>
+            <button onClick={this.closeModal}>Click me to close!</button>
+          </div>
+        </Modal>
         <form onSubmit={this.addItem}>
           <input type="text" name="element" />
           <button>Add element</button>
@@ -50,6 +74,7 @@ class List extends React.Component {
         <Items
           items={this.state.elements}
           deleteItem={this.deleteItem}
+          openModal={this.openModal}
         />
         <button onClick={this.removeAll}>Remove All</button>
       </div>
