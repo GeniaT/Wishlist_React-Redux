@@ -2,6 +2,7 @@ const path = require('path');
 
 module.exports = {
   entry: "./src/app.js",
+  // entry: "./src/sandbox/uuid.js",
   output: {
     path: path.join(__dirname, 'public'),
     filename: "bundle.js"
@@ -24,6 +25,8 @@ module.exports = {
   },
   mode: 'development',
   devtool: 'cheap-module-eval-source-map',
-  devServer: {contentBase: path.join(__dirname, "public")},
-
+  devServer: {
+    contentBase: path.join(__dirname, "public"),
+    historyApiFallback: true
+  }
 };
