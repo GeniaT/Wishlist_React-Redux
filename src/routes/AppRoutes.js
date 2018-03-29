@@ -10,7 +10,7 @@ import Event from '../components/Event';
 import SignIn from '../components/SignIn';
 import LogIn from '../components/LogIn';
 
-const routes = (
+const AppRoutes = () => (
   <BrowserRouter>
     <Switch>
       <Route path="/" component={Home} exact={true}/>
@@ -27,4 +27,4 @@ const routes = (
 )
 
 
-export default routes;
+export default AppRoutes;

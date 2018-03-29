@@ -1,7 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import routes from './routes/routes';
+import { Provider } from 'react-redux';
+import AppRoutes from './routes/AppRoutes';
+import store from './components/store';
 import './styles/index.scss';
 import 'normalize.css';
 
-ReactDOM.render(routes, document.getElementById('app'));
+
+const AppProvider = () => (
+  <Provider store={store}>
+    <AppRoutes />
+  </Provider>
+)
+
+ReactDOM.render(<AppProvider/>, document.getElementById('app'));
