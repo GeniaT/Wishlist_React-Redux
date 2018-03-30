@@ -1,7 +1,6 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import Home from '../components/Home';
-import MyDashboard from '../components/MyDashboard';
 import MyEvents from '../components/MyEvents';
 import CreateWishlist from '../components/CreateWishlist';
 import WrongPage from '../components/WrongPage';
@@ -14,7 +13,6 @@ const AppRoutes = () => (
   <BrowserRouter>
     <Switch>
       <Route path="/" component={Home} exact={true}/>
-      <Route path="/mydashboard" component={MyDashboard}/>
       <Route path="/create-wishlist" component={CreateWishlist}/>
       <Route path="/wishlist/:id" component={Wishlist}/>
       <Route path="/my-events" component={MyEvents}/>

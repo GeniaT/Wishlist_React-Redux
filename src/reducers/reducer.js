@@ -1,0 +1,25 @@
+import { addToWishlist, logIn } from '../actions/actions';
+
+const initialState = {
+  wishlist: ['gta V', 'FFX', 'CLRS'],
+  loggedIn: false
+}
+
+const reducer = (state = initialState, action) => {
+  switch(action.type) {
+    case 'LOG_IN':
+      return {
+        ...state,
+        loggedIn: true
+      }
+    case 'ADD_TO_WISHLIST':
+      return {
+        ...state,
+        wishlist: [...state.wishlist, action.element]
+      }
+    default:
+      return state;
+  }
+}
+
+export default reducer;
