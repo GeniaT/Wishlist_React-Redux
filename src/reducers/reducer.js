@@ -12,6 +12,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         loggedIn: true
       }
+    case 'LOG_OUT':
+      return {
+        ...state,
+        loggedIn: false
+      }
     case 'ADD_TO_WISHLIST':
       return {
         ...state,

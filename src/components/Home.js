@@ -6,7 +6,7 @@ import { addToWishlist } from '../actions/actions';
 import MyDashboard from './MyDashboard';
 import store from './store';
 
-const Home = ({loggedIn}) => {
+const Home = ({loggedIn, addToWishlist}) => {
   return loggedIn
   ? <MyDashboard />
   : <div>
@@ -14,15 +14,18 @@ const Home = ({loggedIn}) => {
       <h1>Not logged in! You see the Home Page</h1>
       <NavLink to="/SignIn" exact={true} className="link"><button>Sign In</button></NavLink>
       <NavLink to="/LogIn" exact={true} className="link"><button>Log In</button></NavLink>
-      <button onClick={() => {props.dispatch(addToWishlist("Pizza"))}}>TEST</button>
+      <button onClick={() => {addToWishlist("LOL")}}>Add an Item as test</button>
     </div>
 }
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state) => {
   return {
     loggedIn: state.loggedIn
   }
 }
 
+const mapDispatchToProps = {
+  addToWishlist
+}
 
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

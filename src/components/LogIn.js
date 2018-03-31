@@ -6,34 +6,34 @@ import { logIn } from '../actions/actions';
 import store from './store';
 
 
-const LogIn = (props, {loggedIn}) => {
-  if (store.getState().loggedIn) {
-    return <Redirect to='/'/>
-  } else {
-    return (
-      <div>
-        <Navbar />
-        <h1>Log In Page</h1>
-        <form>
+const LogIn = ({ loggedIn, logIn }) => {
+  return loggedIn
+  ? <Redirect to='/'/>
+  : <div>
+      <Navbar />
+      <h1>Log In Page</h1>
+      <form>
+      <input
+          type="text"
+          placeholder="Name"
+          autoFocus
+        />
         <input
-            type="text"
-            placeholder="Name"
-            autoFocus
-          />
-          <input
-            type="password"
-            placeholder="Password"
-          />
-        </form>
-        <button onClick={() => props.dispatch(logIn())}>Log In</button>
-      </div>
-    )
-  }
+          type="password"
+          placeholder="Password"
+        />
+      </form>
+      <button onClick={logIn}>Log In</button>
+    </div>
 }
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state) => {
   return {
     loggedIn: state.loggedIn
   }
 }
 
-export default connect(mapStateToProps)(LogIn);
+const mapDispatchToProps = {
+  logIn
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LogIn);
