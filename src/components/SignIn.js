@@ -19,8 +19,8 @@ const SignIn = (props) => (
           type="text"
           placeholder="Email"
         />
+        <button>Sign In</button>
       </form>
-
     </div>
 )
 

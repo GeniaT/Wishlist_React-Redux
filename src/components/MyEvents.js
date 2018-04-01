@@ -1,8 +1,11 @@
 import React from 'react';
 import Navbar from './Navbar';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
-const MyEvents = (props) => (
-    <div>
+const MyEvents = ({loggedIn}) => {
+  return loggedIn
+  ? <div>
       <Navbar />
       <h1>Check your Events here!</h1>
       <h2>My futur events:</h2>
@@ -18,6 +21,13 @@ const MyEvents = (props) => (
         <li>{"Steph's graduation - 02/03/2015"}</li>
       </ul>
     </div>
-)
+  : <Redirect push to='/'/>
+}
 
-export default MyEvents;
+const mapStateToProps = (state) => {
+  return {
+    loggedIn: state.loggedIn
+  }
+}
+
+export default connect(mapStateToProps)(MyEvents);

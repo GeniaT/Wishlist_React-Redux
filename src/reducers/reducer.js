@@ -2,7 +2,12 @@ import { addToWishlist, logIn } from '../actions/actions';
 
 const initialState = {
   wishlist: ['gta V', 'FFX', 'CLRS'],
-  loggedIn: false
+  loggedIn: true,
+  // wishlists: [{
+  //
+  // }
+  //
+  // ]
 }
 
 const reducer = (state = initialState, action) => {

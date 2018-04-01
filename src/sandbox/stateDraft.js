@@ -4,12 +4,12 @@ stateDraft = {
   wishlists: [
     {
       id:uuid(),
-      status: "Private",
-      name:'for the living room',
+      status: "Private", #pr1
+      title:'for the living room',#pr1
       category: 'furniture',
       eventLinks: ["for new home"],
       tags: ["wood","IKEA","cheap"],
-      items: [
+      items: [                    #pr1
         {
           name: "book collector",
           description: undefined,
@@ -47,7 +47,7 @@ stateDraft = {
     {
       id:uuid(),
       status: "Public",
-      name:'for gaming room',
+      title:'for gaming room',
       category: 'video Games',
       eventLinks: ["for gaming time"],
       tags: ["PC","games", "PS4"],
@@ -56,7 +56,7 @@ stateDraft = {
     {
       id:uuid(),
       status: "Public",
-      name:'for the kitchen',
+      title:'for the kitchen',
       category: undefined,
       eventLinks: [],
       tags: undefined,
@@ -65,7 +65,7 @@ stateDraft = {
     {
       id:uuid(),
       status: "linked to Events only"
-      name:'holiday stuff',
+      title:'holiday stuff',
       category: 'holiday',
       eventLinks: ["summer holidays 2020"]
       tags: ["summer","holiday"],

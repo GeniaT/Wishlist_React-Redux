@@ -3,12 +3,10 @@ import Navbar from './Navbar';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { logIn } from '../actions/actions';
-import store from './store';
-
 
 const LogIn = ({ loggedIn, logIn }) => {
   return loggedIn
-  ? <Redirect to='/'/>
+  ? <Redirect push to='/'/>
   : <div>
       <Navbar />
       <h1>Log In Page</h1>

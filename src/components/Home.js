@@ -4,7 +4,6 @@ import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { addToWishlist } from '../actions/actions';
 import MyDashboard from './MyDashboard';
-import store from './store';
 
 const Home = ({loggedIn, addToWishlist}) => {
   return loggedIn

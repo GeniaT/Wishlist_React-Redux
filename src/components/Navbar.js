@@ -2,7 +2,6 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logOut } from '../actions/actions';
-import store from './store';
 
 const Navbar = ({loggedIn, logOut}) => {
   return loggedIn
