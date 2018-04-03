@@ -1,5 +1,8 @@
 import React from 'react';
 import uuid from 'uuid';
+import Modal from 'react-modal';
+
+Modal.setAppElement('#app');
 
 class WishlistForm extends React.Component {
   constructor(props) {
@@ -10,7 +13,8 @@ class WishlistForm extends React.Component {
       title: '',
       category: 'no category',
       eventLinks:[],
-      items: []
+      items: [],
+      showItemModal: false,
     }
   };
 
@@ -40,28 +44,83 @@ class WishlistForm extends React.Component {
     e.preventDefault();
     const item = e.target.element.value.trim();
     if (item !== "") {
-      this.setState(() => ({items:[...this.state.items, item]}));
+      this.setState(() => ({
+        items:[...this.state.items,
+        {
+          name: item,
+          description: '',
+          picture: '',
+          urlToBuy: '',
+          appriximatePrice: '',
+          note: ''
+        }]
+      }));
     }
     e.target.element.value = "";
   }
 
   deleteItem = (item) => {
-    this.setState((prevState) => ({items: prevState.items.filter((x) => x !== item) }));
+    this.setState((prevState) => ({items: prevState.items.filter((x) => x.name !== item)}));
   }
+
   removeAllItems = (e) => {
     e.preventDefault(e);
     this.setState(() => ({
       items: []
     }));
   }
-  onSubmitWishlistForm = (e) => {
-    e.preventDefault();
+
+  // Modal functions:
+  openModalForItemUpdate = (item) => {
+    this.setState(() => ({
+      showItemModal: true,
+      updatingItem: item
+    }))
   }
+
+  closeItemModal = () => {
+    this.setState(() => ({
+      showItemModal: false
+    }))
+  }
+
+onChangeDescription = (e) => {
+  const description = e.target.value;
+  const itemToUpdate = this.state.items.find(obj => obj.name === this.state.updatingItem)
+  this.setState(() => {itemToUpdate.description = description});
+}
+
+onChangePictureLink = (e) => {
+  const pictureLink = e.target.value;
+  const itemToUpdate = this.state.items.find(obj => obj.name === this.state.updatingItem)
+  this.setState(() => {itemToUpdate.picture = pictureLink});
+}
+
+onChangeToBuyLink = (e) => {
+  const toBuyLink = e.target.value;
+  const itemToUpdate = this.state.items.find(obj => obj.name === this.state.updatingItem)
+  this.setState(() => {itemToUpdate.urlToBuy = toBuyLink});
+}
+
+onChangePrice = (e) => {
+  const price = e.target.value;
+  const itemToUpdate = this.state.items.find(obj => obj.name === this.state.updatingItem)
+  this.setState(() => {itemToUpdate.appriximatePrice = price});
+}
+
+onChangeNoteArea = (e) => {
+  const note = e.target.value;
+  const itemToUpdate = this.state.items.find(obj => obj.name === this.state.updatingItem)
+  this.setState(() => {itemToUpdate.note = note});
+}
+
+// try to replace the 5 functions above with one having the same 2 const for all and
+// just a switch case to update the local state.  
   render() {
     return (
       <div>
-        <form onSubmit={this.onSubmitWishlistForm}>
-          <input type="text" placeholder="Wishlist title" onChange={this.onChangeTitle}/><br/>
+        <form>
+          Wishlist Title: <input type="text" onChange={this.onChangeTitle}/><br/>
           <input type="radio" name="status" value="public" defaultChecked onChange={this.onChangeStatus}/>Public
           <input type="radio" name="status" value="private" onChange={this.onChangeStatus}/>Private <br/>
 
@@ -88,13 +147,39 @@ class WishlistForm extends React.Component {
             <ul>
               {this.state.items.map((item, index) =>
                 <li key={index}>
-                  {item}
-                  <button>Update</button>
-                  <button onClick={() => this.deleteItem(item)}>Delete</button>
+                  {item.name}
+                  <button onClick={() => this.openModalForItemUpdate(item.name)}>Update</button>
+                  <button onClick={() => this.deleteItem(item.name)}>Delete</button>
                 </li>)}
             </ul>
             <button onClick={this.removeAllItems}>Remove all items</button>
         </div> }
+        <button disabled={this.state.title.trim() === ""}
+          onClick={(wishlist) => this.props.onSaveWishlist({
+            id: this.state.id,
+            status: this.state.status,
+            title: this.state.title,
+            category: this.state.category,
+            eventLinks:this.state.eventLinks,
+            items: this.state.items
+          })}>Save wishlist</button>
+        <Modal
+           isOpen={this.state.showItemModal}
+           onRequestClose={this.closeItemModal}
+        >
+          <h1>{this.state.updatingItem}</h1>
+          <form>
+            Decription: <input type="text" onChange={this.onChangeDescription}/><br/>
+            Picture link: <input type="text" onChange={this.onChangePictureLink}/><br/>
+            Link to buy the item: <input type="text" onChange={this.onChangeToBuyLink}/><br/>
+            Approximative price: <input type="text" onChange={this.onChangePrice}/><br/>
+            {"Here are some details that may help you with the item :"}<br/>
+            <textarea rows="4" cols="50" onChange={this.onChangeNoteArea}>
+
+            </textarea><br/>
+          </form>
+          <button onClick={this.closeItemModal}>Click me to close!</button>
+        </Modal>
       </div>
     )
   }

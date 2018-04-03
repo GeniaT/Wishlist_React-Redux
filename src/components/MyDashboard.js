@@ -1,19 +1,20 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Navbar from './Navbar';
 
 const MyDashboard = (props) => {
+  const wishlists = props.wishlists.map((x, index) => {
+    return <p key={index}>{x.title}</p>
+  });
+
+
   return (
     <div>
       <Navbar />
       <h1>My Dashboard</h1>
-
       <div>
         <h2>My wishlists</h2>
-        <ul>
-          <li>{"Video Games"}</li>
-          <li>{"Books"}</li>
-          <li>{"Tech"}</li>
-        </ul>
+        {wishlists}
       </div>
       <div>
       <h2>Suggestions for me</h2>
@@ -51,5 +52,10 @@ const MyDashboard = (props) => {
   )
 }
 
+const mapStateToProps = (state) => {
+  return {
+    wishlists: state.wishlists
+  }
+}
 
-export default MyDashboard;
+export default connect(mapStateToProps)(MyDashboard);

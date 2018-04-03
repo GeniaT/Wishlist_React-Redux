@@ -11,6 +11,10 @@ export const addToWishlist = (element) => ({
   element
 })
 
+export const saveWishlist = (wishlist) => ({
+  type: 'SAVE_WISHLIST',
+  wishlist
+})
 export const openModal = (id) => ({
   type:'OPEN_MODAL_FOR_WISHITEM_UPDATE',
   id
