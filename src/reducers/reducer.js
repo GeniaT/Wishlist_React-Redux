@@ -8,10 +8,38 @@ const initialState = {
       status: "private",
       eventLinks: [],
       items: [
-        {name: "CLRS"},
-        {name: "Linear Algebra"},
-        {name: "Algorithm Design Manual"},
-        {name: "MIT 6 Math for CS"},
+        {
+          name: "CLRS",
+          description: "algorithms focused book",
+          picture: "http://flickr.com/test1",
+          urlToBuy: "https://amazon.com/furni1",
+          appriximatePrice: '89$',
+          note: "linear Algebra as prerequisite"
+        },
+        {
+          name: "Linear Algebra",
+          description: "",
+          picture: "http://flickr.com/test1",
+          urlToBuy: "https://amazon.com/furni1",
+          appriximatePrice: '50$',
+          note: "math++"
+        },
+        {
+          name: "Algorithm Design Manual",
+          description: "",
+          picture: "http://flickr.com/test1",
+          urlToBuy: "https://amazon.com/furni1",
+          appriximatePrice: '35$',
+          note: "lets make it right"
+        },
+        {
+          name: "MIT 6 Math for CS",
+          description: "",
+          picture: "http://flickr.com/test1",
+          urlToBuy: "https://amazon.com/furni1",
+          appriximatePrice: '50$',
+          note: "more math for CS please !"
+        }
       ]
     }
   ]

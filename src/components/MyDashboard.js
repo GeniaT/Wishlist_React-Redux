@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Navbar from './Navbar';
+import { Link } from "react-router-dom";
 
 const MyDashboard = (props) => {
   const wishlists = props.wishlists.map((x, index) => {
-    return <p key={index}>{x.title}</p>
+    return <p key={index}>{x.title} <Link to={`/updateWishlist/${x.id}`}><button>{'Update this Wishlist'}</button></Link></p>
   });
 
 

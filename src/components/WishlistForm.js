@@ -7,14 +7,18 @@ Modal.setAppElement('#app');
 class WishlistForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      id: uuid(),
-      status: 'public',
-      title: '',
-      category: 'no category',
-      eventLinks:[],
-      items: [],
-      showItemModal: false,
+    if (this.props.wishlistToUpdate) { //if updating the wishlist
+      this.state = this.props.wishlistToUpdate;
+    } else { //if creating the wishlist
+      this.state = {
+        id: uuid(),
+        status: 'public',
+        title: '',
+        category: 'no category',
+        eventLinks:[],
+        items: [],
+        showItemModal: false,
+      }
     }
   };
 
@@ -84,49 +88,40 @@ class WishlistForm extends React.Component {
     }))
   }
 
-onChangeDescription = (e) => {
-  const description = e.target.value;
-  const itemToUpdate = this.state.items.find(obj => obj.name === this.state.updatingItem)
-  this.setState(() => {itemToUpdate.description = description});
+onUpdateItem = (e) => {
+  const myUpdate = e.target.value;
+  const itemToUpdate = this.state.items.find(obj => obj.name === this.state.updatingItem);
+
+  switch(e.target.name) {
+    case "description":
+      this.setState(() => {itemToUpdate.description = myUpdate});
+      break;
+    case "pictureLink":
+      this.setState(() => {itemToUpdate.picture = myUpdate});
+      break;
+    case "buyLink":
+      this.setState(() => {itemToUpdate.urlToBuy = myUpdate});
+      break;
+    case "price":
+      this.setState(() => {itemToUpdate.appriximatePrice = myUpdate});
+      break;
+    case "note":
+      this.setState(() => {itemToUpdate.note = myUpdate});
+      break;
+  }
 }
 
-onChangePictureLink = (e) => {
-  const pictureLink = e.target.value;
-  const itemToUpdate = this.state.items.find(obj => obj.name === this.state.updatingItem)
-  this.setState(() => {itemToUpdate.picture = pictureLink});
-}
-
-onChangeToBuyLink = (e) => {
-  const toBuyLink = e.target.value;
-  const itemToUpdate = this.state.items.find(obj => obj.name === this.state.updatingItem)
-  this.setState(() => {itemToUpdate.urlToBuy = toBuyLink});
-}
-
-onChangePrice = (e) => {
-  const price = e.target.value;
-  const itemToUpdate = this.state.items.find(obj => obj.name === this.state.updatingItem)
-  this.setState(() => {itemToUpdate.appriximatePrice = price});
-}
-
-onChangeNoteArea = (e) => {
-  const note = e.target.value;
-  const itemToUpdate = this.state.items.find(obj => obj.name === this.state.updatingItem)
-  this.setState(() => {itemToUpdate.note = note});
-}
-
-// try to replace the 5 functions above with one having the same 2 const for all and
-// just a switch case to update the local state.  
   render() {
     return (
       <div>
         <form>
-          Wishlist Title: <input type="text" onChange={this.onChangeTitle}/><br/>
-          <input type="radio" name="status" value="public" defaultChecked onChange={this.onChangeStatus}/>Public
-          <input type="radio" name="status" value="private" onChange={this.onChangeStatus}/>Private <br/>
+          Wishlist Title: <input type="text" value={this.state.title} onChange={this.onChangeTitle}/><br/>
+          <input type="radio" name="status" value="public" checked={this.state.status === "public"} onChange={this.onChangeStatus}/>Public
+          <input type="radio" name="status" value="private" checked={this.state.status === "private"} onChange={this.onChangeStatus}/>Private <br/>
 
           Category:
-           <select name="category" onChange={this.onChangeCategory}>
-           <option value="no category">no category</option>
+           <select name="category" value={this.state.category} onChange={this.onChangeCategory}>
+            <option value="no category">no category</option>
             <option value="books">books</option>
             <option value="video games">video games</option>
             <option value="tech">tech</option>
@@ -169,12 +164,12 @@ onChangeNoteArea = (e) => {
         >
           <h1>{this.state.updatingItem}</h1>
           <form>
-            Decription: <input type="text" onChange={this.onChangeDescription}/><br/>
-            Picture link: <input type="text" onChange={this.onChangePictureLink}/><br/>
-            Link to buy the item: <input type="text" onChange={this.onChangeToBuyLink}/><br/>
-            Approximative price: <input type="text" onChange={this.onChangePrice}/><br/>
+            Description: <input type="text" name="description" onChange={this.onUpdateItem}/><br/>
+            Picture link: <input type="text" name="pictureLink" onChange={this.onUpdateItem}/><br/>
+            Link to buy the item: <input type="text" name="buyLink" onChange={this.onUpdateItem}/><br/>
+            Approximative price: <input type="text" name="price" onChange={this.onUpdateItem}/><br/>
             {"Here are some details that may help you with the item :"}<br/>
-            <textarea rows="4" cols="50" onChange={this.onChangeNoteArea}>
+            <textarea rows="4" cols="50" name="note" onChange={this.onUpdateItem}>
 
             </textarea><br/>
           </form>
