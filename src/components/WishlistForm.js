@@ -8,7 +8,7 @@ class WishlistForm extends React.Component {
   constructor(props) {
     super(props);
     if (this.props.wishlistToUpdate) { //if updating the wishlist
-      this.state = this.props.wishlistToUpdate;
+      this.state = {...this.props.wishlistToUpdate, itemObj: ''};
     } else { //if creating the wishlist
       this.state = {
         id: uuid(),
@@ -18,6 +18,7 @@ class WishlistForm extends React.Component {
         eventLinks:[],
         items: [],
         showItemModal: false,
+        itemObj: ''
       }
     }
   };
@@ -76,9 +77,11 @@ class WishlistForm extends React.Component {
 
   // Modal functions:
   openModalForItemUpdate = (item) => {
+    const itemToUpdate = this.state.items.find(obj => obj.name === this.state.updatingItem);
     this.setState(() => ({
       showItemModal: true,
-      updatingItem: item
+      updatingItem: item,
+      itemObjToUpdate: itemToUpdate
     }))
   }
 
@@ -111,6 +114,10 @@ onUpdateItem = (e) => {
   }
 }
 
+itemInfoInit = () => {
+  const itemToUpdate = this.state.items.find(obj => obj.name === this.state.updatingItem);
+  this.setState(() => ({itemObj: itemToUpdate}));
+}
   render() {
     return (
       <div>
@@ -161,16 +168,46 @@ onUpdateItem = (e) => {
         <Modal
            isOpen={this.state.showItemModal}
            onRequestClose={this.closeItemModal}
+           onAfterOpen={this.itemInfoInit}
         >
           <h1>{this.state.updatingItem}</h1>
           <form>
-            Description: <input type="text" name="description" onChange={this.onUpdateItem}/><br/>
-            Picture link: <input type="text" name="pictureLink" onChange={this.onUpdateItem}/><br/>
-            Link to buy the item: <input type="text" name="buyLink" onChange={this.onUpdateItem}/><br/>
-            Approximative price: <input type="text" name="price" onChange={this.onUpdateItem}/><br/>
+            Description:
+            <input
+              type="text"
+              name="description"
+              value={this.state.itemObj.description}
+              onChange={this.onUpdateItem}
+            /><br/>
+            Picture link:
+            <input
+              type="text"
+              name="pictureLink"
+              value={this.state.itemObj.picture}
+              onChange={this.onUpdateItem}
+            /><br/>
+            Link to buy the item:
+            <input
+              type="text"
+              name="buyLink"
+              value={this.state.itemObj.urlToBuy}
+              onChange={this.onUpdateItem}
+            /><br/>
+            Approximative price:
+            <input
+              type="text"
+              name="price"
+              value={this.state.itemObj.appriximatePrice}
+              onChange={this.onUpdateItem}
+            /><br/>
             {"Here are some details that may help you with the item :"}<br/>
-            <textarea rows="4" cols="50" name="note" onChange={this.onUpdateItem}>
-
+            <textarea
+              rows="4"
+              cols="50"
+              name="note"
+              value={this.state.itemObj.note}
+              onChange={this.onUpdateItem}
+            >
             </textarea><br/>
           </form>
           <button onClick={this.closeItemModal}>Click me to close!</button>
