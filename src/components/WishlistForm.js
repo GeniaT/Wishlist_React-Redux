@@ -8,7 +8,7 @@ class WishlistForm extends React.Component {
   constructor(props) {
     super(props);
     if (this.props.wishlistToUpdate) { //if updating the wishlist
-      this.state = {...this.props.wishlistToUpdate, itemObj: ''};
+      this.state = {...this.props.wishlistToUpdate, itemObj: '', updatingItemIndex: ''};
     } else { //if creating the wishlist
       this.state = {
         id: uuid(),
@@ -18,7 +18,8 @@ class WishlistForm extends React.Component {
         eventLinks:[],
         items: [],
         showItemModal: false,
-        itemObj: ''
+        itemObj: '',
+        updatingItemIndex: ''
       }
     }
   };
@@ -87,7 +88,9 @@ class WishlistForm extends React.Component {
 
   closeItemModal = () => {
     this.setState(() => ({
-      showItemModal: false
+      showItemModal: false,
+      updatingItem: '',
+      itemObjToUpdate: ''
     }))
   }
 
@@ -115,8 +118,15 @@ onUpdateItem = (e) => {
 }
 
 itemInfoInit = () => {
-  const itemToUpdate = this.state.items.find(obj => obj.name === this.state.updatingItem);
-  this.setState(() => ({itemObj: itemToUpdate}));
+  // Goal should be to get the index of the item from items array, update updatingItemIndex state and use it inside input value
+  // const itemToUpdate = this.state.items.find(obj => obj.name === this.state.updatingItem);
+  const itemIndex = this.state.items.forEach((x, index) => {
+    if (x.name === this.state.updatingItem) {
+      console.log(index);
+      this.setState(() => ({ updatingItemIndex: index}));
+    }
+  });
+  // this.setState(() => ({itemObj: itemToUpdate}));
 }
   render() {
     return (
@@ -176,28 +186,29 @@ itemInfoInit = () => {
             <input
               type="text"
               name="description"
-              value={this.state.itemObj.description}
+              // value={this.state.itemObj.description}
+              value={this.state.items[this.state.updatingItemIndex].description}
               onChange={this.onUpdateItem}
             /><br/>
             Picture link:
             <input
               type="text"
               name="pictureLink"
-              value={this.state.itemObj.picture}
+              // value={this.state.itemObj.picture}
               onChange={this.onUpdateItem}
             /><br/>
             Link to buy the item:
             <input
               type="text"
               name="buyLink"
-              value={this.state.itemObj.urlToBuy}
+              // value={this.state.itemObj.urlToBuy}
               onChange={this.onUpdateItem}
             /><br/>
             Approximative price:
             <input
               type="text"
               name="price"
-              value={this.state.itemObj.appriximatePrice}
+              // value={this.state.itemObj.appriximatePrice}
               onChange={this.onUpdateItem}
             /><br/>
             {"Here are some details that may help you with the item :"}<br/>
@@ -205,7 +216,7 @@ itemInfoInit = () => {
               rows="4"
               cols="50"
               name="note"
-              value={this.state.itemObj.note}
+              // value={this.state.itemObj.note}
               onChange={this.onUpdateItem}
             >
             </textarea><br/>

@@ -81,7 +81,16 @@ stateDraft = {
     tech: ['GoPro5', 'Boose radio', 'Canon camera'],
     clothes: ['Hat Superdry', 'sweather' ,'gloves HB']
   },
-  futurEvents: [
+  events: [
+    {
+      id:uuid(),
+      date: "01/02/2017",
+      title: "Kevin's brirthday",
+      participants: ['Tamah','Louli','Jerome','Genia'],
+      items: ['black t-shirt', "Nike hat"],
+      reservedItems: ['Nike hat'],
+      note: "Don't offer anything else please"
+    },
     {
       id:uuid(),
       date: "01/02/2019",
@@ -108,17 +117,6 @@ stateDraft = {
       items: ['HP Laptop',"noodles", "botProgram", "Lineage Eternal", "LoL skin card"],
       reservedItems: ["LoL skin card", "noodles"],
       note: "priority on HP laptop please"
-    }
-  ],
-  passedEvents: [
-    {
-      id:uuid(),
-      date: "01/02/2017",
-      title: "Kevin's brirthday",
-      participants: ['Tamah','Louli','Jerome','Genia'],
-      items: ['black t-shirt', "Nike hat"],
-      reservedItems: ['Nike hat'],
-      note: "Don't offer anything else please"
     }
   ]
 }
