@@ -1,15 +1,6 @@
 1/To solve: the events are not checked even if the wishlist is linked to certain events.
   How: add a check logic in the wishlist form based on what events is the wishlist linked to.
   When: When the events in info of the wishlist are generated based on Redux state and existing events in the app.
-2/ To solve: On updating an item from wishlist:
-"Warning: A component is changing an uncontrolled input of type text to be controlled.
-Input elements should not switch from uncontrolled to controlled (or vice versa).
-Decide between using a controlled or uncontrolled input element for the lifetime of the component.
-More info: https://fb.me/react-controlled-components"
-  How: Dunno yet ^^
-  When: not a priority, when most of the app is working as expected.
-3/ To solve: unable to update fields like descrption, note, price in a wishlist update or in creation.
-  How: Correct as with wishlist title management: value watching the state of a field and onChange,
-  modify that same state field for syncing data between input value and state. Remove itemObj from state and select an obj from state.items array.
-  When: next thing to do.
-  ==> MAYBE USE BEFOREOPEN MODAL parameter to run the fct "iteminfoInit". Check asap. 
+2/ Try to use Promise.all in itemInfoInit function (wishlistForm) instead of multiple then()s
+3/avoid saving duplicate wishlists
+4/avoid saving duplicate items in wishlist 

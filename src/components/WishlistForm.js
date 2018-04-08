@@ -8,7 +8,7 @@ class WishlistForm extends React.Component {
   constructor(props) {
     super(props);
     if (this.props.wishlistToUpdate) { //if updating the wishlist
-      this.state = {...this.props.wishlistToUpdate, itemObj: '', updatingItemIndex: ''};
+      this.state = {...this.props.wishlistToUpdate};
     } else { //if creating the wishlist
       this.state = {
         id: uuid(),
@@ -17,9 +17,7 @@ class WishlistForm extends React.Component {
         category: 'no category',
         eventLinks:[],
         items: [],
-        showItemModal: false,
-        itemObj: '',
-        updatingItemIndex: ''
+        showItemModal: false
       }
     }
   };
@@ -78,19 +76,16 @@ class WishlistForm extends React.Component {
 
   // Modal functions:
   openModalForItemUpdate = (item) => {
-    const itemToUpdate = this.state.items.find(obj => obj.name === this.state.updatingItem);
     this.setState(() => ({
       showItemModal: true,
-      updatingItem: item,
-      itemObjToUpdate: itemToUpdate
+      updatingItem: item
     }))
   }
 
   closeItemModal = () => {
     this.setState(() => ({
       showItemModal: false,
-      updatingItem: '',
-      itemObjToUpdate: ''
+      updatingItem: ''
     }))
   }
 
@@ -118,16 +113,19 @@ onUpdateItem = (e) => {
 }
 
 itemInfoInit = () => {
-  // Goal should be to get the index of the item from items array, update updatingItemIndex state and use it inside input value
-  // const itemToUpdate = this.state.items.find(obj => obj.name === this.state.updatingItem);
-  const itemIndex = this.state.items.forEach((x, index) => {
+  let indx;
+  return new Promise ((resolve) => {this.state.items.forEach((x, index) => {
     if (x.name === this.state.updatingItem) {
-      console.log(index);
-      this.setState(() => ({ updatingItemIndex: index}));
+      indx = index;
     }
-  });
-  // this.setState(() => ({itemObj: itemToUpdate}));
+  })})
+  .then(document.getElementById('description').value = this.state.items[indx].description)
+  .then(document.getElementById('pictureLink').value = this.state.items[indx].picture)
+  .then(document.getElementById('buyLink').value = this.state.items[indx].urlToBuy)
+  .then(document.getElementById('price').value = this.state.items[indx].appriximatePrice)
+  .then(document.getElementById('note').value = this.state.items[indx].note)
 }
+
   render() {
     return (
       <div>
@@ -186,29 +184,28 @@ itemInfoInit = () => {
             <input
               type="text"
               name="description"
-              // value={this.state.itemObj.description}
-              value={this.state.items[this.state.updatingItemIndex].description}
+              id="description"
               onChange={this.onUpdateItem}
             /><br/>
             Picture link:
             <input
               type="text"
               name="pictureLink"
-              // value={this.state.itemObj.picture}
+              id="pictureLink"
               onChange={this.onUpdateItem}
             /><br/>
             Link to buy the item:
             <input
               type="text"
               name="buyLink"
-              // value={this.state.itemObj.urlToBuy}
+              id="buyLink"
               onChange={this.onUpdateItem}
             /><br/>
             Approximative price:
             <input
               type="text"
               name="price"
-              // value={this.state.itemObj.appriximatePrice}
+              id="price"
               onChange={this.onUpdateItem}
             /><br/>
             {"Here are some details that may help you with the item :"}<br/>
@@ -216,7 +213,7 @@ itemInfoInit = () => {
               rows="4"
               cols="50"
               name="note"
-              // value={this.state.itemObj.note}
+              id="note"
               onChange={this.onUpdateItem}
             >
             </textarea><br/>
