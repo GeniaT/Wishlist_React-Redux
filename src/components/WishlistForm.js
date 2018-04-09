@@ -47,7 +47,7 @@ class WishlistForm extends React.Component {
   addItem = (e) => {
     e.preventDefault();
     const item = e.target.element.value.trim();
-    if (item !== "") {
+    if (item !== "" && (this.state.items.find(x => x.name === item) === undefined)) { //to avoid duplicates
       this.setState(() => ({
         items:[...this.state.items,
         {
@@ -114,16 +114,20 @@ onUpdateItem = (e) => {
 
 itemInfoInit = () => {
   let indx;
-  return new Promise ((resolve) => {this.state.items.forEach((x, index) => {
-    if (x.name === this.state.updatingItem) {
-      indx = index;
-    }
-  })})
-  .then(document.getElementById('description').value = this.state.items[indx].description)
-  .then(document.getElementById('pictureLink').value = this.state.items[indx].picture)
-  .then(document.getElementById('buyLink').value = this.state.items[indx].urlToBuy)
-  .then(document.getElementById('price').value = this.state.items[indx].appriximatePrice)
-  .then(document.getElementById('note').value = this.state.items[indx].note)
+  let item;
+  return new Promise ((resolve) => {
+    this.state.items.forEach((x, index) => {
+      if (x.name === this.state.updatingItem) {
+        indx = index;
+        item = this.state.items[indx];
+      }
+  })}).then(Promise.all([
+    document.getElementById('description').value = item.description,
+    document.getElementById('pictureLink').value = item.picture,
+    document.getElementById('buyLink').value = item.urlToBuy,
+    document.getElementById('price').value = item.appriximatePrice,
+    document.getElementById('note').value = item.note
+  ]));
 }
 
   render() {

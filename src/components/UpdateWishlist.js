@@ -11,7 +11,6 @@ import store from '../store/store';
 const UpdateWishlist = (props) => {
   const state = store.getState();
   const wishlistObj = state.wishlists.find(obj => obj.id === props.match.params.id);
-  console.log(wishlistObj);
 
   return props.loggedIn
   ? <div>

@@ -1,6 +1,4 @@
 1/To solve: the events are not checked even if the wishlist is linked to certain events.
   How: add a check logic in the wishlist form based on what events is the wishlist linked to.
   When: When the events in info of the wishlist are generated based on Redux state and existing events in the app.
-2/ Try to use Promise.all in itemInfoInit function (wishlistForm) instead of multiple then()s
-3/avoid saving duplicate wishlists
-4/avoid saving duplicate items in wishlist 
+2/avoid saving duplicate wishlists (SAVE_WISHLIST)

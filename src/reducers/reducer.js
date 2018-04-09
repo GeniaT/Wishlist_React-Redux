@@ -63,10 +63,17 @@ const reducer = (state = initialState, action) => {
         wishlist: [...state.wishlist, action.element]
       }
     case 'SAVE_WISHLIST':
+      // on SAVE_WISHLIST action, check if it's a new wishlist or an update.
+      // by checking if the registering wishlist.id exists in global state.
+
+      // if it doesnt exist, we proceed with the code below:
       return {
         ...state,
         wishlists: [...state.wishlists, action.wishlist]
       }
+
+      // if it exists, it means it's an update and the global state should keep the existing wishlist
+      // with the updates. 
     default:
       return state;
   }
