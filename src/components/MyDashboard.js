@@ -7,7 +7,10 @@ const MyDashboard = (props) => {
   const wishlists = props.wishlists.map((x, index) => {
     return <p key={index}>{x.title} <Link to={`/updateWishlist/${x.id}`}><button>{'Update this Wishlist'}</button></Link></p>
   });
-
+  const events = props.events.map((ev, index) => {
+    return <p key={index}>{ev.title} <Link to={`/updateEvent/${ev.id}`}><button>{'Update this Event'}</button></Link></p>
+  });
+  console.log(props);
 
   return (
     <div>
@@ -16,21 +19,8 @@ const MyDashboard = (props) => {
       <div>
         <h2>My wishlists</h2>
         {wishlists}
-      </div>
-      <div>
-      <h2>Suggestions for me</h2>
-        <h3>Books</h3>
-        <ul>
-          <li>{"Don't dream too big by xxx"}</li>
-          <li>{"12 shades of Purple by xxx"}</li>
-          <li>{"123 habits of ineffective people by xxx"}</li>
-        </ul>
-        <h3>Video Games</h3>
-        <ul>
-          <li>{"GTA VII"}</li>
-          <li>{"Grand Tourismo 9"}</li>
-          <li>{"Zelda - Ocarina of time II"}</li>
-        </ul>
+        <h2>My Events</h2>
+        {events}
       </div>
       <div>
         <h2>Social</h2>
@@ -38,11 +28,11 @@ const MyDashboard = (props) => {
         <p>43</p>
         <h3>Following</h3>
         <p>13</p>
-        <h3>Feed</h3>
+        <h2>Feed</h2>
         <p>Kevin has updated his xxx list</p>
         <p>Steph has updated her xxx list</p>
         <p>Event xxx is tomorrow!</p>
-        <h3>Next Events</h3>
+        <h2>Next Events</h2>
         <ul>
           <li>{"Chrismas with friend - 25/12/2018"}</li>
           <li>{"Vi's Birthday - 16/03/2019"}</li>
@@ -55,7 +45,8 @@ const MyDashboard = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    wishlists: state.wishlists
+    wishlists: state.wishlists,
+    events: state.events
   }
 }
 

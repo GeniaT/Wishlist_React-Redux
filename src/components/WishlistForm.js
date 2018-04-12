@@ -147,7 +147,7 @@ itemInfoInit = () => {
             <option value="software">software</option>
           </select> <br/>
 
-          Link the list to one of your events ? <br/>
+          {'Link the list to one of your events ?'} <br/>
           <input type="checkbox" name="event1" value="event1" onChange={this.onEventLink}/> Event 1<br/>
           <input type="checkbox" name="event2" value="event2" onChange={this.onEventLink}/> Event 2<br/>
         </form>

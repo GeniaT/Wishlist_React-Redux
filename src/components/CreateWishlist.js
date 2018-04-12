@@ -1,7 +1,6 @@
 import React from 'react';
 import Navbar from './Navbar';
 import WishlistForm from './WishlistForm';
-import Modal from 'react-modal';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { saveWishlist } from '../actions/actions';

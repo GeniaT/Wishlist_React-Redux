@@ -23,3 +23,8 @@ export const openModal = (id) => ({
 export const closeModal = () => ({
   type:'CLOSE_MODAL_FROM_WISHITEM_UPDATE'
 })
+
+export const saveEvent = (ev) => ({
+  type: 'SAVE_EVENT',
+  ev
+})

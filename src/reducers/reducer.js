@@ -42,7 +42,36 @@ const initialState = {
         }
       ]
     }
-  ]
+  ],
+  events: [
+    {
+      id: '1337',
+      date: '01/03/2019',
+      status:'public',
+      title: 'tennis tournament',
+      participants: ['Genia'],
+      items: [
+        {
+          name: "Tennis racket",
+          description: "Babolat",
+          picture: "http://flickr.com/test1",
+          urlToBuy: "https://amazon.com/furni1",
+          appriximatePrice: '335$',
+          note: "lets make it right"
+        },
+        {
+          name: "balls",
+          description: "",
+          picture: "http://flickr.com/test1",
+          urlToBuy: "https://amazon.com/furni1",
+          appriximatePrice: '20$',
+          note: "2x4 minimum"
+        }
+      ],
+      reservedItems: ["balls"],
+      note: "Need the necessary stuff to play!"
+    }
+  ],
 }
 
 const reducer = (state = initialState, action) => {
@@ -84,6 +113,30 @@ const reducer = (state = initialState, action) => {
             wishlists: [...state.wishlists, action.wishlist]
         }
       }
+      updating = false;
+    case 'SAVE_EVENT':
+      updating = false;
+      // Check if it's a new event or an update:
+      state.events.forEach((ev, index) => {
+        if (ev.id === action.ev.id) {
+          updating = true;
+          return {
+            ...state,
+            events: [
+              ...state.events,
+              state.events[index] = action.ev
+            ]
+          }
+        }
+      });
+
+      if (updating === false) {
+        return {
+          ...state,
+          events: [...state.events, action.ev]
+        }
+      }
+      updating = false;
     default:
       return state;
   }
