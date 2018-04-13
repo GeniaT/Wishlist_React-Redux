@@ -2,4 +2,5 @@
   How: add a check logic in the wishlist form based on what events is the wishlist linked to.
   When: When the events in info of the wishlist are generated based on Redux state and existing events in the app.
 2/ when setting a title on a wishlist, make sure its unique before validating it.
-  If not, alert the user to choose a new title. 
+  If not, alert the user to choose a new title.
+3/ Add wishlists check logic on events creation => Check for wishlists in the state and display them in events creation.

@@ -114,6 +114,7 @@ const reducer = (state = initialState, action) => {
         }
       }
       updating = false;
+      return;
     case 'SAVE_EVENT':
       updating = false;
       // Check if it's a new event or an update:

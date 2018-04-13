@@ -1,8 +1,6 @@
 import React from 'react';
 import uuid from 'uuid';
-import Modal from 'react-modal';
-
-Modal.setAppElement('#app');
+import ItemDetailsModal from './ItemDetailsModal';
 
 class WishlistForm extends React.Component {
   constructor(props) {
@@ -176,54 +174,15 @@ itemInfoInit = () => {
             category: this.state.category,
             eventLinks:this.state.eventLinks,
             items: this.state.items
-          })}>Save wishlist</button>
-        <Modal
-           isOpen={this.state.showItemModal}
-           onRequestClose={this.closeItemModal}
-           onAfterOpen={this.itemInfoInit}
-        >
-          <h1>{this.state.updatingItem}</h1>
-          <form>
-            Description:
-            <input
-              type="text"
-              name="description"
-              id="description"
-              onChange={this.onUpdateItem}
-            /><br/>
-            Picture link:
-            <input
-              type="text"
-              name="pictureLink"
-              id="pictureLink"
-              onChange={this.onUpdateItem}
-            /><br/>
-            Link to buy the item:
-            <input
-              type="text"
-              name="buyLink"
-              id="buyLink"
-              onChange={this.onUpdateItem}
-            /><br/>
-            Approximative price:
-            <input
-              type="text"
-              name="price"
-              id="price"
-              onChange={this.onUpdateItem}
-            /><br/>
-            {"Here are some details that may help you with the item :"}<br/>
-            <textarea
-              rows="4"
-              cols="50"
-              name="note"
-              id="note"
-              onChange={this.onUpdateItem}
-            >
-            </textarea><br/>
-          </form>
-          <button onClick={this.closeItemModal}>Click me to close!</button>
-        </Modal>
+          })}>Save wishlist
+        </button>
+        <ItemDetailsModal
+          showItemModal={this.state.showItemModal}
+          closeItemModal={this.closeItemModal}
+          itemInfoInit={this.itemInfoInit}
+          updatingItem={this.state.updatingItem}
+          onUpdateItem={this.onUpdateItem}
+        />
       </div>
     )
   }

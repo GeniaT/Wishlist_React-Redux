@@ -10,7 +10,6 @@ const MyDashboard = (props) => {
   const events = props.events.map((ev, index) => {
     return <p key={index}>{ev.title} <Link to={`/updateEvent/${ev.id}`}><button>{'Update this Event'}</button></Link></p>
   });
-  console.log(props);
 
   return (
     <div>
