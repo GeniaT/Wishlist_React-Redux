@@ -1,12 +1,17 @@
 import React from 'react';
 import uuid from 'uuid';
 import ItemDetailsModal from './ItemDetailsModal';
+import store from '../store/store';
 
 class EventForm extends React.Component {
   constructor(props) {
     super(props);
     if (this.props.eventToUpdate) {//if updating the event
-      this.state = {...this.props.eventToUpdate}
+      this.state = {
+        ...this.props.eventToUpdate,
+        duplicateTitle: '',
+        error: ''
+      }
     } else {
       this.state = {
         id: uuid(),
@@ -17,13 +22,27 @@ class EventForm extends React.Component {
         items:[],
         reservedItems: [],
         note: '',
-        showItemModal: false
+        showItemModal: false,
+        duplicateTitle: '',
+        error: ''
       }
     }
   };
     onChangeTitle = (e) => {
       const title = e.target.value;
       this.setState(() => ({title}));
+
+      if (title !== "" && (store.getState().events.find(x => x.title === title) === undefined)) { //to avoid duplicates
+        this.setState(() => ({
+          duplicateTitle: false,
+          error: ''
+        }));
+      } else {
+        this.setState(() => ({
+          duplicateTitle: true,
+          error: 'This title is already taken, please choose another one.'
+        }));
+      }
     }
     onChangeStatus = (e) => {
       const status = e.target.value;
@@ -137,6 +156,7 @@ class EventForm extends React.Component {
     }
 
   render() {
+    const storeState = store.getState();
     return (
       <div>
         <form>
@@ -145,9 +165,17 @@ class EventForm extends React.Component {
           <input type="radio" name="status" value="public" checked={this.state.status === "public"} onChange={this.onChangeStatus}/>Public
           <input type="radio" name="status" value="private" checked={this.state.status === "private"} onChange={this.onChangeStatus}/>Private <br/>
 
-          {'Link wishlists to this event?'}<br/>
-          <input type="checkbox" name="wishlist1" value="wishlist1" onChange={this.onWishlistLink}/> wishlist 1<br/>
-          <input type="checkbox" name="wishlist2" value="wishlist2" onChange={this.onWishlistLink}/> wishlist 2<br/>
+          {storeState.wishlists.length > 0 &&
+            <div>
+              <h4>{'Link the event to your wishlist ?'}</h4>
+              {storeState.wishlists.map((list, index) =>
+                <div key={index}>
+                  <input type="checkbox" name="choosewishlist" value="wishlist" onChange={this.onWishlistLink}/>
+                  <label>{list.title}</label><br/>
+                </div>
+              )}
+            </div>
+          }
         </form>
         {'Wanted participants:'}<br/>
         <form onSubmit={this.addParticipant}>
@@ -170,7 +198,7 @@ class EventForm extends React.Component {
           <input type="text" name="element"/>
           <button>Add item</button>
         </form>
-        {this.state.items.length !== 0 &&
+        {this.state.items.length > 0 &&
           <div>
             <h3>{'Your additional items outside your premade wishlists:'}</h3>
             <ul>
@@ -192,7 +220,8 @@ class EventForm extends React.Component {
           onChange={this.onEventNote}
         >
         </textarea><br/>
-        <button disabled={this.state.title.trim() === ""}
+        {this.state.error && <p>{this.state.error}</p>}
+        <button disabled={this.state.title.trim() === "" || this.state.duplicateTitle}
           onClick={(ev) => this.props.onSaveEvent({
             id: this.state.id,
             status: this.state.status,

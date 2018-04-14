@@ -1,12 +1,17 @@
 import React from 'react';
 import uuid from 'uuid';
 import ItemDetailsModal from './ItemDetailsModal';
+import store from '../store/store';
 
 class WishlistForm extends React.Component {
   constructor(props) {
     super(props);
     if (this.props.wishlistToUpdate) { //if updating the wishlist
-      this.state = {...this.props.wishlistToUpdate};
+      this.state = {
+        ...this.props.wishlistToUpdate,
+        duplicateTitle: '',
+        error: ''
+       };
     } else { //if creating the wishlist
       this.state = {
         id: uuid(),
@@ -15,14 +20,28 @@ class WishlistForm extends React.Component {
         category: 'no category',
         eventLinks:[],
         items: [],
-        showItemModal: false
+        showItemModal: false,
+        duplicateTitle: '',
+        error: ''
       }
     }
   };
 
   onChangeTitle = (e) => {
-    const title = e.target.value;
+    const title = e.target.value.trim();
     this.setState(() => ({title}));
+
+    if (title !== "" && (store.getState().wishlists.find(x => x.title === title) === undefined)) { //to avoid duplicates
+      this.setState(() => ({
+        duplicateTitle: false,
+        error: ''
+      }));
+    } else {
+      this.setState(() => ({
+        duplicateTitle: true,
+        error: 'This title is already taken, please choose another one.'
+      }));
+    }
   }
 
   onChangeStatus = (e) => {
@@ -129,6 +148,7 @@ itemInfoInit = () => {
 }
 
   render() {
+    const storeState = store.getState();
     return (
       <div>
         <form>
@@ -144,16 +164,24 @@ itemInfoInit = () => {
             <option value="tech">tech</option>
             <option value="software">software</option>
           </select> <br/>
+          {storeState.events.length > 0 &&
+            <div>
+              <h4>{'Link the list to one of your events ?'}</h4>
+              {storeState.events.map((ev, index) =>
+                <div key={index}>
+                  <input type="checkbox" name="event" value="oneofmyevents" onChange={this.onEventLink}/>
+                  <label>{ev.title}</label>
+                </div>
+              )}
+            </div>
+          }
 
-          {'Link the list to one of your events ?'} <br/>
-          <input type="checkbox" name="event1" value="event1" onChange={this.onEventLink}/> Event 1<br/>
-          <input type="checkbox" name="event2" value="event2" onChange={this.onEventLink}/> Event 2<br/>
         </form>
         <form onSubmit={this.addItem}>
           <input type="text" name="element"/>
           <button>Add item</button>
         </form>
-        {this.state.items.length !== 0 &&
+        {this.state.items.length > 0 &&
           <div>
             <h3>Your items:</h3>
             <ul>
@@ -166,7 +194,8 @@ itemInfoInit = () => {
             </ul>
             <button onClick={this.removeAllItems}>Remove all items</button>
         </div> }
-        <button disabled={this.state.title.trim() === ""}
+        {this.state.error && <p>{this.state.error}</p>}
+        <button disabled={this.state.title.trim() === "" || this.state.duplicateTitle}
           onClick={(wishlist) => this.props.onSaveWishlist({
             id: this.state.id,
             status: this.state.status,
@@ -174,7 +203,7 @@ itemInfoInit = () => {
             category: this.state.category,
             eventLinks:this.state.eventLinks,
             items: this.state.items
-          })}>Save wishlist
+          })}>{'Save wishlist'}
         </button>
         <ItemDetailsModal
           showItemModal={this.state.showItemModal}

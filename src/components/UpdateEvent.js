@@ -19,7 +19,10 @@ const UpdateEvent = (props) => {
       <EventForm
         onSaveEvent={(ev) => {
           props.saveEvent(ev);
+          console.log('history: ', props.history);
           props.history.push('/my-events');
+          console.log('history:' , props.history);
+
         }}
         eventToUpdate={eventObj}
       />
