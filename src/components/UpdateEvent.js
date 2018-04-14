@@ -5,12 +5,12 @@ import Modal from 'react-modal';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { saveEvent } from '../actions/actions';
-import store from '../store/store';
+// import store from '../store/store';
 
 
 const UpdateEvent = (props) => {
-  const state = store.getState();
-  const eventObj = state.events.find(obj => obj.id === props.match.params.id);
+  // const state = store.getState();
+  const eventObj = props.events.find(obj => obj.id === props.match.params.id);
 
   return props.loggedIn
   ? <div>
@@ -19,9 +19,7 @@ const UpdateEvent = (props) => {
       <EventForm
         onSaveEvent={(ev) => {
           props.saveEvent(ev);
-          console.log('history: ', props.history);
           props.history.push('/my-events');
-          console.log('history:' , props.history);
 
         }}
         eventToUpdate={eventObj}
@@ -32,7 +30,8 @@ const UpdateEvent = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    loggedIn: state.loggedIn
+    loggedIn: state.loggedIn,
+    events: state.events
   }
 }
 

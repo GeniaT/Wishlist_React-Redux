@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 const initialState = {
   loggedIn: true,
   wishlists: [
@@ -46,7 +48,7 @@ const initialState = {
   events: [
     {
       id: '1337',
-      date: '01/03/2019',
+      date: moment('2018-02-08T02:00:00.000Z'),
       status:'public',
       title: 'tennis tournament',
       participants: ['Genia'],
@@ -70,6 +72,30 @@ const initialState = {
       ],
       reservedItems: ["balls"],
       note: "Need the necessary stuff to play!"
+    },
+    {
+      id: '1338',
+      date: moment('2019-02-08T02:00:00.000Z'),
+      status:'public',
+      title: 'dancing time',
+      participants: ['Genia'],
+      items: [],
+    },
+    {
+      id: '1339',
+      date: moment('2020-03-08T02:00:00.000Z'),
+      status:'public',
+      title: 'hanging out with friends',
+      participants: ['Genia'],
+      items: [],
+    },
+    {
+      id: '1340',
+      date: moment('2017-02-08T02:00:00.000Z'),
+      status:'public',
+      title: 'birthday Alex',
+      participants: ['Genia'],
+      items: [],
     }
   ],
 }

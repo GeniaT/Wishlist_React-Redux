@@ -2,9 +2,14 @@ import React from 'react';
 import uuid from 'uuid';
 import ItemDetailsModal from './ItemDetailsModal';
 import store from '../store/store';
+import Moment from 'moment';
+import 'react-dates/initialize';
+import { SingleDatePicker } from 'react-dates';
+import 'react-dates/lib/css/_datepicker.css';
 
 class EventForm extends React.Component {
   constructor(props) {
+    console.log(props);
     super(props);
     if (this.props.eventToUpdate) {//if updating the event
       this.state = {
@@ -15,7 +20,6 @@ class EventForm extends React.Component {
     } else {
       this.state = {
         id: uuid(),
-        date: '',
         status: 'public',
         title: '',
         participants: [],
@@ -48,10 +52,7 @@ class EventForm extends React.Component {
       const status = e.target.value;
       this.setState(() => ({status}));
     }
-    onChangeDate = (e) => {
-      const date = e.target.value;
-      this.setState(() => ({date}));
-    }
+
     onEventLink = (e) => {
       // probably won't work well for now.
       const eventLink = e.target;
@@ -161,7 +162,12 @@ class EventForm extends React.Component {
       <div>
         <form>
           {'Event Title: '}<input type="text" value={this.state.title} onChange={this.onChangeTitle}/>
-          {'Date:'} <input type="text" value={this.state.date} onChange={this.onChangeDate}/><br/>
+          <SingleDatePicker
+            date={this.state.date}
+            onDateChange={date => this.setState({ date })}
+            focused={this.state.focused}
+            onFocusChange={({ focused }) => this.setState({ focused })}
+          /><br/>
           <input type="radio" name="status" value="public" checked={this.state.status === "public"} onChange={this.onChangeStatus}/>Public
           <input type="radio" name="status" value="private" checked={this.state.status === "private"} onChange={this.onChangeStatus}/>Private <br/>
 

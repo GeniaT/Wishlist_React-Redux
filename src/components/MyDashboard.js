@@ -2,13 +2,23 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Navbar from './Navbar';
 import { Link } from "react-router-dom";
+import moment from 'moment';
 
 const MyDashboard = (props) => {
   const wishlists = props.wishlists.map((x, index) => {
     return <p key={index}>{x.title} <Link to={`/updateWishlist/${x.id}`}><button>{'Update this Wishlist'}</button></Link></p>
   });
+  const now = moment();
   const events = props.events.map((ev, index) => {
-    return <p key={index}>{ev.title} <Link to={`/updateEvent/${ev.id}`}><button>{'Update this Event'}</button></Link></p>
+    return (
+    <p key={index}>
+      {ev.title} {moment(ev.date).format('YYYY-MM-DD')}
+      {now.isBefore(moment(ev.date)) &&
+        <Link to={`/updateEvent/${ev.id}`}>
+          <button>{'Update this Event'}</button>
+        </Link>
+      }
+    </p>)
   });
 
   return (
