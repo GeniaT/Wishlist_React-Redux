@@ -4,6 +4,7 @@ stateDraft = {
   wishlists: [
     {
       id:uuid(),
+      createdAt: '20180923',
       status: "Private",
       title:'for the living room',
       category: 'furniture',
@@ -46,6 +47,7 @@ stateDraft = {
     },
     {
       id:uuid(),
+      createdAt: '20171206',
       status: "Public",
       title:'for gaming room',
       category: 'video Games',
@@ -55,6 +57,7 @@ stateDraft = {
     },
     {
       id:uuid(),
+      createdAt: '20160903',
       status: "Public",
       title:'for the kitchen',
       category: undefined,
@@ -64,7 +67,8 @@ stateDraft = {
     },
     {
       id:uuid(),
-      status: "linked to Events only"
+      createdAt: '20131020',
+      status: "Private"
       title:'holiday stuff',
       category: 'holiday',
       eventLinks: ["summer holidays 2020"]
@@ -118,5 +122,21 @@ stateDraft = {
       reservedItems: ["LoL skin card", "noodles"],
       note: "priority on HP laptop please"
     }
-  ]
+  ],
+  eventsWishlistsLinks:[
+    ['X',  'wlw','wlx','wly','wlz'],
+    ['ev1',0,0,0,0],
+    ['ev2',0,0,0,0],
+    ['ev3',0,0,0,0],
+    ['ev4',0,0,0,0],
+    // not good with bidirectional links...
+    wlx: ['ev1','ev2'],
+    wly: ['ev1','ev3'],
+    wlz: ['ev1','ev3'],
+    ev1: ['wlx','wly','wlz'],
+    ev2: ['wlx'],
+    ev3: ["wly","wlz"],
+    ev4: []
+],
+otherEventsParticipation:[],
 }

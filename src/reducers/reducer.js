@@ -8,6 +8,7 @@ const initialState = {
       title: "Books for computer Science",
       category: "books",
       status: "private",
+      createdAt: '20180923',
       eventLinks: [],
       items: [
         {
@@ -49,6 +50,7 @@ const initialState = {
     {
       id: '1337',
       date: moment('2018-02-08T02:00:00.000Z'),
+      createdAt: '20180423',
       status:'public',
       title: 'tennis tournament',
       participants: ['Genia'],
@@ -76,6 +78,7 @@ const initialState = {
     {
       id: '1338',
       date: moment('2019-02-08T02:00:00.000Z'),
+      createdAt: '20180923',
       status:'public',
       title: 'dancing time',
       participants: ['Genia'],
@@ -84,6 +87,7 @@ const initialState = {
     {
       id: '1339',
       date: moment('2020-03-08T02:00:00.000Z'),
+      createdAt: '20170923',
       status:'public',
       title: 'hanging out with friends',
       participants: ['Genia'],
@@ -92,6 +96,7 @@ const initialState = {
     {
       id: '1340',
       date: moment('2017-02-08T02:00:00.000Z'),
+      createdAt: '20160923',
       status:'public',
       title: 'birthday Alex',
       participants: ['Genia'],

@@ -5,6 +5,7 @@ import AppRoutes from './routes/AppRoutes';
 import store from './store/store';
 import './styles/index.scss';
 import 'normalize.css';
+import 'react-dates/lib/css/_datepicker.css';
 
 const AppProvider = () => (
   <Provider store={store}>

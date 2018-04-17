@@ -7,11 +7,11 @@ import moment from 'moment';
 
 const MyEvents = ({loggedIn, events}) => {
   const now = moment();
+  const futurEvents = events.filter((ev) => {
+    return moment(ev.date).isSameOrAfter(now);
+  });
   const passedEvents = events.filter((ev) => {
     return moment(ev.date).isBefore(now);
-  });
-  const futurEvents = events.filter((ev) => {
-    return now.isBefore(ev.date);
   });
 
   return loggedIn

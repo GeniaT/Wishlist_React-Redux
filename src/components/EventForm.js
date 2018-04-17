@@ -1,15 +1,13 @@
 import React from 'react';
 import uuid from 'uuid';
 import ItemDetailsModal from './ItemDetailsModal';
-import store from '../store/store';
-import Moment from 'moment';
+import { connect } from 'react-redux';
+import moment from 'moment';
 import 'react-dates/initialize';
 import { SingleDatePicker } from 'react-dates';
-import 'react-dates/lib/css/_datepicker.css';
 
 class EventForm extends React.Component {
   constructor(props) {
-    console.log(props);
     super(props);
     if (this.props.eventToUpdate) {//if updating the event
       this.state = {
@@ -36,7 +34,7 @@ class EventForm extends React.Component {
       const title = e.target.value;
       this.setState(() => ({title}));
 
-      if (title !== "" && (store.getState().events.find(x => x.title === title) === undefined)) { //to avoid duplicates
+      if (title !== "" && (this.props.events.find(x => x.title === title) === undefined)) { //to avoid duplicates
         this.setState(() => ({
           duplicateTitle: false,
           error: ''
@@ -136,6 +134,7 @@ class EventForm extends React.Component {
         case "note":
           this.setState(() => {itemToUpdate.note = myUpdate});
           break;
+        default: return;
       }
     }
     itemInfoInit = () => {
@@ -157,24 +156,24 @@ class EventForm extends React.Component {
     }
 
   render() {
-    const storeState = store.getState();
     return (
       <div>
         <form>
           {'Event Title: '}<input type="text" value={this.state.title} onChange={this.onChangeTitle}/>
           <SingleDatePicker
-            date={this.state.date}
+            date={this.state.date || moment()}
             onDateChange={date => this.setState({ date })}
             focused={this.state.focused}
+            reopenPickerOnClearDate={true}
             onFocusChange={({ focused }) => this.setState({ focused })}
           /><br/>
           <input type="radio" name="status" value="public" checked={this.state.status === "public"} onChange={this.onChangeStatus}/>Public
           <input type="radio" name="status" value="private" checked={this.state.status === "private"} onChange={this.onChangeStatus}/>Private <br/>
 
-          {storeState.wishlists.length > 0 &&
+          {this.props.wishlists.length > 0 &&
             <div>
               <h4>{'Link the event to your wishlist ?'}</h4>
-              {storeState.wishlists.map((list, index) =>
+              {this.props.wishlists.map((list, index) =>
                 <div key={index}>
                   <input type="checkbox" name="choosewishlist" value="wishlist" onChange={this.onWishlistLink}/>
                   <label>{list.title}</label><br/>
@@ -231,6 +230,7 @@ class EventForm extends React.Component {
           onClick={(ev) => this.props.onSaveEvent({
             id: this.state.id,
             status: this.state.status,
+            createdAt: moment(),
             title: this.state.title,
             date: this.state.date,
             participants:this.state.participants,
@@ -250,4 +250,9 @@ class EventForm extends React.Component {
   }
 }
 
-export default EventForm;
+const mapStateToProps = (state) => ({
+  wishlists: state.wishlists,
+  events: state.events
+})
+
+export default connect(mapStateToProps)(EventForm);

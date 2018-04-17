@@ -5,11 +5,8 @@ import Modal from 'react-modal';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { saveEvent } from '../actions/actions';
-// import store from '../store/store';
-
 
 const UpdateEvent = (props) => {
-  // const state = store.getState();
   const eventObj = props.events.find(obj => obj.id === props.match.params.id);
 
   return props.loggedIn

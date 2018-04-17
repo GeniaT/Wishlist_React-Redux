@@ -1,7 +1,8 @@
 import React from 'react';
 import uuid from 'uuid';
+import { connect } from 'react-redux';
 import ItemDetailsModal from './ItemDetailsModal';
-import store from '../store/store';
+import moment from 'moment';
 
 class WishlistForm extends React.Component {
   constructor(props) {
@@ -31,7 +32,7 @@ class WishlistForm extends React.Component {
     const title = e.target.value.trim();
     this.setState(() => ({title}));
 
-    if (title !== "" && (store.getState().wishlists.find(x => x.title === title) === undefined)) { //to avoid duplicates
+    if (title !== "" && (this.props.wishlists.find(x => x.title === title) === undefined)) { //to avoid duplicates
       this.setState(() => ({
         duplicateTitle: false,
         error: ''
@@ -148,7 +149,6 @@ itemInfoInit = () => {
 }
 
   render() {
-    const storeState = store.getState();
     return (
       <div>
         <form>
@@ -164,10 +164,10 @@ itemInfoInit = () => {
             <option value="tech">tech</option>
             <option value="software">software</option>
           </select> <br/>
-          {storeState.events.length > 0 &&
+          {this.props.events.length > 0 &&
             <div>
               <h4>{'Link the list to one of your events ?'}</h4>
-              {storeState.events.map((ev, index) =>
+              {this.props.events.map((ev, index) =>
                 <div key={index}>
                   <input type="checkbox" name="event" value="oneofmyevents" onChange={this.onEventLink}/>
                   <label>{ev.title}</label>
@@ -199,6 +199,7 @@ itemInfoInit = () => {
           onClick={(wishlist) => this.props.onSaveWishlist({
             id: this.state.id,
             status: this.state.status,
+            createdAt: moment(),
             title: this.state.title,
             category: this.state.category,
             eventLinks:this.state.eventLinks,
@@ -217,4 +218,8 @@ itemInfoInit = () => {
   }
 }
 
-export default WishlistForm;
+const mapStateToProps = (state) => ({
+  wishlists: state.wishlists,
+  events: state.events
+})
+export default connect(mapStateToProps)(WishlistForm);
