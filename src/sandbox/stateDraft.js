@@ -124,19 +124,23 @@ stateDraft = {
     }
   ],
   eventsWishlistsLinks:[
-    ['X',  'wlw','wlx','wly','wlz'],
-    ['ev1',0,0,0,0],
-    ['ev2',0,0,0,0],
-    ['ev3',0,0,0,0],
-    ['ev4',0,0,0,0],
-    // not good with bidirectional links...
-    wlx: ['ev1','ev2'],
-    wly: ['ev1','ev3'],
-    wlz: ['ev1','ev3'],
-    ev1: ['wlx','wly','wlz'],
-    ev2: ['wlx'],
-    ev3: ["wly","wlz"],
-    ev4: []
+
+    // ['ord','ev1ID','ev2ID','ev3ID','ev4ID'], //sorted by createdAt state
+    // ['abs','wlwID','wlxID','wlyID','wlzID'], //sorted by createdAt state
+    // 1 row = 1 event, 1 column = 1 wishlist
+    [0,1,1,1],
+    [0,1,0,0],
+    [0,0,1,1],
+    [0,0,0,0],
+    // Links that are represented in the matrix above
+    // wlw:[],
+    // wlx: ['ev1','ev2'],
+    // wly: ['ev1','ev3'],
+    // wlz: ['ev1','ev3'],
+    // ev1: ['wlx','wly','wlz'],
+    // ev2: ['wlx'],
+    // ev3: ["wly","wlz"],
+    // ev4: []
 ],
 otherEventsParticipation:[],
 }

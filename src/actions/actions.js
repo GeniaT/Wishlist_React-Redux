@@ -28,3 +28,9 @@ export const saveEvent = (ev) => ({
   type: 'SAVE_EVENT',
   ev
 })
+
+export const updateEventsWishlistsLinksMatrix = (operation, id) => ({
+  type: 'UPDATE_EVENTS_WISHLISTS_LINKS_MATRIX',
+  operation,
+  id
+})

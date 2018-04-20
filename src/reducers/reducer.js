@@ -8,7 +8,7 @@ const initialState = {
       title: "Books for computer Science",
       category: "books",
       status: "private",
-      createdAt: '20180923',
+      createdAt: moment('2018-04-17T09:18:57.610Z'),
       eventLinks: [],
       items: [
         {
@@ -44,7 +44,16 @@ const initialState = {
           note: "more math for CS please !"
         }
       ]
+    },{
+        id: "dd6ddad2",
+        title: "Video Games for PC",
+        category: "books",
+        status: "private",
+        createdAt: moment('2016-02-14T09:16:50.610Z'),
+        eventLinks: [],
+        items: []
     }
+
   ],
   events: [
     {
@@ -103,6 +112,12 @@ const initialState = {
       items: [],
     }
   ],
+  eventsWishlistsLinks: [
+    [0,0],
+    [0,0],
+    [0,0],
+    [0,0]
+  ]
 }
 
 const reducer = (state = initialState, action) => {
@@ -169,6 +184,23 @@ const reducer = (state = initialState, action) => {
         }
       }
       updating = false;
+    case 'UPDATE_EVENTS_WISHLISTS_LINKS_MATRIX':
+      switch (action.operation) {
+        case 'wishlistCreation':
+          state.eventsWishlistsLinks.forEach((x) => {
+            x.push(0);
+          });
+        case 'wishlistUpdate':
+        case 'wishlistDeletion':
+        case 'eventCreation':
+          const newEventArr = new Array(state.eventsWishlistsLinks[0].length);
+          newEventArr.fill(0);
+          state.eventsWishlistsLinks.push(newEventArr);
+        case 'eventUpdate':
+        case 'eventDeletion':
+        default: return state;
+      }
+
     default:
       return state;
   }

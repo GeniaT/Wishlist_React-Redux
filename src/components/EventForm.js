@@ -252,7 +252,8 @@ class EventForm extends React.Component {
 
 const mapStateToProps = (state) => ({
   wishlists: state.wishlists,
-  events: state.events
+  events: state.events,
+  eventsWishlistsLinks: state.eventsWishlistsLinks
 })
 
 export default connect(mapStateToProps)(EventForm);

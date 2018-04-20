@@ -3,7 +3,7 @@ import Navbar from './Navbar';
 import WishlistForm from './WishlistForm';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { saveWishlist } from '../actions/actions';
+import { saveWishlist, updateEventsWishlistsLinksMatrix } from '../actions/actions';
 
 
 const CreateWishlist = (props) => {
@@ -11,8 +11,9 @@ const CreateWishlist = (props) => {
   ? <div>
       <Navbar />
       <h1>Create your wishlist!</h1>
-      <WishlistForm onSaveWishlist={(wishlist) => {
+      <WishlistForm onSaveWishlist={(wishlist, operation, id) => {
         props.saveWishlist(wishlist);
+        props.updateEventsWishlistsLinksMatrix(operation, id);
         props.history.push('/');
         }}
       />
@@ -27,7 +28,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  saveWishlist
+  saveWishlist,
+  updateEventsWishlistsLinksMatrix
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateWishlist);

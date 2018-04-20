@@ -3,34 +3,27 @@ import Navbar from './Navbar';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import { passedEvents, futurEvents } from '../selectors/events';
 import moment from 'moment';
 
 const MyEvents = ({loggedIn, events}) => {
-  const now = moment();
-  const futurEvents = events.filter((ev) => {
-    return moment(ev.date).isSameOrAfter(now);
-  });
-  const passedEvents = events.filter((ev) => {
-    return moment(ev.date).isBefore(now);
-  });
-
   return loggedIn
   ? <div>
       <Navbar />
       <h1>Check your Events here!</h1>
-      {futurEvents.length > 0 &&
+      {futurEvents(events).length > 0 &&
         <div>
         <h2>My futur events:</h2>
-        {futurEvents.map((ev,index) =>
+        {futurEvents(events).map((ev,index) =>
           <p key={index}>{ev.title} - {moment(ev.date).format('YYYY MM DD')}</p>
       )}
       </div>}
 
       <Link to={`/create-event`}><button>{'Create a new Event'}</button></Link>
-      {passedEvents.length > 0 &&
+      {passedEvents(events).length > 0 &&
         <div>
         <h2>My passed events:</h2>
-        {passedEvents.map((ev,index) =>
+        {passedEvents(events).map((ev,index) =>
           <p key={index}>{ev.title} - {moment(ev.date).format('YYYY MM DD')}</p>
       )}
       </div>}

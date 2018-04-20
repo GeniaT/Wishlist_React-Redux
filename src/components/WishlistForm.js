@@ -2,6 +2,7 @@ import React from 'react';
 import uuid from 'uuid';
 import { connect } from 'react-redux';
 import ItemDetailsModal from './ItemDetailsModal';
+import { futurEvents } from '../selectors/events';
 import moment from 'moment';
 
 class WishlistForm extends React.Component {
@@ -10,6 +11,7 @@ class WishlistForm extends React.Component {
     if (this.props.wishlistToUpdate) { //if updating the wishlist
       this.state = {
         ...this.props.wishlistToUpdate,
+        operation: 'wishlistUpdate',
         duplicateTitle: '',
         error: ''
        };
@@ -22,6 +24,7 @@ class WishlistForm extends React.Component {
         eventLinks:[],
         items: [],
         showItemModal: false,
+        operation: 'wishlistCreation',
         duplicateTitle: '',
         error: ''
       }
@@ -166,8 +169,8 @@ itemInfoInit = () => {
           </select> <br/>
           {this.props.events.length > 0 &&
             <div>
-              <h4>{'Link the list to one of your events ?'}</h4>
-              {this.props.events.map((ev, index) =>
+              <h4>{'Link the list to one of your futur events ?'}</h4>
+              {futurEvents(this.props.events).map((ev, index) =>
                 <div key={index}>
                   <input type="checkbox" name="event" value="oneofmyevents" onChange={this.onEventLink}/>
                   <label>{ev.title}</label>
@@ -204,7 +207,7 @@ itemInfoInit = () => {
             category: this.state.category,
             eventLinks:this.state.eventLinks,
             items: this.state.items
-          })}>{'Save wishlist'}
+          }, this.state.operation, this.state.id)}>{'Save wishlist'}
         </button>
         <ItemDetailsModal
           showItemModal={this.state.showItemModal}
@@ -220,6 +223,7 @@ itemInfoInit = () => {
 
 const mapStateToProps = (state) => ({
   wishlists: state.wishlists,
-  events: state.events
+  events: state.events,
+  eventsWishlistsLinks: state.eventsWishlistsLinks
 })
 export default connect(mapStateToProps)(WishlistForm);
