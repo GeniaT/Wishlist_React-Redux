@@ -63,6 +63,7 @@ const initialState = {
       status:'public',
       title: 'tennis tournament',
       participants: ['Genia'],
+      wishlistLinks: [],
       items: [
         {
           name: "Tennis racket",
@@ -113,10 +114,9 @@ const initialState = {
     }
   ],
   eventsWishlistsLinks: [
-    [0,0],
-    [0,0],
-    [0,0],
-    [0,0]
+    ['X','cc6ddad2-434b-4c6c-91be-03271476ed4e','dd6ddad2'],
+    ['1338', 0,0],
+    ['1339', 0,0]
   ]
 }
 
@@ -187,15 +187,31 @@ const reducer = (state = initialState, action) => {
     case 'UPDATE_EVENTS_WISHLISTS_LINKS_MATRIX':
       switch (action.operation) {
         case 'wishlistCreation':
+          //for each event that I checked in wishlistform, I set a 1 in the matrix.
           state.eventsWishlistsLinks.forEach((x) => {
-            x.push(0);
+            if (action.linksIds.indexOf(x[0]) !== -1) {
+              x.push(1);
+            } else {
+              x.push(0);
+            }
           });
+          state.eventsWishlistsLinks[0][state.eventsWishlistsLinks[0].lastIndexOf(0)] = action.id;
+          break;
         case 'wishlistUpdate':
         case 'wishlistDeletion':
         case 'eventCreation':
+          //a new Arr represents a new event, filled with 0. Then if a link is found with a wishlist from eventForm,
+          //we write 1 in the matrix.
           const newEventArr = new Array(state.eventsWishlistsLinks[0].length);
           newEventArr.fill(0);
+          newEventArr.forEach((x, index) => {
+            if (action.linksIds.indexOf(state.eventsWishlistsLinks[0][index]) !== -1) {
+              newEventArr[index] = 1
+            }
+          });
+          newEventArr[0] = action.id;
           state.eventsWishlistsLinks.push(newEventArr);
+          break;
         case 'eventUpdate':
         case 'eventDeletion':
         default: return state;

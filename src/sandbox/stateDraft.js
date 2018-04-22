@@ -8,7 +8,7 @@ stateDraft = {
       status: "Private",
       title:'for the living room',
       category: 'furniture',
-      eventLinks: ["for new home"],
+      eventLinksIds: ['uiqopifjkdd', 'sqd2'],
       tags: ["wood","IKEA","cheap"],
       items: [
         {
@@ -127,7 +127,7 @@ stateDraft = {
 
     // ['ord','ev1ID','ev2ID','ev3ID','ev4ID'], //sorted by createdAt state
     // ['abs','wlwID','wlxID','wlyID','wlzID'], //sorted by createdAt state
-    // 1 row = 1 event, 1 column = 1 wishlist
+    // 1 row = 1 FUTUR event, 1 column = 1 wishlist
     [0,1,1,1],
     [0,1,0,0],
     [0,0,1,1],

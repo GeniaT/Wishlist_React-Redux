@@ -13,7 +13,7 @@ const MyDashboard = (props) => {
     return (
     <p key={index}>
       {ev.title} {moment(ev.date).format('YYYY-MM-DD')}
-      {now.isBefore(moment(ev.date)) &&
+      {moment(ev.date).isSameOrAfter(now) &&
         <Link to={`/updateEvent/${ev.id}`}>
           <button>{'Update this Event'}</button>
         </Link>

@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from './Navbar';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { saveEvent } from '../actions/actions';
+import { saveEvent, updateEventsWishlistsLinksMatrix } from '../actions/actions';
 import EventForm from './EventForm';
 
 
@@ -11,8 +11,9 @@ const CreateEvent = (props) => {
   ? <div>
       <Navbar />
       <h1>{'Create your Event!'}</h1>
-      <EventForm onSaveEvent={(ev) => {
+      <EventForm onSaveEvent={(ev, operation, id, linksIds) => {
         props.saveEvent(ev);
+        props.updateEventsWishlistsLinksMatrix(operation, id, linksIds);
         props.history.push('/my-events');
         }}
       />
@@ -27,7 +28,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  saveEvent
+  saveEvent,
+  updateEventsWishlistsLinksMatrix
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateEvent);

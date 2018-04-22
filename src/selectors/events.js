@@ -10,7 +10,7 @@ function futurEvents(eventsArray) {
 function passedEvents(eventsArray) {
   const now = moment();
   return eventsArray.filter((ev) => {
-    return moment(ev.date.isBefore(now));
+    return moment(ev.date).isBefore(now);
   })
 }
 

@@ -11,9 +11,9 @@ const CreateWishlist = (props) => {
   ? <div>
       <Navbar />
       <h1>Create your wishlist!</h1>
-      <WishlistForm onSaveWishlist={(wishlist, operation, id) => {
+      <WishlistForm onSaveWishlist={(wishlist, operation, id, eventLinksIds) => {
         props.saveWishlist(wishlist);
-        props.updateEventsWishlistsLinksMatrix(operation, id);
+        props.updateEventsWishlistsLinksMatrix(operation, id, eventLinksIds);
         props.history.push('/');
         }}
       />

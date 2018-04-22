@@ -21,7 +21,7 @@ class WishlistForm extends React.Component {
         status: 'public',
         title: '',
         category: 'no category',
-        eventLinks:[],
+        eventLinksIds:[],
         items: [],
         showItemModal: false,
         operation: 'wishlistCreation',
@@ -60,9 +60,9 @@ class WishlistForm extends React.Component {
   onEventLink = (e) => {
     const eventLink = e.target;
     if (eventLink.checked == true) {
-      this.setState(() => ({eventLinks:[...this.state.eventLinks, eventLink.value]}));
+      this.setState(() => ({eventLinksIds:[...this.state.eventLinksIds, eventLink.value]}));
     } else {
-      this.setState(() => ({eventLinks: this.state.eventLinks.filter((link) => link !== eventLink.value)}))
+      this.setState(() => ({eventLinksIds: this.state.eventLinksIds.filter((link) => link !== eventLink.value)}))
     }
   }
   addItem = (e) => {
@@ -172,7 +172,7 @@ itemInfoInit = () => {
               <h4>{'Link the list to one of your futur events ?'}</h4>
               {futurEvents(this.props.events).map((ev, index) =>
                 <div key={index}>
-                  <input type="checkbox" name="event" value="oneofmyevents" onChange={this.onEventLink}/>
+                  <input type="checkbox" name="event" value={ev.id} onChange={this.onEventLink}/>
                   <label>{ev.title}</label>
                 </div>
               )}
@@ -205,9 +205,9 @@ itemInfoInit = () => {
             createdAt: moment(),
             title: this.state.title,
             category: this.state.category,
-            eventLinks:this.state.eventLinks,
+            eventLinksIds:this.state.eventLinksIds,
             items: this.state.items
-          }, this.state.operation, this.state.id)}>{'Save wishlist'}
+          }, this.state.operation, this.state.id, this.state.eventLinksIds)}>{'Save wishlist'}
         </button>
         <ItemDetailsModal
           showItemModal={this.state.showItemModal}

@@ -13,18 +13,21 @@ class EventForm extends React.Component {
       this.state = {
         ...this.props.eventToUpdate,
         duplicateTitle: '',
-        error: ''
+        error: '',
+        operation: 'eventUpdate'
       }
     } else {
       this.state = {
         id: uuid(),
         status: 'public',
         title: '',
+        wishlistLinksIds: [],
         participants: [],
         items:[],
         reservedItems: [],
         note: '',
         showItemModal: false,
+        operation: 'eventCreation',
         duplicateTitle: '',
         error: ''
       }
@@ -74,6 +77,14 @@ class EventForm extends React.Component {
     onEventNote = (e) => {
       const note = e.target.value;
       this.setState(() => ({note}));
+    }
+    onWishlistLink = (e) => {
+      const wishlistLink = e.target;
+      if (wishlistLink.checked == true) {
+        this.setState(() => ({wishlistLinksIds:[...this.state.wishlistLinksIds, wishlistLink.value]}));
+      } else {
+        this.setState(() => ({wishlistLinksIds: this.state.wishlistLinksIds.filter((link) => link !== wishlistLink.value)}))
+      }
     }
     addItem = (e) => {
       e.preventDefault();
@@ -175,7 +186,7 @@ class EventForm extends React.Component {
               <h4>{'Link the event to your wishlist ?'}</h4>
               {this.props.wishlists.map((list, index) =>
                 <div key={index}>
-                  <input type="checkbox" name="choosewishlist" value="wishlist" onChange={this.onWishlistLink}/>
+                  <input type="checkbox" name="choosewishlist" value={list.id} onChange={this.onWishlistLink}/>
                   <label>{list.title}</label><br/>
                 </div>
               )}
@@ -236,7 +247,7 @@ class EventForm extends React.Component {
             participants:this.state.participants,
             items: this.state.items,
             note: this.state.note
-          })}>{'Save Event'}
+          }, this.state.operation, this.state.id, this.state.wishlistLinksIds)}>{'Save Event'}
         </button>
         <ItemDetailsModal
           showItemModal={this.state.showItemModal}
