@@ -13,7 +13,8 @@ class WishlistForm extends React.Component {
         ...this.props.wishlistToUpdate,
         operation: 'wishlistUpdate',
         duplicateTitle: '',
-        error: ''
+        error: '',
+        eventLinksIds:[]
        };
     } else { //if creating the wishlist
       this.state = {
@@ -151,6 +152,20 @@ itemInfoInit = () => {
   ]));
 }
 
+componentDidMount() {
+    const wishlistIndexFromMatrix = this.props.eventsWishlistsLinks[0].indexOf(this.state.id);
+    let additionalLinks = []; //used because setState can't be run so quickly many times in forEach loop.
+    this.props.eventsWishlistsLinks.forEach((row) => {
+      if (row[wishlistIndexFromMatrix] === 1) {
+        document.getElementById(row[0]).checked = true;
+        additionalLinks.push(row[0]);
+      }
+    });
+    this.setState(() => ({eventLinksIds: (this.state.eventLinksIds).concat(additionalLinks)
+    }));
+  }
+
+
   render() {
     return (
       <div>
@@ -172,7 +187,13 @@ itemInfoInit = () => {
               <h4>{'Link the list to one of your futur events ?'}</h4>
               {futurEvents(this.props.events).map((ev, index) =>
                 <div key={index}>
-                  <input type="checkbox" name="event" value={ev.id} onChange={this.onEventLink}/>
+                  <input
+                    type="checkbox"
+                    name="event"
+                    value={ev.id}
+                    id={ev.id}
+                    onChange={this.onEventLink}
+                  />
                   <label>{ev.title}</label>
                 </div>
               )}

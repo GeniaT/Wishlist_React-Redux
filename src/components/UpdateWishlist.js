@@ -4,7 +4,7 @@ import WishlistForm from './WishlistForm';
 import Modal from 'react-modal';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { saveWishlist } from '../actions/actions';
+import { saveWishlist, updateEventsWishlistsLinksMatrix } from '../actions/actions';
 import store from '../store/store';
 
 
@@ -17,8 +17,9 @@ const UpdateWishlist = (props) => {
       <Navbar />
       <h1>Update {wishlistObj.title } wishlist!</h1>
       <WishlistForm
-        onSaveWishlist={(wishlist) => {
+        onSaveWishlist={(wishlist, operation, id, eventLinksIds) => {
           props.saveWishlist(wishlist);
+          props.updateEventsWishlistsLinksMatrix(operation, id, eventLinksIds);
           props.history.push('/');
         }}
         wishlistToUpdate={wishlistObj}
@@ -34,7 +35,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  saveWishlist
+  saveWishlist,
+  updateEventsWishlistsLinksMatrix
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(UpdateWishlist);

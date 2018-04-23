@@ -9,7 +9,7 @@ const initialState = {
       category: "books",
       status: "private",
       createdAt: moment('2018-04-17T09:18:57.610Z'),
-      eventLinks: [],
+      eventLinksIds: [],
       items: [
         {
           name: "CLRS",
@@ -63,7 +63,7 @@ const initialState = {
       status:'public',
       title: 'tennis tournament',
       participants: ['Genia'],
-      wishlistLinks: [],
+      wishlistLinksIds: [],
       items: [
         {
           name: "Tennis racket",
@@ -92,6 +92,7 @@ const initialState = {
       status:'public',
       title: 'dancing time',
       participants: ['Genia'],
+      wishlistLinksIds: [],
       items: [],
     },
     {
@@ -101,6 +102,7 @@ const initialState = {
       status:'public',
       title: 'hanging out with friends',
       participants: ['Genia'],
+      wishlistLinksIds: [],
       items: [],
     },
     {
@@ -110,13 +112,14 @@ const initialState = {
       status:'public',
       title: 'birthday Alex',
       participants: ['Genia'],
+      wishlistLinksIds: [],
       items: [],
     }
   ],
   eventsWishlistsLinks: [
     ['X','cc6ddad2-434b-4c6c-91be-03271476ed4e','dd6ddad2'],
-    ['1338', 0,0],
-    ['1339', 0,0]
+    ['1338', 1,0],
+    ['1339', 0,1]
   ]
 }
 
@@ -187,7 +190,7 @@ const reducer = (state = initialState, action) => {
     case 'UPDATE_EVENTS_WISHLISTS_LINKS_MATRIX':
       switch (action.operation) {
         case 'wishlistCreation':
-          //for each event that I checked in wishlistform, I set a 1 in the matrix.
+          //for each event that I checked in wishlistform, I push a 1 in the matrix.
           state.eventsWishlistsLinks.forEach((x) => {
             if (action.linksIds.indexOf(x[0]) !== -1) {
               x.push(1);
@@ -198,6 +201,20 @@ const reducer = (state = initialState, action) => {
           state.eventsWishlistsLinks[0][state.eventsWishlistsLinks[0].lastIndexOf(0)] = action.id;
           break;
         case 'wishlistUpdate':
+        console.log("inside wishlistUpdate reducer!");
+          const wishlistIndexFromMatrix = state.eventsWishlistsLinks[0].indexOf(action.id);
+          console.log(wishlistIndexFromMatrix);
+          //For each event checked in wishlistform, I set a 1 to link it to the wishlistId in the matrix
+          for (let i = 1; i < state.eventsWishlistsLinks.length; i++) {
+            if (action.linksIds.indexOf(state.eventsWishlistsLinks[i][0]) !== -1) {
+              state.eventsWishlistsLinks[i][wishlistIndexFromMatrix] = 1;
+              console.log(state.eventsWishlistsLinks);
+            } else {
+              state.eventsWishlistsLinks[i][wishlistIndexFromMatrix] = 0;
+              console.log(state.eventsWishlistsLinks);
+            }
+          }
+          break;
         case 'wishlistDeletion':
         case 'eventCreation':
           //a new Arr represents a new event, filled with 0. Then if a link is found with a wishlist from eventForm,
