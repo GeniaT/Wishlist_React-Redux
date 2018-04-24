@@ -201,17 +201,13 @@ const reducer = (state = initialState, action) => {
           state.eventsWishlistsLinks[0][state.eventsWishlistsLinks[0].lastIndexOf(0)] = action.id;
           break;
         case 'wishlistUpdate':
-        console.log("inside wishlistUpdate reducer!");
           const wishlistIndexFromMatrix = state.eventsWishlistsLinks[0].indexOf(action.id);
-          console.log(wishlistIndexFromMatrix);
           //For each event checked in wishlistform, I set a 1 to link it to the wishlistId in the matrix
           for (let i = 1; i < state.eventsWishlistsLinks.length; i++) {
             if (action.linksIds.indexOf(state.eventsWishlistsLinks[i][0]) !== -1) {
               state.eventsWishlistsLinks[i][wishlistIndexFromMatrix] = 1;
-              console.log(state.eventsWishlistsLinks);
             } else {
               state.eventsWishlistsLinks[i][wishlistIndexFromMatrix] = 0;
-              console.log(state.eventsWishlistsLinks);
             }
           }
           break;
@@ -230,6 +226,25 @@ const reducer = (state = initialState, action) => {
           state.eventsWishlistsLinks.push(newEventArr);
           break;
         case 'eventUpdate':
+          //TO COMPLETE as with wishlistupdate + adaptations.
+          //Detection of the row in the matrix to update
+          let eventRowNrFromMatrix = '';
+          state.eventsWishlistsLinks.forEach((row, index) => {
+            if (row[0] === action.id) {
+              eventRowNrFromMatrix = index;
+              return;
+            }
+          });
+          //for each column in the matrix except eventsids (1st one), a wishlist
+          // has been linked to the event, I set a 1 in the intersection of wishlist id and event id
+          for (let i = 1; i < state.eventsWishlistsLinks[0].length; i++) {
+            if (action.linksIds.indexOf(state.eventsWishlistsLinks[0][i]) !== -1) {
+              state.eventsWishlistsLinks[eventRowNrFromMatrix][i] = 1;
+            } else {
+              state.eventsWishlistsLinks[eventRowNrFromMatrix][i] = 0;
+            }
+          }
+          break;
         case 'eventDeletion':
         default: return state;
       }

@@ -153,6 +153,7 @@ itemInfoInit = () => {
 }
 
 componentDidMount() {
+  //We update the eventLinksIds state to then use it to update the link matrix in global state when saving the form.
     const wishlistIndexFromMatrix = this.props.eventsWishlistsLinks[0].indexOf(this.state.id);
     let additionalLinks = []; //used because setState can't be run so quickly many times in forEach loop.
     this.props.eventsWishlistsLinks.forEach((row) => {
@@ -161,8 +162,7 @@ componentDidMount() {
         additionalLinks.push(row[0]);
       }
     });
-    this.setState(() => ({eventLinksIds: (this.state.eventLinksIds).concat(additionalLinks)
-    }));
+    this.setState(() => ({eventLinksIds: (this.state.eventLinksIds).concat(additionalLinks)}));
   }
 
 

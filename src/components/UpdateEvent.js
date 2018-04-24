@@ -4,7 +4,7 @@ import EventForm from './EventForm';
 import Modal from 'react-modal';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { saveEvent } from '../actions/actions';
+import { saveEvent, updateEventsWishlistsLinksMatrix } from '../actions/actions';
 
 const UpdateEvent = (props) => {
   const eventObj = props.events.find(obj => obj.id === props.match.params.id);
@@ -14,8 +14,9 @@ const UpdateEvent = (props) => {
       <Navbar />
       <h1>Update {eventObj.title } ev€nt!</h1>
       <EventForm
-        onSaveEvent={(ev) => {
+        onSaveEvent={(ev, operation, id, wishlistLinksIds) => {
           props.saveEvent(ev);
+          props.updateEventsWishlistsLinksMatrix(operation, id, wishlistLinksIds);
           props.history.push('/my-events');
 
         }}
@@ -33,7 +34,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  saveEvent
+  saveEvent,
+  updateEventsWishlistsLinksMatrix
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(UpdateEvent);

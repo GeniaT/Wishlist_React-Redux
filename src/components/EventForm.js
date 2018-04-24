@@ -14,7 +14,8 @@ class EventForm extends React.Component {
         ...this.props.eventToUpdate,
         duplicateTitle: '',
         error: '',
-        operation: 'eventUpdate'
+        operation: 'eventUpdate',
+        wishlistLinksIds:[]
       }
     } else {
       this.state = {
@@ -33,138 +34,156 @@ class EventForm extends React.Component {
       }
     }
   };
-    onChangeTitle = (e) => {
-      const title = e.target.value;
-      this.setState(() => ({title}));
-
-      if (title !== "" && (this.props.events.find(x => x.title === title) === undefined)) { //to avoid duplicates
-        this.setState(() => ({
-          duplicateTitle: false,
-          error: ''
-        }));
-      } else {
-        this.setState(() => ({
-          duplicateTitle: true,
-          error: 'This title is already taken, please choose another one.'
-        }));
-      }
-    }
-    onChangeStatus = (e) => {
-      const status = e.target.value;
-      this.setState(() => ({status}));
-    }
-
-    onEventLink = (e) => {
-      // probably won't work well for now.
-      const eventLink = e.target;
-      if (eventLink.checked == true) {
-        this.setState(() => ({eventLinks:[...this.state.eventLinks, eventLink.value]}));
-      } else {
-        this.setState(() => ({eventLinks: this.state.eventLinks.filter((link) => link !== eventLink.value)}))
-      }
-    }
-    addParticipant = (e) => {
-      e.preventDefault();
-      const participant = e.target.participant.value.trim();
+  onChangeTitle = (e) => {
+    const title = e.target.value;
+    this.setState(() => ({title}));
+    if (title !== "" && (this.props.events.find(x => x.title === title) === undefined)) { //to avoid duplicates
       this.setState(() => ({
-        participants:[...this.state.participants, participant]
+        duplicateTitle: false,
+        error: ''
       }));
-      e.target.participant.value = '';
-    }
-    deleteParticipant = (participant) => {
-      this.setState((prevState) => ({participants: prevState.participants.filter((x) => x !== participant)}));
-    }
-    onEventNote = (e) => {
-      const note = e.target.value;
-      this.setState(() => ({note}));
-    }
-    onWishlistLink = (e) => {
-      const wishlistLink = e.target;
-      if (wishlistLink.checked == true) {
-        this.setState(() => ({wishlistLinksIds:[...this.state.wishlistLinksIds, wishlistLink.value]}));
-      } else {
-        this.setState(() => ({wishlistLinksIds: this.state.wishlistLinksIds.filter((link) => link !== wishlistLink.value)}))
-      }
-    }
-    addItem = (e) => {
-      e.preventDefault();
-      const item = e.target.element.value.trim();
-      if (item !== "" && (this.state.items.find(x => x.name === item) === undefined)) { //to avoid duplicates
-        this.setState(() => ({
-          items:[...this.state.items,
-          {
-            name: item,
-            description: '',
-            picture: '',
-            urlToBuy: '',
-            appriximatePrice: '',
-            note: ''
-          }]
-        }));
-      }
-      e.target.element.value = "";
-    }
-    deleteItem = (item) => {
-      this.setState((prevState) => ({items: prevState.items.filter((x) => x.name !== item)}));
-    }
-    removeAllItems = (e) => {
-      e.preventDefault(e);
+    } else {
       this.setState(() => ({
-        items: []
+        duplicateTitle: true,
+        error: 'This title is already taken, please choose another one.'
       }));
     }
-    openModalForItemUpdate = (item) => {
-      this.setState(() => ({
-        showItemModal: true,
-        updatingItem: item
-      }))
+  }
+  onChangeStatus = (e) => {
+    const status = e.target.value;
+    this.setState(() => ({status}));
+  }
+  onEventLink = (e) => {
+    // probably won't work well for now.
+    const eventLink = e.target;
+    if (eventLink.checked == true) {
+      this.setState(() => ({eventLinks:[...this.state.eventLinks, eventLink.value]}));
+    } else {
+      this.setState(() => ({eventLinks: this.state.eventLinks.filter((link) => link !== eventLink.value)}))
     }
-    closeItemModal = () => {
-      this.setState(() => ({
-        showItemModal: false,
-        updatingItem: ''
-      }))
+  }
+  addParticipant = (e) => {
+    e.preventDefault();
+    const participant = e.target.participant.value.trim();
+    this.setState(() => ({
+      participants:[...this.state.participants, participant]
+    }));
+    e.target.participant.value = '';
+  }
+  deleteParticipant = (participant) => {
+    this.setState((prevState) => ({participants: prevState.participants.filter((x) => x !== participant)}));
+  }
+  onEventNote = (e) => {
+    const note = e.target.value;
+    this.setState(() => ({note}));
+  }
+  onWishlistLink = (e) => {
+    const wishlistLink = e.target;
+    if (wishlistLink.checked == true) {
+      this.setState(() => ({wishlistLinksIds:[...this.state.wishlistLinksIds, wishlistLink.value]}));
+    } else {
+      this.setState(() => ({wishlistLinksIds: this.state.wishlistLinksIds.filter((link) => link !== wishlistLink.value)}))
     }
-    onUpdateItem = (e) => {
-      const myUpdate = e.target.value;
-      const itemToUpdate = this.state.items.find(obj => obj.name === this.state.updatingItem);
-
-      switch(e.target.name) {
-        case "description":
-          this.setState(() => {itemToUpdate.description = myUpdate});
-          break;
-        case "pictureLink":
-          this.setState(() => {itemToUpdate.picture = myUpdate});
-          break;
-        case "buyLink":
-          this.setState(() => {itemToUpdate.urlToBuy = myUpdate});
-          break;
-        case "price":
-          this.setState(() => {itemToUpdate.appriximatePrice = myUpdate});
-          break;
-        case "note":
-          this.setState(() => {itemToUpdate.note = myUpdate});
-          break;
-        default: return;
+  }
+  addItem = (e) => {
+    e.preventDefault();
+    const item = e.target.element.value.trim();
+    if (item !== "" && (this.state.items.find(x => x.name === item) === undefined)) { //to avoid duplicates
+      this.setState(() => ({
+        items:[...this.state.items,
+        {
+          name: item,
+          description: '',
+          picture: '',
+          urlToBuy: '',
+          appriximatePrice: '',
+          note: ''
+        }]
+      }));
+    }
+    e.target.element.value = "";
+  }
+  deleteItem = (item) => {
+    this.setState((prevState) => ({items: prevState.items.filter((x) => x.name !== item)}));
+  }
+  removeAllItems = (e) => {
+    e.preventDefault(e);
+    this.setState(() => ({
+      items: []
+    }));
+  }
+  openModalForItemUpdate = (item) => {
+    this.setState(() => ({
+      showItemModal: true,
+      updatingItem: item
+    }))
+  }
+  closeItemModal = () => {
+    this.setState(() => ({
+      showItemModal: false,
+      updatingItem: ''
+    }))
+  }
+  onUpdateItem = (e) => {
+    const myUpdate = e.target.value;
+    const itemToUpdate = this.state.items.find(obj => obj.name === this.state.updatingItem);
+    switch(e.target.name) {
+      case "description":
+        this.setState(() => {itemToUpdate.description = myUpdate});
+        break;
+      case "pictureLink":
+        this.setState(() => {itemToUpdate.picture = myUpdate});
+        break;
+      case "buyLink":
+        this.setState(() => {itemToUpdate.urlToBuy = myUpdate});
+        break;
+      case "price":
+        this.setState(() => {itemToUpdate.appriximatePrice = myUpdate});
+        break;
+      case "note":
+        this.setState(() => {itemToUpdate.note = myUpdate});
+        break;
+      default: return;
+    }
+  }
+  itemInfoInit = () => {
+    let indx;
+    let item;
+    return new Promise ((resolve) => {
+      this.state.items.forEach((x, index) => {
+        if (x.name === this.state.updatingItem) {
+          indx = index;
+          item = this.state.items[indx];
+        }
+    })}).then(Promise.all([
+      document.getElementById('description').value = item.description,
+      document.getElementById('pictureLink').value = item.picture,
+      document.getElementById('buyLink').value = item.urlToBuy,
+      document.getElementById('price').value = item.appriximatePrice,
+      document.getElementById('note').value = item.note
+    ]));
+  }
+  componentDidMount() {
+    //Update the wishlistLinksIds state
+    let eventRowNrFromMatrix = '';
+    this.props.eventsWishlistsLinks.forEach((row, index) => {
+      if (row[0] === this.state.id) {
+        eventRowNrFromMatrix = index;
+        console.log(eventRowNrFromMatrix);
+        return;
       }
-    }
-    itemInfoInit = () => {
-      let indx;
-      let item;
-      return new Promise ((resolve) => {
-        this.state.items.forEach((x, index) => {
-          if (x.name === this.state.updatingItem) {
-            indx = index;
-            item = this.state.items[indx];
-          }
-      })}).then(Promise.all([
-        document.getElementById('description').value = item.description,
-        document.getElementById('pictureLink').value = item.picture,
-        document.getElementById('buyLink').value = item.urlToBuy,
-        document.getElementById('price').value = item.appriximatePrice,
-        document.getElementById('note').value = item.note
-      ]));
-    }
+    });
+    //read the matrix and get the links to be checked in the form during init.
+    let additionalLinks = [];
+    this.props.eventsWishlistsLinks[eventRowNrFromMatrix].forEach((wishlistLink, index) => {
+      if (wishlistLink === 1) {
+        document.getElementById(this.props.eventsWishlistsLinks[0][index]).checked = true;
+        additionalLinks.push(this.props.eventsWishlistsLinks[0][index]);
+      }
+    });
+
+    this.setState(() => ({wishlistLinksIds: (this.state.wishlistLinksIds).concat(additionalLinks)}));
+  }
 
   render() {
     return (
@@ -186,7 +205,7 @@ class EventForm extends React.Component {
               <h4>{'Link the event to your wishlist ?'}</h4>
               {this.props.wishlists.map((list, index) =>
                 <div key={index}>
-                  <input type="checkbox" name="choosewishlist" value={list.id} onChange={this.onWishlistLink}/>
+                  <input type="checkbox" name="choosewishlist" value={list.id} id={list.id} onChange={this.onWishlistLink}/>
                   <label>{list.title}</label><br/>
                 </div>
               )}
@@ -246,7 +265,8 @@ class EventForm extends React.Component {
             date: this.state.date,
             participants:this.state.participants,
             items: this.state.items,
-            note: this.state.note
+            note: this.state.note,
+            wishlistLinksIds: this.state.wishlistLinksIds
           }, this.state.operation, this.state.id, this.state.wishlistLinksIds)}>{'Save Event'}
         </button>
         <ItemDetailsModal
