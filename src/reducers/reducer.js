@@ -164,6 +164,14 @@ const reducer = (state = initialState, action) => {
       }
       updating = false;
       return;
+    case 'DELETE_WISHLIST':
+      console.log('deleting wishlist in the reducer ! ');
+      console.log('wishlist id:', action.wishlistId);
+      return {
+        ...state,
+        wishlists: state.wishlists.filter((wishlist) => wishlist.id !== action.wishlistId)
+      }
+      break;
     case 'SAVE_EVENT':
       updating = false;
       // Check if it's a new event or an update:
@@ -187,6 +195,12 @@ const reducer = (state = initialState, action) => {
         }
       }
       updating = false;
+    case 'DELETE_EVENT':
+      return {
+        ...state,
+        events: state.events.filter((ev) => ev.id !== action.eventId)
+      }
+      break;
     case 'UPDATE_EVENTS_WISHLISTS_LINKS_MATRIX':
       switch (action.operation) {
         case 'wishlistCreation':
@@ -212,6 +226,9 @@ const reducer = (state = initialState, action) => {
           }
           break;
         case 'wishlistDeletion':
+          //Detect the id of the clicked wishlist
+          //update the matrix removing wishlist column and all links to events
+
         case 'eventCreation':
           //a new Arr represents a new event, filled with 0. Then if a link is found with a wishlist from eventForm,
           //we write 1 in the matrix.
@@ -226,7 +243,6 @@ const reducer = (state = initialState, action) => {
           state.eventsWishlistsLinks.push(newEventArr);
           break;
         case 'eventUpdate':
-          //TO COMPLETE as with wishlistupdate + adaptations.
           //Detection of the row in the matrix to update
           let eventRowNrFromMatrix = '';
           state.eventsWishlistsLinks.forEach((row, index) => {

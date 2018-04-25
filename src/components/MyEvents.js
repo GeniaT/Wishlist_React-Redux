@@ -4,9 +4,10 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { passedEvents, futurEvents } from '../selectors/events';
+import { deleteEvent } from '../actions/actions';
 import moment from 'moment';
 
-const MyEvents = ({loggedIn, events}) => {
+const MyEvents = ({loggedIn, events, deleteEvent }) => {
   return loggedIn
   ? <div>
       <Navbar />
@@ -15,7 +16,9 @@ const MyEvents = ({loggedIn, events}) => {
         <div>
         <h2>My futur events:</h2>
         {futurEvents(events).map((ev,index) =>
-          <p key={index}>{ev.title} - {moment(ev.date).format('YYYY MM DD')}</p>
+          <p key={index} id={ev.id}>{ev.title} - {moment(ev.date).format('YYYY MM DD')}
+            <button onClick={() => {deleteEvent(ev.id)}}>Delete</button>
+          </p>
       )}
       </div>}
 
@@ -24,7 +27,9 @@ const MyEvents = ({loggedIn, events}) => {
         <div>
         <h2>My passed events:</h2>
         {passedEvents(events).map((ev,index) =>
-          <p key={index}>{ev.title} - {moment(ev.date).format('YYYY MM DD')}</p>
+          <p key={index} id={ev.id}>{ev.title} - {moment(ev.date).format('YYYY MM DD')}
+            <button onClick={() => {deleteEvent(ev.id)}}>Delete</button>
+          </p>
       )}
       </div>}
     </div>
@@ -38,4 +43,8 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(MyEvents);
+const mapDispatchToProps = {
+  deleteEvent
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyEvents);
