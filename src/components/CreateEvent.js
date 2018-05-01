@@ -5,7 +5,6 @@ import { Redirect } from 'react-router-dom';
 import { saveEvent, updateEventsWishlistsLinksMatrix } from '../actions/actions';
 import EventForm from './EventForm';
 
-
 const CreateEvent = (props) => {
   return props.loggedIn
   ? <div>
@@ -23,7 +22,7 @@ const CreateEvent = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    loggedIn: state.loggedIn
+    loggedIn: state.user.loggedIn
   }
 }
 

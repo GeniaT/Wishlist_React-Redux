@@ -28,9 +28,15 @@ const UpdateWishlist = (props) => {
   : <Redirect to='/'/>
 }
 
+// const mapStateToProps = (state) => {
+//   return {
+//     loggedIn: state.loggedIn
+//   }
+// }
+
 const mapStateToProps = (state) => {
   return {
-    loggedIn: state.loggedIn
+    loggedIn: state.user.loggedIn
   }
 }
 

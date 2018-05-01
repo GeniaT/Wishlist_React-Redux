@@ -3,18 +3,26 @@ import { connect } from 'react-redux';
 import Navbar from './Navbar';
 import { Link } from "react-router-dom";
 import moment from 'moment';
-import { deleteWishlist, deleteEvent } from '../actions/actions';
+import { deleteWishlist, deleteEvent, updateEventsWishlistsLinksMatrix } from '../actions/actions';
 
 const MyDashboard = (props) => {
-  const wishlists = props.wishlists.map((x, index) => {
-    return <p key={index} id={x.id}>{x.title} <button onClick={() => {props.deleteWishlist(x.id)}}>Delete</button><Link to={`/updateWishlist/${x.id}`}><button>{'Update this Wishlist'}</button></Link></p>
+  const wishlistsToRender = props.wishlists.map((x, index) => {
+    return <p key={index} id={x.id}>{x.title}
+      <button onClick={() => new Promise((resolve) => {
+        props.deleteWishlist(x.id)})
+      .then(props.updateEventsWishlistsLinksMatrix('wishlistDeletion', x.id))}>Delete</button>
+      <Link to={`/updateWishlist/${x.id}`}><button>{'Update this Wishlist'}</button></Link>
+    </p>
   });
   const now = moment();
   const events = props.events.map((ev, index) => {
     return (
     <p key={index} id={ev.id}>
       {ev.title} {moment(ev.date).format('YYYY-MM-DD')}
-      <button onClick={() => {props.deleteEvent(ev.id)}}>Delete</button>
+      <button onClick={() => new Promise((resolve) => {
+        props.deleteEvent(ev.id)
+      })
+      .then(props.updateEventsWishlistsLinksMatrix('eventDeletion', ev.id))}>Delete</button>
       {moment(ev.date).isSameOrAfter(now) &&
         <Link to={`/updateEvent/${ev.id}`}>
           <button>{'Update this Event'}</button>
@@ -29,7 +37,7 @@ const MyDashboard = (props) => {
       <h1>My Dashboard</h1>
       <div>
         <h2>My wishlists</h2>
-        {wishlists}
+        {wishlistsToRender}
         <h2>My Events</h2>
         {events}
       </div>
@@ -63,7 +71,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   deleteWishlist,
-  deleteEvent
+  deleteEvent,
+  updateEventsWishlistsLinksMatrix
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyDashboard);

@@ -169,20 +169,21 @@ class EventForm extends React.Component {
     this.props.eventsWishlistsLinks.forEach((row, index) => {
       if (row[0] === this.state.id) {
         eventRowNrFromMatrix = index;
-        console.log(eventRowNrFromMatrix);
         return;
       }
     });
     //read the matrix and get the links to be checked in the form during init.
-    let additionalLinks = [];
-    this.props.eventsWishlistsLinks[eventRowNrFromMatrix].forEach((wishlistLink, index) => {
-      if (wishlistLink === 1) {
-        document.getElementById(this.props.eventsWishlistsLinks[0][index]).checked = true;
-        additionalLinks.push(this.props.eventsWishlistsLinks[0][index]);
-      }
-    });
+    if (eventRowNrFromMatrix !== '') { //If we are updating the event (not creating)
+      let additionalLinks = [];
+      this.props.eventsWishlistsLinks[eventRowNrFromMatrix].forEach((wishlistLink, index) => {
+        if (wishlistLink === 1) {
+          document.getElementById(this.props.eventsWishlistsLinks[0][index]).checked = true;
+          additionalLinks.push(this.props.eventsWishlistsLinks[0][index]);
+        }
+      });
 
-    this.setState(() => ({wishlistLinksIds: (this.state.wishlistLinksIds).concat(additionalLinks)}));
+      this.setState(() => ({wishlistLinksIds: (this.state.wishlistLinksIds).concat(additionalLinks)}));
+    }
   }
 
   render() {

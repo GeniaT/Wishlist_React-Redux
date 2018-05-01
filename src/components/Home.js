@@ -4,8 +4,8 @@ import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import MyDashboard from './MyDashboard';
 
-const Home = ({loggedIn, addToWishlist}) => {
-  return loggedIn
+const Home = (props, {addToWishlist}) => {
+  return props.loggedIn
   ? <MyDashboard />
   : <div>
       <Navbar />
@@ -17,7 +17,7 @@ const Home = ({loggedIn, addToWishlist}) => {
 
 const mapStateToProps = (state) => {
   return {
-    loggedIn: state.loggedIn
+    loggedIn: state.user.loggedIn
   }
 }
 

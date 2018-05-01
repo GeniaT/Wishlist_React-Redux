@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { passedEvents, futurEvents } from '../selectors/events';
-import { deleteEvent } from '../actions/actions';
+import { deleteEvent, updateEventsWishlistsLinksMatrix } from '../actions/actions';
 import moment from 'moment';
 
-const MyEvents = ({loggedIn, events, deleteEvent }) => {
+const MyEvents = ({loggedIn, events, deleteEvent, updateEventsWishlistsLinksMatrix }) => {
   return loggedIn
   ? <div>
       <Navbar />
@@ -17,7 +17,12 @@ const MyEvents = ({loggedIn, events, deleteEvent }) => {
         <h2>My futur events:</h2>
         {futurEvents(events).map((ev,index) =>
           <p key={index} id={ev.id}>{ev.title} - {moment(ev.date).format('YYYY MM DD')}
-            <button onClick={() => {deleteEvent(ev.id)}}>Delete</button>
+            <button onClick={() => new Promise ((resolve) => {
+              deleteEvent(ev.id)
+            }).then(updateEventsWishlistsLinksMatrix('eventDeletion', ev.id))}>Delete</button>
+            <Link to={`/updateEvent/${ev.id}`}>
+              <button>{'Update this Event'}</button>
+            </Link>
           </p>
       )}
       </div>}
@@ -28,7 +33,9 @@ const MyEvents = ({loggedIn, events, deleteEvent }) => {
         <h2>My passed events:</h2>
         {passedEvents(events).map((ev,index) =>
           <p key={index} id={ev.id}>{ev.title} - {moment(ev.date).format('YYYY MM DD')}
-            <button onClick={() => {deleteEvent(ev.id)}}>Delete</button>
+            <button onClick={() => new Promise ((resolve) => {
+              deleteEvent(ev.id)
+            }).then(updateEventsWishlistsLinksMatrix('eventDeletion', ev.id))}>Delete</button>
           </p>
       )}
       </div>}
@@ -38,13 +45,14 @@ const MyEvents = ({loggedIn, events, deleteEvent }) => {
 
 const mapStateToProps = (state) => {
   return {
-    loggedIn: state.loggedIn,
+    loggedIn: state.user.loggedIn,
     events: state.events
   }
 }
 
 const mapDispatchToProps = {
-  deleteEvent
+  deleteEvent,
+  updateEventsWishlistsLinksMatrix
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyEvents);

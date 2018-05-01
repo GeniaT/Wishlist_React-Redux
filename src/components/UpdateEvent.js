@@ -26,9 +26,16 @@ const UpdateEvent = (props) => {
   : <Redirect to='/'/>
 }
 
+// const mapStateToProps = (state) => {
+//   return {
+//     loggedIn: state.loggedIn,
+//     events: state.events
+//   }
+// }
+
 const mapStateToProps = (state) => {
   return {
-    loggedIn: state.loggedIn,
+    loggedIn: state.user.loggedIn,
     events: state.events
   }
 }

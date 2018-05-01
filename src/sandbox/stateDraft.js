@@ -124,23 +124,9 @@ stateDraft = {
     }
   ],
   eventsWishlistsLinks:[
-
-    // ['ord','ev1ID','ev2ID','ev3ID','ev4ID'], //sorted by createdAt state
-    // ['abs','wlwID','wlxID','wlyID','wlzID'], //sorted by createdAt state
-    // 1 row = 1 FUTUR event, 1 column = 1 wishlist
-    [0,1,1,1],
-    [0,1,0,0],
-    [0,0,1,1],
-    [0,0,0,0],
-    // Links that are represented in the matrix above
-    // wlw:[],
-    // wlx: ['ev1','ev2'],
-    // wly: ['ev1','ev3'],
-    // wlz: ['ev1','ev3'],
-    // ev1: ['wlx','wly','wlz'],
-    // ev2: ['wlx'],
-    // ev3: ["wly","wlz"],
-    // ev4: []
+    ["X","cc6ddad2-434b-4c6c-91be-03271476ed4e","dd6ddad2"],
+    ["1338", 1, 0],
+    ["1339", 0, 1]
 ],
 otherEventsParticipation:[],
 }

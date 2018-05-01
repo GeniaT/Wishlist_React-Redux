@@ -24,9 +24,10 @@ const LogIn = ({ loggedIn, logIn }) => {
       <button onClick={logIn}>Log In</button>
     </div>
 }
+
 const mapStateToProps = (state) => {
   return {
-    loggedIn: state.loggedIn
+    loggedIn: state.user.loggedIn
   }
 }
 
