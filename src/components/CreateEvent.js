@@ -1,5 +1,5 @@
 import React from 'react';
-import Navbar from './Navbar';
+import NavbarContainer from '../containers/NavbarContainer';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { saveEvent, updateEventsWishlistsLinksMatrix } from '../actions/actions';
@@ -8,7 +8,7 @@ import EventForm from './EventForm';
 const CreateEvent = (props) => {
   return props.loggedIn
   ? <div>
-      <Navbar />
+      <NavbarContainer />
       <h1>{'Create your Event!'}</h1>
       <EventForm onSaveEvent={(ev, operation, id, linksIds) => {
         props.saveEvent(ev);

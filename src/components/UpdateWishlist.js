@@ -1,5 +1,5 @@
 import React from 'react';
-import Navbar from './Navbar';
+import NavbarContainer from '../containers/NavbarContainer';
 import WishlistForm from './WishlistForm';
 import Modal from 'react-modal';
 import { connect } from 'react-redux';
@@ -14,7 +14,7 @@ const UpdateWishlist = (props) => {
 
   return props.loggedIn
   ? <div>
-      <Navbar />
+      <NavbarContainer />
       <h1>Update {wishlistObj.title } wishlist!</h1>
       <WishlistForm
         onSaveWishlist={(wishlist, operation, id, eventLinksIds) => {
@@ -27,12 +27,6 @@ const UpdateWishlist = (props) => {
     </div>
   : <Redirect to='/'/>
 }
-
-// const mapStateToProps = (state) => {
-//   return {
-//     loggedIn: state.loggedIn
-//   }
-// }
 
 const mapStateToProps = (state) => {
   return {

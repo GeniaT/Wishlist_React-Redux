@@ -1,5 +1,5 @@
 import React from 'react';
-import Navbar from './Navbar';
+import NavbarContainer from '../containers/NavbarContainer';
 import WishlistForm from './WishlistForm';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { saveWishlist, updateEventsWishlistsLinksMatrix } from '../actions/actio
 const CreateWishlist = (props) => {
   return props.loggedIn
   ? <div>
-      <Navbar />
+      <NavbarContainer />
       <h1>Create your wishlist!</h1>
       <WishlistForm onSaveWishlist={(wishlist, operation, id, eventLinksIds) => {
         props.saveWishlist(wishlist);
@@ -20,12 +20,6 @@ const CreateWishlist = (props) => {
     </div>
   : <Redirect to='/'/>
 }
-
-// const mapStateToProps = (state) => {
-//   return {
-//     loggedIn: state.loggedIn
-//   }
-// }
 
 const mapStateToProps = (state) => {
   return {

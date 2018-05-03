@@ -1,3 +1,5 @@
+import store from '../store/store';
+
 const initialState = {
   loggedIn: true
 }

@@ -1,21 +1,21 @@
 import React from 'react';
-import Navbar from './Navbar';
+import NavbarContainer from '../containers/NavbarContainer';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { passedEvents, futurEvents } from '../selectors/events';
+import { getPassedEvents, getFuturEvents } from '../selectors/events';
 import { deleteEvent, updateEventsWishlistsLinksMatrix } from '../actions/actions';
 import moment from 'moment';
 
 const MyEvents = ({loggedIn, events, deleteEvent, updateEventsWishlistsLinksMatrix }) => {
   return loggedIn
   ? <div>
-      <Navbar />
+      <NavbarContainer />
       <h1>Check your Events here!</h1>
-      {futurEvents(events).length > 0 &&
+      {getFuturEvents(events).length > 0 &&
         <div>
         <h2>My futur events:</h2>
-        {futurEvents(events).map((ev,index) =>
+        {getFuturEvents(events).map((ev,index) =>
           <p key={index} id={ev.id}>{ev.title} - {moment(ev.date).format('YYYY MM DD')}
             <button onClick={() => new Promise ((resolve) => {
               deleteEvent(ev.id)
@@ -28,10 +28,10 @@ const MyEvents = ({loggedIn, events, deleteEvent, updateEventsWishlistsLinksMatr
       </div>}
 
       <Link to={`/create-event`}><button>{'Create a new Event'}</button></Link>
-      {passedEvents(events).length > 0 &&
+      {getPassedEvents(events).length > 0 &&
         <div>
         <h2>My passed events:</h2>
-        {passedEvents(events).map((ev,index) =>
+        {getPassedEvents(events).map((ev,index) =>
           <p key={index} id={ev.id}>{ev.title} - {moment(ev.date).format('YYYY MM DD')}
             <button onClick={() => new Promise ((resolve) => {
               deleteEvent(ev.id)

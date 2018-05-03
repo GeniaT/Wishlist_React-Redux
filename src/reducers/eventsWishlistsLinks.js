@@ -7,7 +7,7 @@ const initialState = [
 
 export default function eventsWishlistsLinks(state = initialState, action) {
   switch (action.type) {
-    case 'UPDATE_EVENTS_WISHLISTS_LINKS_MATRIX':
+    case 'MATRIX_EVENTS_WISHLISTS_LINKS_UPDATE':
       switch (action.operation) {
         case 'wishlistCreation':
           //for each event that I checked in wishlistform, I push a 1 in the matrix.

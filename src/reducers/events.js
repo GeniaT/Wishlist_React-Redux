@@ -1,6 +1,5 @@
 import moment from 'moment';
 
-
 const initialState = [
     {
       id: '1337',
@@ -66,13 +65,16 @@ const initialState = [
 
 export default function events(state = initialState, action) {
   switch (action.type) {
-    case 'SAVE_EVENT':
+    case 'EVENT_DELETE':
+      return [...state.filter((ev) => ev.id !== action.eventId)]
+      break;
+    case 'EVENT_SAVE':
       let updating = false;
       // Check if it's a new event or an update:
       state.forEach((ev, index) => {
         if (ev.id === action.ev.id) {
           updating = true;
-          state[index] = action.ev
+          state[index] = action.ev;
         }
       });
 
@@ -80,8 +82,7 @@ export default function events(state = initialState, action) {
         return [...state.concat(action.ev)]
       }
       updating = false;
-    case 'DELETE_EVENT':
-      return [...state.filter((ev) => ev.id !== action.eventId)]
+      return state;
       break;
     default:
       return state

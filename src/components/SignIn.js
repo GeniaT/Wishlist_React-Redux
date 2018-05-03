@@ -1,9 +1,9 @@
 import React from 'react';
-import Navbar from './Navbar';
+import NavbarContainer from '../containers/NavbarContainer';
 
 const SignIn = (props) => (
     <div>
-      <Navbar />
+      <NavbarContainer />
       <h1>Sign In Page</h1>
       <form>
       <input

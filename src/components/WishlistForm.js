@@ -2,7 +2,7 @@ import React from 'react';
 import uuid from 'uuid';
 import { connect } from 'react-redux';
 import ItemDetailsModal from './ItemDetailsModal';
-import { futurEvents } from '../selectors/events';
+import { getFuturEvents } from '../selectors/events';
 import moment from 'moment';
 
 class WishlistForm extends React.Component {
@@ -152,7 +152,7 @@ itemInfoInit = () => {
   ]));
 }
 
-componentDidMount() {
+componentDidMount() { //to run only if in wishlist update case.
   //We update the eventLinksIds state, then use it to update the link matrix in global state when saving the form.
     const wishlistIndexFromMatrix = this.props.eventsWishlistsLinks[0].indexOf(this.state.id);
     let additionalLinks = []; //used because setState can't be run so quickly many times in forEach loop.
@@ -185,7 +185,7 @@ componentDidMount() {
           {this.props.events.length > 0 &&
             <div>
               <h4>{'Link the list to one of your futur events ?'}</h4>
-              {futurEvents(this.props.events).map((ev, index) =>
+              {getFuturEvents(this.props.events).map((ev, index) =>
                 <div key={index}>
                   <input
                     type="checkbox"

@@ -55,12 +55,15 @@ const initialState = [
 
 export default function wishlists(state = initialState, action) {
   switch(action.type) {
-    case 'ADD_TO_WISHLIST':
+    case 'WISHLIST_ADD_ITEM':
       return {
         ...state,
         wishlist: [...state.wishlist, action.element]
       }
-    case 'SAVE_WISHLIST':
+    case 'WISHLIST_DELETE':
+      return [...state.filter((wishlist) => wishlist.id !== action.wishlistId)]
+      break;
+    case 'WISHLIST_SAVE':
       let updating = false;
       // check if it's a new wishlist or an update:
       state.forEach((list, index) => {
@@ -75,9 +78,6 @@ export default function wishlists(state = initialState, action) {
       }
       updating = false;
       // return;
-    case 'DELETE_WISHLIST':
-      return [...state.filter((wishlist) => wishlist.id !== action.wishlistId)]
-      break;
     default:
       return state
   }

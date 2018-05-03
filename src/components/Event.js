@@ -1,10 +1,10 @@
 import React from 'react';
-import Navbar from './Navbar';
+import NavbarContainer from '../containers/NavbarContainer';
 
 const Event = (props) => {
   return (
     <div>
-      <Navbar />
+      <NavbarContainer />
       <h1>Check Event number {props.match.params.id}!</h1>
     </div>
   )

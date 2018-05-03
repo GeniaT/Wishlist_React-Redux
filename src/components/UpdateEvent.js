@@ -1,5 +1,5 @@
 import React from 'react';
-import Navbar from './Navbar';
+import NavbarContainer from '../containers/NavbarContainer';
 import EventForm from './EventForm';
 import Modal from 'react-modal';
 import { connect } from 'react-redux';
@@ -11,7 +11,7 @@ const UpdateEvent = (props) => {
 
   return props.loggedIn
   ? <div>
-      <Navbar />
+      <NavbarContainer />
       <h1>Update {eventObj.title } ev€nt!</h1>
       <EventForm
         onSaveEvent={(ev, operation, id, wishlistLinksIds) => {
@@ -25,13 +25,6 @@ const UpdateEvent = (props) => {
     </div>
   : <Redirect to='/'/>
 }
-
-// const mapStateToProps = (state) => {
-//   return {
-//     loggedIn: state.loggedIn,
-//     events: state.events
-//   }
-// }
 
 const mapStateToProps = (state) => {
   return {

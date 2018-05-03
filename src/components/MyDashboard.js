@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Navbar from './Navbar';
+import NavbarContainer from '../containers/NavbarContainer';
 import { Link } from "react-router-dom";
 import moment from 'moment';
 import { deleteWishlist, deleteEvent, updateEventsWishlistsLinksMatrix } from '../actions/actions';
@@ -11,7 +11,10 @@ const MyDashboard = (props) => {
       <button onClick={() => new Promise((resolve) => {
         props.deleteWishlist(x.id)})
       .then(props.updateEventsWishlistsLinksMatrix('wishlistDeletion', x.id))}>Delete</button>
-      <Link to={`/updateWishlist/${x.id}`}><button>{'Update this Wishlist'}</button></Link>
+      <Link to={{
+        pathname: `/updateWishlist/${x.id}`,
+        state: {wishlistid: x.id}
+      }} ><button>{'Update this Wishlist'}</button></Link>
     </p>
   });
   const now = moment();
@@ -33,7 +36,7 @@ const MyDashboard = (props) => {
 
   return (
     <div>
-      <Navbar />
+      <NavbarContainer />
       <h1>My Dashboard</h1>
       <div>
         <h2>My wishlists</h2>

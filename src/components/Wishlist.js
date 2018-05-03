@@ -1,9 +1,9 @@
 import React from 'react';
-import Navbar from './Navbar';
+import NavbarContainer from '../containers/NavbarContainer';
 
 const Wishlist = (props) => (
     <div>
-      <Navbar />
+      <NavbarContainer />
       <h1>Wishlist nr {props.match.params.id}!</h1>
     </div>
 )

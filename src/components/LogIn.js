@@ -1,5 +1,5 @@
 import React from 'react';
-import Navbar from './Navbar';
+import NavbarContainer from '../containers/NavbarContainer';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { logIn } from '../actions/actions';
@@ -8,7 +8,7 @@ const LogIn = ({ loggedIn, logIn }) => {
   return loggedIn
   ? <Redirect push to='/'/>
   : <div>
-      <Navbar />
+      <NavbarContainer />
       <h1>Log In Page</h1>
       <form>
       <input

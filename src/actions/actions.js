@@ -7,40 +7,32 @@ export const logOut = () => ({
 })
 
 export const addToWishlist = (element) => ({
-  type: 'ADD_TO_WISHLIST',
+  type: 'WISHLIST_ADD_ITEM',
   element
 })
 
 export const saveWishlist = (wishlist) => ({
-  type: 'SAVE_WISHLIST',
+  type: 'WISHLIST_SAVE',
   wishlist
 })
 
 export const deleteWishlist = (wishlistId) => ({
-  type: 'DELETE_WISHLIST',
+  type: 'WISHLIST_DELETE',
   wishlistId
-})
-export const openModal = (id) => ({
-  type:'OPEN_MODAL_FOR_WISHITEM_UPDATE',
-  id
-})
-
-export const closeModal = () => ({
-  type:'CLOSE_MODAL_FROM_WISHITEM_UPDATE'
 })
 
 export const saveEvent = (ev) => ({
-  type: 'SAVE_EVENT',
+  type: 'EVENT_SAVE',
   ev
 })
 
 export const deleteEvent = (eventId) => ({
-  type: 'DELETE_EVENT',
+  type: 'EVENT_DELETE',
   eventId
 })
 
 export const updateEventsWishlistsLinksMatrix = (operation, id, linksIds) => ({
-  type: 'UPDATE_EVENTS_WISHLISTS_LINKS_MATRIX',
+  type: 'MATRIX_EVENTS_WISHLISTS_LINKS_UPDATE',
   operation,
   id,
   linksIds
