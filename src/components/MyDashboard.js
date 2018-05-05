@@ -25,9 +25,12 @@ const MyDashboard = (props) => {
       <button onClick={() => new Promise((resolve) => {
         props.deleteEvent(ev.id)
       })
-      .then(props.updateEventsWishlistsLinksMatrix('eventDeletion', ev.id))}>Delete</button>
+      .then(props.updateEventsWishlistsLinksMatrix('eventDeletion', ev.id)).then(console.log(ev.date))}>Delete</button>
       {moment(ev.date).isSameOrAfter(now) &&
-        <Link to={`/updateEvent/${ev.id}`}>
+        <Link to={{
+          pathname: `/updateEvent/${ev.id}`,
+          state: {eventid: ev.id}
+        }}>
           <button>{'Update this Event'}</button>
         </Link>
       }

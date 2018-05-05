@@ -20,7 +20,10 @@ const MyEvents = ({loggedIn, events, deleteEvent, updateEventsWishlistsLinksMatr
             <button onClick={() => new Promise ((resolve) => {
               deleteEvent(ev.id)
             }).then(updateEventsWishlistsLinksMatrix('eventDeletion', ev.id))}>Delete</button>
-            <Link to={`/updateEvent/${ev.id}`}>
+            <Link to={{
+              pathname: `/updateEvent/${ev.id}`,
+              state: {eventid: ev.id}
+            }}>
               <button>{'Update this Event'}</button>
             </Link>
           </p>

@@ -1,17 +1,16 @@
 import React from 'react';
 import uuid from 'uuid';
-import WishlistForm from './WishlistForm';
+import { Redirect } from 'react-router-dom';
+import WishlistForm from '../Components/WishlistForm';
+import NavbarContainer from './NavbarContainer';
 import { saveWishlist, updateEventsWishlistsLinksMatrix } from '../actions/actions';
 import { connect } from 'react-redux';
 import { getWishlist } from '../selectors/wishlists';
-// import ItemDetailsModal from './ItemDetailsModal';
-// import { getFuturEvents } from '../selectors/events';
-// import moment from 'moment';
 
 class WishlistFormContainer extends React.Component {
   constructor(props) {
     super(props);
-    if (props.location === 'create-wishlist') {
+    if (props.location.pathname === '/create-wishlist') {
       this.state = {
         id: uuid(),
         status: 'public',
@@ -40,6 +39,7 @@ class WishlistFormContainer extends React.Component {
          }
       }
     }
+
     onChangeTitle = (e) => {
       const title = e.target.value.trim();
       this.setState(() => ({title}));
@@ -166,19 +166,25 @@ class WishlistFormContainer extends React.Component {
     //We update the eventLinksIds state, then use it to update the link matrix in global state when saving the form.
       const wishlistIndexFromMatrix = this.props.eventsWishlistsLinks[0].indexOf(this.state.id);
       let additionalLinks = []; //used because setState can't be run so quickly many times in forEach loop.
-      // this.props.eventsWishlistsLinks.forEach((row) => {
-      //   if (row[wishlistIndexFromMatrix] === 1) {
-      //     document.getElementById(row[0]).checked = true;
-      //     additionalLinks.push(row[0]);
-      //   }
-      // });
+      this.props.eventsWishlistsLinks.forEach((row) => {
+        if (row[wishlistIndexFromMatrix] === 1) {
+          document.getElementById(row[0]).checked = true;
+          additionalLinks.push(row[0]);
+        }
+      });
       this.setState(() => ({eventLinksIds: (this.state.eventLinksIds).concat(additionalLinks)}));
     }
   }
 
     render () {
-      return (
-        <WishlistForm
+      return this.props.loggedIn ? <div>
+        <NavbarContainer />
+        <WishlistForm onSaveWishlist={(wishlist, operation, id, eventLinksIds) => {
+          this.props.saveWishlist(wishlist);
+          this.props.updateEventsWishlistsLinksMatrix(operation, id, eventLinksIds);
+          this.props.history.push('/');
+          }}
+
           addItem={this.addItem}
           deleteItem={this.deleteItem}
           closeItemModal={this.closeItemModal}
@@ -191,7 +197,9 @@ class WishlistFormContainer extends React.Component {
           openModalForItemUpdate={this.openModalForItemUpdate}
           removeAllItems={this.removeAllItems}
 
-
+          id={this.state.id}
+          operation={this.state.operation}
+          eventLinksIds={this.state.eventLinksIds}
           title={this.state.title}
           status={this.state.status}
           category={this.state.category}
@@ -201,7 +209,7 @@ class WishlistFormContainer extends React.Component {
           events={this.props.events}
           showItemModal={this.state.showItemModal}
         />
-      )
+      </div> : <Redirect push to='/'/>
     }
 }
 
