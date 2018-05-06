@@ -3,15 +3,13 @@ import Navbar from '../components/Navbar';
 import { connect } from 'react-redux';
 import { logOut } from '../actions/actions';
 
-class NavbarContainer extends React.Component {
-  render() {
-    return (
-      <Navbar
-        loggedIn={this.props.loggedIn}
-        logOut={this.props.logOut}
-      />
-    )
-  }
+const NavbarContainer = (props) => {
+  return (
+    <Navbar
+      loggedIn={props.loggedIn}
+      logOut={props.logOut}
+    />
+  )
 }
 
 const mapStateToProps = (state) => {
