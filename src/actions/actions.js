@@ -6,11 +6,6 @@ export const logOut = () => ({
   type: 'LOG_OUT'
 })
 
-export const addToWishlist = (element) => ({
-  type: 'WISHLIST_ADD_ITEM',
-  element
-})
-
 export const saveWishlist = (wishlist) => ({
   type: 'WISHLIST_SAVE',
   wishlist

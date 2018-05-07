@@ -1,7 +1,7 @@
 import store from '../store/store';
 
 const initialState = {
-  loggedIn: true
+  loggedIn: false
 }
 
 export default function user(state = initialState, action) {
@@ -17,6 +17,6 @@ export default function user(state = initialState, action) {
         loggedIn: false
       }
     default:
-      return state
+      return {...state}
   }
 }
