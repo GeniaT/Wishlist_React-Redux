@@ -3,6 +3,7 @@ import NavbarContainer from '../containers/NavbarContainer';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { logIn } from '../actions/actions';
+import { firebase, googleAuthProvider } from '../firebase/firebase';
 
 const LogIn = ({ loggedIn, logIn }) => {
   return loggedIn
@@ -22,6 +23,18 @@ const LogIn = ({ loggedIn, logIn }) => {
         />
       </form>
       <button onClick={logIn}>Log In</button>
+      <button onClick={() => {
+        firebase.auth().signInWithPopup(googleAuthProvider).then(
+          firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+              console.log("you are logged in!");
+              console.log('user info: ', firebase.UserInfo);
+              firebase.database().ref('me').set({status: 'firebase update coz authed!'});
+            }
+          })
+        );
+
+      }}>{'Auth with Google PopUp'}</button>
     </div>
 }
 

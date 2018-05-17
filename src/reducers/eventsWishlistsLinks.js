@@ -1,12 +1,12 @@
-// const initialState = [
-//   ['X','cc6ddad2-434b-4c6c-91be-03271476ed4e','dd6ddad2'],
-//   ['1338', 1,0],
-//   ['1339', 0,1]
-// ]
-
 const initialState = [
-  ['X']
+  ['X','cc6ddad2-434b-4c6c-91be-03271476ed4e','dd6ddad2'],
+  ['1338', 1,0],
+  ['1339', 0,1]
 ]
+
+// const initialState = [ //used for running tests and custom data depending on cases.
+//   ['X']
+// ]
 export default function eventsWishlistsLinks(state = initialState, action) {
   switch (action.type) {
     case 'MATRIX_EVENTS_WISHLISTS_LINKS_UPDATE':

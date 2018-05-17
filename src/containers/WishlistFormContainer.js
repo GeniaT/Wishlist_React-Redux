@@ -25,7 +25,7 @@ class WishlistFormContainer extends React.Component {
       }
     } else if (props.match.path === '/updateWishlist/:id') {
       const wishlistToUpdate = getWishlist(this.props.wishlists, this.props.location.state.wishlistid);
-        this.state = { //To add the prop for the updating wishlist info
+        this.state = {
           id: wishlistToUpdate.id,
           status: wishlistToUpdate.status,
           title: wishlistToUpdate.title,

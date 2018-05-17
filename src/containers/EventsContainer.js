@@ -8,10 +8,6 @@ import { deleteEvent, updateEventsWishlistsLinksMatrix } from '../actions/action
 import moment from 'moment';
 
 class EventsContainer extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  // }
-
   deleteEventAndUpdateMatrix = (eventId) => {
     return new Promise ((resolve) => {
       this.props.deleteEvent(eventId)
