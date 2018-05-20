@@ -1,10 +1,26 @@
-export const logIn = () => ({
-  type: 'LOG_IN'
+import { firebase, googleAuthProvider } from '../firebase/firebase';
+import store from '../store/store';
+
+export const logIn = (uid) => ({
+  type: 'LOG_IN',
+  uid
 })
+
+export const startLogin = () => {
+  return () => {
+    return firebase.auth().signInWithPopup(googleAuthProvider);
+  }
+}
 
 export const logOut = () => ({
   type: 'LOG_OUT'
 })
+
+export const startLogout = () => {
+  return () => {
+    return firebase.auth().signOut();
+  }
+};
 
 export const saveWishlist = (wishlist) => ({
   type: 'WISHLIST_SAVE',

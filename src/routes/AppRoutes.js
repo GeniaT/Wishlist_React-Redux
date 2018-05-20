@@ -6,7 +6,6 @@ import Wishlist from '../components/Wishlist';
 import Event from '../components/Event';
 import SignIn from '../components/SignIn';
 import LogIn from '../components/LogIn';
-
 import WishlistFormContainer from '../containers/WishlistFormContainer';
 import EventFormContainer from '../containers/EventFormContainer';
 import EventsContainer from '../containers/EventsContainer';

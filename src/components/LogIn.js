@@ -2,10 +2,10 @@ import React from 'react';
 import NavbarContainer from '../containers/NavbarContainer';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { logIn } from '../actions/actions';
-import { firebase, googleAuthProvider } from '../firebase/firebase';
+import { startLogin } from '../actions/actions';
+import { firebase, googleAuthProvider, userId } from '../firebase/firebase';
 
-const LogIn = ({ loggedIn, logIn }) => {
+const LogIn = ({ loggedIn, startLogin }) => {
   return loggedIn
   ? <Redirect push to='/'/>
   : <div>
@@ -22,19 +22,7 @@ const LogIn = ({ loggedIn, logIn }) => {
           placeholder="Password"
         />
       </form>
-      <button onClick={logIn}>Log In</button>
-      <button onClick={() => {
-        firebase.auth().signInWithPopup(googleAuthProvider).then(
-          firebase.auth().onAuthStateChanged(function(user) {
-            if (user) {
-              console.log("you are logged in!");
-              console.log('user info: ', firebase.UserInfo);
-              firebase.database().ref('me').set({status: 'firebase update coz authed!'});
-            }
-          })
-        );
-
-      }}>{'Auth with Google PopUp'}</button>
+      <button onClick={startLogin}>Log In</button>
     </div>
 }
 
@@ -45,7 +33,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  logIn
+  startLogin
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LogIn);

@@ -9,11 +9,11 @@ export default function user(state = initialState, action) {
     case 'LOG_IN':
       return {
         ...state,
-        loggedIn: true
+        loggedIn: true,
+        uid: action.uid
       }
     case 'LOG_OUT':
       return {
-        ...state,
         loggedIn: false
       }
     default:
