@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { firebase } from './firebase/firebase';
 import AppRoutes from './routes/AppRoutes';
-import { logIn, startLogin } from './actions/actions';
+import { logIn, startLogin, createUser } from './actions/actions';
 import store from './store/store';
 import './styles/index.scss';
 import 'normalize.css';
@@ -17,8 +17,10 @@ const AppProvider = () => (
 
 firebase.auth().onAuthStateChanged(function(user) { //if user data still in memory, we don't display auth popup
   if (user) {
+    console.log("inside user from authStateChange observer");
     console.log(user.uid);
     console.log(user.displayName);
+    createUser(user.uid);
     return store.dispatch(logIn(user.uid));
   } else {
     return store.dispatch(startLogin());

@@ -13,11 +13,11 @@ stateDraft = {
       items: [
         {
           name: "book collector",
-          description: undefined, #pr1
-          picture: "http://flickr.com/test1",#pr1
-          urlToBuy: "https://amazon.com/furni1",#pr1
-          appriximatePrice: '50$',#pr1
-          note: "written by Didam Miller"#pr1
+          description: undefined,
+          picture: "http://flickr.com/test1",
+          urlToBuy: "https://amazon.com/furni1",
+          appriximatePrice: '50$',
+          note: "written by Didam Miller"
         },
         {
           name: "table",

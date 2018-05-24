@@ -1,0 +1,37 @@
+users
+  uids
+    wishlistsIds
+    eventsIds
+    eventsWishlistsLinksMatrix
+    userinfo
+      Name
+      email
+      creationDate
+    following
+      uids
+    followers
+      uids
+wishlists
+  ids
+    createdAt
+    status
+    title
+    category
+    eventsLinksIds
+    tags
+    itemsIds
+events
+  ids
+    date
+    title
+    participants
+    itemsIds
+    note
+items
+  ids
+    name
+    description
+    pictureLink
+    urlToBuy
+    price
+    note
