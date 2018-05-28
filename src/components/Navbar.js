@@ -9,7 +9,7 @@ const Navbar = ({loggedIn, logOut, startLogout }) => {
       <NavLink to="/" exact={true} activeClassName="selected" className="link">Dashboard</NavLink>
       <NavLink to="/create-wishlist" activeClassName="selected" className="link">Create a wishlist</NavLink>
       <NavLink to="/my-events" activeClassName="selected" className="link">My Events</NavLink>
-      <button onClick={() => store.dispatch(startLogout).then(() => store.dispatch(logOut)) }>Log Out</button>
+      <button onClick={() => store.dispatch(startLogout)}>Log Out</button>
     </div>
   : <div>
       <NavLink to="/" exact={true} activeClassName="selected" className="link">Home</NavLink>

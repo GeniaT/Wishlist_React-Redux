@@ -61,19 +61,15 @@ export default function wishlists(state = initialState, action) {
       return [...state.filter((wishlist) => wishlist.id !== action.wishlistId)]
       break;
     case 'WISHLIST_SAVE':
-      let updating = false;
-      // check if it's a new wishlist or an update:
-      state.forEach((list, index) => {
-        if (list.id === action.wishlist.id) {
-          updating = true;
-          state[index] = action.wishlist
-        }
-      });
-
-      if (updating === false && action.wishlist.title) { //creation.
+      if (action.operation === 'wishlistUpdate') {
+        state.forEach((list, index) => {
+          if (list.id === action.wishlist.id) {
+            return state[index] = action.wishlist;
+          }
+        });
+      } else if (action.operation === 'wishlistCreation' && action.wishlist.title) {
         return [...state.concat(action.wishlist)];
       }
-      updating = false;
     default:
       return state
   }

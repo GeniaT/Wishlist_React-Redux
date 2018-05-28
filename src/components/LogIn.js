@@ -3,7 +3,6 @@ import NavbarContainer from '../containers/NavbarContainer';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { startLogin } from '../actions/actions';
-import { firebase, googleAuthProvider, userId } from '../firebase/firebase';
 
 const LogIn = ({ loggedIn, startLogin }) => {
   return loggedIn

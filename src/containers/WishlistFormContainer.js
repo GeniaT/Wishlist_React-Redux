@@ -3,7 +3,7 @@ import uuid from 'uuid';
 import { Redirect } from 'react-router-dom';
 import WishlistForm from '../Components/WishlistForm';
 import NavbarContainer from './NavbarContainer';
-import { saveWishlist, updateEventsWishlistsLinksMatrix } from '../actions/actions';
+import { saveWishlist, updateEventsWishlistsLinksMatrix, startWishlistCreation } from '../actions/actions';
 import { connect } from 'react-redux';
 import { getWishlist } from '../selectors/wishlists';
 
@@ -180,9 +180,11 @@ class WishlistFormContainer extends React.Component {
       return this.props.loggedIn ? <div>
         <NavbarContainer />
         <WishlistForm onSaveWishlist={(wishlist, operation, id, eventLinksIds) => {
-          this.props.saveWishlist(wishlist);
+          this.props.saveWishlist(wishlist, operation);
           this.props.updateEventsWishlistsLinksMatrix(operation, id, eventLinksIds);
           this.props.history.push('/');
+
+          this.props.startWishlistCreation();
           }}
 
           addItem={this.addItem}
@@ -220,9 +222,14 @@ const mapStateToProps = (state) => ({
   wishlists: state.wishlists,
 })
 
-const mapDispatchToProps = {
-  saveWishlist,
-  updateEventsWishlistsLinksMatrix
-}
+// const mapDispatchToProps = {
+//   saveWishlist,
+//   updateEventsWishlistsLinksMatrix,
+// }
+const mapDispatchToProps = (dispatch) => ({
+  saveWishlist: (wishlist, operation) => dispatch(saveWishlist(wishlist, operation)),
+  updateEventsWishlistsLinksMatrix: (operation, id, linksIds) => dispatch(updateEventsWishlistsLinksMatrix(operation, id, linksIds)),
+  startWishlistCreation: () => dispatch(startWishlistCreation())
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(WishlistFormContainer);

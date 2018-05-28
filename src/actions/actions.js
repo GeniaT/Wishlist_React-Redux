@@ -24,23 +24,40 @@ export const startLogout = () => {
 };
 
 export const createUser = (uid) => {
-  //Add Logic to check if the user exists in the DB or not + init the user id in the app with firebase's generated id.
-  console.log("in createUser action");
-  const userRef = firebase.database().ref('users');
   const userInfo = firebase.auth().currentUser;
+  const userId = userInfo.uid;
   const userNamesArray = userInfo.displayName.split(' ');
-  userRef.push({userInfos: {
-    'First name': userNamesArray[0],
-    'Last name': userNamesArray.slice(1).join(' '),
-    email: userInfo.email,
-    creationDate: moment().format('MMMM Do YYYY')
+  const userRef = firebase.database().ref(`users/${userId}`);
+
+  return userRef.once("value").then(function(snapshot) {
+      if (!snapshot.child(userId).exists()) { //create if the authed user doesn't exist in firebase
+        userRef.set({
+          userInfos: {
+            'First name': userNamesArray[0],
+            'Last name': userNamesArray.slice(1).join(' '),
+            email: userInfo.email,
+            creationDate: moment().format('MMMM Do YYYY')
+          }
+        }
+      );
     }
   });
 }
 
-export const saveWishlist = (wishlist) => ({
+export const startWishlistCreation = (wishlist, id, operation) => {
+  return () => {
+    const userId = firebase.auth().currentUser.uid;
+    const wishlistRef1 = firebase.database().ref(`users/${userId}/wishlistsIds`);
+    return wishlistRef1.push('myfirstWishlistCreation!').then(() => {
+      console.log("done");
+    });
+  }
+}
+
+export const saveWishlist = (wishlist, operation) => ({
   type: 'WISHLIST_SAVE',
-  wishlist
+  wishlist,
+  operation
 })
 
 export const deleteWishlist = (wishlistId) => ({
