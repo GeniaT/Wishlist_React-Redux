@@ -30,7 +30,7 @@ export const createUser = (uid) => {
   const userRef = firebase.database().ref(`users/${userId}`);
 
   return userRef.once("value").then(function(snapshot) {
-      if (!snapshot.child(userId).exists()) { //create if the authed user doesn't exist in firebase
+      if (!snapshot.exists()) { //create if the authed user doesn't exist in firebase
         userRef.set({
           userInfos: {
             'First name': userNamesArray[0],
@@ -44,12 +44,37 @@ export const createUser = (uid) => {
   });
 }
 
-export const startWishlistCreation = (wishlist, id, operation) => {
+export const startWishlistCreation = (wishlist, id) => {
+  const wishlistObj = wishlist;
+  const wishlistId = id;
   return () => {
     const userId = firebase.auth().currentUser.uid;
     const wishlistRef1 = firebase.database().ref(`users/${userId}/wishlistsIds`);
-    return wishlistRef1.push('myfirstWishlistCreation!').then(() => {
-      console.log("done");
+    const wishlistRef2 = firebase.database().ref('wishlists');
+    wishlistRef2.push(wishlistObj);
+    return wishlistRef1.push(wishlistId).then(() => {
+    });
+  }
+}
+
+export const startWishlistUpdate = (wishlist, id) => {
+  const wishlistObj = wishlist;
+  const wishlistId = id;
+  return () => {
+    const userId = firebase.auth().currentUser.uid;
+    const wishlistRef = firebase.database().ref('wishlists');
+    wishlistRef.once('value').then(snapshot => {
+      snapshot.forEach(child => {
+        const key = child.key;
+        const idFromDB = snapshot.child(key).val().id;
+        if (idFromDB === wishlistId) {
+          const wishlistToUpdateRef = firebase.database().ref(`wishlists/${key}`);
+          wishlistToUpdateRef.update(wishlistObj);
+          console.log('wishlist update: DONE');
+          return true;
+        }
+      });
+      console.log('nothing found, no update.');
     });
   }
 }

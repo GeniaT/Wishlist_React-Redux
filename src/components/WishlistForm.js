@@ -60,7 +60,7 @@ const WishlistForm = (props) => {
         onClick={(wishlist) => props.onSaveWishlist({
           id: props.id,
           status: props.status,
-          createdAt: moment(),
+          createdAt: props.createdAt,
           title: props.title,
           category: props.category,
           eventLinksIds:props.eventLinksIds,

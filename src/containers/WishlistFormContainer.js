@@ -1,10 +1,16 @@
 import React from 'react';
 import uuid from 'uuid';
+import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import moment from 'moment';
 import WishlistForm from '../Components/WishlistForm';
 import NavbarContainer from './NavbarContainer';
-import { saveWishlist, updateEventsWishlistsLinksMatrix, startWishlistCreation } from '../actions/actions';
-import { connect } from 'react-redux';
+import {
+  saveWishlist,
+  updateEventsWishlistsLinksMatrix,
+  startWishlistCreation,
+  startWishlistUpdate
+} from '../actions/actions';
 import { getWishlist } from '../selectors/wishlists';
 
 class WishlistFormContainer extends React.Component {
@@ -183,8 +189,11 @@ class WishlistFormContainer extends React.Component {
           this.props.saveWishlist(wishlist, operation);
           this.props.updateEventsWishlistsLinksMatrix(operation, id, eventLinksIds);
           this.props.history.push('/');
-
-          this.props.startWishlistCreation();
+          if (operation === 'wishlistCreation') {
+            this.props.startWishlistCreation(wishlist, id);
+          } else if (operation === 'wishlistUpdate') {
+            this.props.startWishlistUpdate(wishlist, id);
+          }
           }}
 
           addItem={this.addItem}
@@ -204,6 +213,7 @@ class WishlistFormContainer extends React.Component {
           eventLinksIds={this.state.eventLinksIds}
           title={this.state.title}
           status={this.state.status}
+          createdAt={moment().format("dddd, MMMM Do YYYY")}
           category={this.state.category}
           items={this.state.items}
           error={this.state.error}
@@ -229,7 +239,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   saveWishlist: (wishlist, operation) => dispatch(saveWishlist(wishlist, operation)),
   updateEventsWishlistsLinksMatrix: (operation, id, linksIds) => dispatch(updateEventsWishlistsLinksMatrix(operation, id, linksIds)),
-  startWishlistCreation: () => dispatch(startWishlistCreation())
+  startWishlistCreation: (wishlist, id) => dispatch(startWishlistCreation(wishlist, id)),
+  startWishlistUpdate: (wishlist, id) => dispatch(startWishlistUpdate(wishlist, id))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(WishlistFormContainer);
