@@ -4,14 +4,15 @@ import Events from '../Components/Events';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { getPassedEvents, getFuturEvents } from '../selectors/events';
-import { deleteEvent, updateEventsWishlistsLinksMatrix } from '../actions/actions';
+import { deleteEvent, updateEventsWishlistsLinksMatrix, startEventDeletion } from '../actions/actions';
 import moment from 'moment';
 
 class EventsContainer extends React.Component {
   deleteEventAndUpdateMatrix = (eventId) => {
     return new Promise ((resolve) => {
-      this.props.deleteEvent(eventId)
-    }).then(this.props.updateEventsWishlistsLinksMatrix('eventDeletion', eventId));
+      this.props.deleteEvent(eventId)})
+      .then(this.props.updateEventsWishlistsLinksMatrix('eventDeletion', eventId))
+      .then(this.props.startEventDeletion(eventId));
   }
 
   render() {
@@ -39,9 +40,14 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = {
-  deleteEvent,
-  updateEventsWishlistsLinksMatrix
-}
+// const mapDispatchToProps = {
+//   deleteEvent,
+//   updateEventsWishlistsLinksMatrix
+// }
+const mapDispatchToProps = (dispatch) => ({
+  deleteEvent: (eventId) => dispatch(deleteEvent(eventId)),
+  updateEventsWishlistsLinksMatrix: (operation, id, linksIds) => dispatch(updateEventsWishlistsLinksMatrix(operation, id, linksIds)),
+  startEventDeletion: (id) => dispatch(startEventDeletion(id)),
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventsContainer);

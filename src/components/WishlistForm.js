@@ -1,6 +1,6 @@
 import React from 'react';
 import ItemDetailsModal from './ItemDetailsModal';
-import moment from 'moment';
+// import moment from 'moment';
 import { getFuturEvents } from '../selectors/events';
 
 const WishlistForm = (props) => {

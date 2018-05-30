@@ -78,9 +78,8 @@ const EventForm = (props) => {
         onClick={(ev) => props.onSaveEvent({
           id: props.id,
           status: props.status,
-          createdAt: moment(),
+          createdAt: props.createdAt,
           title: props.title,
-          date: props.date,
           participants: props.participants,
           items: props.items,
           note: props.note,

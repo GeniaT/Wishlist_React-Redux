@@ -4,7 +4,12 @@ import { Redirect } from 'react-router-dom';
 import EventForm from '../Components/EventForm';
 import NavbarContainer from './NavbarContainer';
 import moment from 'moment';
-import { saveEvent, updateEventsWishlistsLinksMatrix } from '../actions/actions';
+import {
+  saveEvent,
+  updateEventsWishlistsLinksMatrix,
+  startEventCreation,
+  startEventUpdate
+ } from '../actions/actions';
 import { connect } from 'react-redux';
 import { getEvent } from '../selectors/events';
 import 'react-dates/initialize';
@@ -206,9 +211,14 @@ class EventFormContainer extends React.Component {
       <NavbarContainer />
       <EventForm
         onSaveEvent={(ev, operation, id, wishlistLinksIds) => {
-          this.props.saveEvent(ev);
+          this.props.saveEvent(ev, operation);
           this.props.updateEventsWishlistsLinksMatrix(operation, id, wishlistLinksIds);
           this.props.history.push('/my-events');
+          if (operation === 'eventCreation') {
+            this.props.startEventCreation(ev, id);
+          } else if (operation === 'eventUpdate') {
+            this.props.startEventUpdate(ev, id);
+          }
         }}
           addItem={this.addItem}
           addParticipant={this.addParticipant}
@@ -231,6 +241,7 @@ class EventFormContainer extends React.Component {
           participants={this.state.participants}
           title={this.state.title}
           status={this.state.status}
+          createdAt={moment().format("dddd, MMMM Do YYYY")}
           wishlists={this.props.wishlists}
           wishlistLinksIds={this.state.wishlistLinksIds}
 
@@ -256,9 +267,15 @@ const mapStateToProps = (state) => ({
   wishlists: state.wishlists,
 })
 
-const mapDispatchToProps = {
-  saveEvent,
-  updateEventsWishlistsLinksMatrix
-}
+// const mapDispatchToProps = {
+//   saveEvent,
+//   updateEventsWishlistsLinksMatrix
+// }
+const mapDispatchToProps = (dispatch) => ({
+  saveEvent: (ev, operation) => dispatch(saveEvent(ev, operation)),
+  updateEventsWishlistsLinksMatrix: (operation, id, linksIds) => dispatch(updateEventsWishlistsLinksMatrix(operation, id, linksIds)),
+  startEventCreation: (ev, id) => dispatch(startEventCreation(ev, id)),
+  startEventUpdate: (ev, id) => dispatch(startEventUpdate(ev, id))
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventFormContainer);

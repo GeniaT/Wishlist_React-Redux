@@ -12,8 +12,6 @@ const config = {
 firebase.auth.Auth.Persistence.LOCAL; //https://firebase.google.com/docs/auth/web/auth-state-persistence
 firebase.initializeApp(config);
 
-//Test for DB access:
-// firebase.database().ref('me').set({status: '!!!'});
 
 const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 export { firebase, googleAuthProvider };
