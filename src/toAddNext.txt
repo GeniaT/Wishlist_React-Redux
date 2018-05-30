@@ -1,2 +1,3 @@
 - Make sure the auth pop up doesn't appear if there user is still in memory or logged to the app.
 - Make the initial app rendering dynamic based on fetching/logged in/logged off status of the user.
+- Remove items details from 'wishlists/ids/items', need to store only itemsIds at this reference.

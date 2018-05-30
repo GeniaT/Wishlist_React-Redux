@@ -110,9 +110,11 @@ class EventFormContainer extends React.Component {
     e.preventDefault();
     const item = e.target.element.value.trim();
     if (item !== "" && (this.state.items.find(x => x.name === item) === undefined)) { //to avoid duplicates
+      const itemId = uuid();
       this.setState(() => ({
         items:[...this.state.items,
         {
+          id: itemId,
           name: item,
           description: '',
           picture: '',

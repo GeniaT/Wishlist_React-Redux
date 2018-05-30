@@ -8,11 +8,11 @@ import { deleteEvent, updateEventsWishlistsLinksMatrix, startEventDeletion } fro
 import moment from 'moment';
 
 class EventsContainer extends React.Component {
-  deleteEventAndUpdateMatrix = (eventId) => {
+  deleteEventAndUpdateMatrix = (ev, eventId) => {
     return new Promise ((resolve) => {
       this.props.deleteEvent(eventId)})
       .then(this.props.updateEventsWishlistsLinksMatrix('eventDeletion', eventId))
-      .then(this.props.startEventDeletion(eventId));
+      .then(this.props.startEventDeletion(ev, eventId));
   }
 
   render() {
@@ -47,7 +47,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   deleteEvent: (eventId) => dispatch(deleteEvent(eventId)),
   updateEventsWishlistsLinksMatrix: (operation, id, linksIds) => dispatch(updateEventsWishlistsLinksMatrix(operation, id, linksIds)),
-  startEventDeletion: (id) => dispatch(startEventDeletion(id)),
+  startEventDeletion: (ev, id) => dispatch(startEventDeletion(ev, id)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventsContainer);

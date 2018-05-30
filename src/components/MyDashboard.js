@@ -17,7 +17,7 @@ const MyDashboard = (props) => {
       <button onClick={() => new Promise((resolve) => {
         props.deleteWishlist(x.id)})
       .then(props.updateEventsWishlistsLinksMatrix('wishlistDeletion', x.id))
-      .then(props.startWishlistDeletion(x.id))}>Delete</button>
+      .then(props.startWishlistDeletion(x, x.id))}>Delete</button>
       <Link to={{
         pathname: `/updateWishlist/${x.id}`,
         state: {wishlistid: x.id}
@@ -33,7 +33,7 @@ const MyDashboard = (props) => {
         props.deleteEvent(ev.id)
       })
       .then(props.updateEventsWishlistsLinksMatrix('eventDeletion', ev.id))
-      .then(props.startEventDeletion(ev.id))}>Delete</button>
+      .then(props.startEventDeletion(ev, ev.id))}>Delete</button>
       {moment(ev.date).isSameOrAfter(now, 'day') &&
         <Link to={{
           pathname: `/updateEvent/${ev.id}`,
@@ -87,8 +87,8 @@ const mapDispatchToProps = (dispatch) => ({
   deleteWishlist: (wishlistId) => dispatch(deleteWishlist(wishlistId)),
   deleteEvent: (eventId) => dispatch(deleteEvent(eventId)),
   updateEventsWishlistsLinksMatrix: (operation, id, linksIds) => dispatch(updateEventsWishlistsLinksMatrix(operation, id, linksIds)),
-  startWishlistDeletion: (id) => dispatch(startWishlistDeletion(id)),
-  startEventDeletion: (id) => dispatch(startEventDeletion(id))
+  startWishlistDeletion: (wishlist, id) => dispatch(startWishlistDeletion(wishlist, id)),
+  startEventDeletion: (ev, id) => dispatch(startEventDeletion(ev, id))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyDashboard);

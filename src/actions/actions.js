@@ -47,14 +47,22 @@ export const createUser = (uid) => {
 export const startWishlistCreation = (wishlist, id) => {
   const wishlistObj = wishlist;
   const wishlistId = id;
+  const itemsArray = wishlistObj.items.reduce((accumulator, currentValue) => {
+    return [...accumulator, currentValue]
+  }, []);
+
   return () => {
     const userId = firebase.auth().currentUser.uid;
     const wishlistRef1 = firebase.database().ref(`users/${userId}/wishlistsIds`);
     const wishlistRef2 = firebase.database().ref(`wishlists/${wishlistId}`);
+    // const itemsRef = firebase.database().ref(`items`);
     // we use update instead of push here to simplify the update in firebase later on
     // by avoiding to iterate through all keys generated from push(). Furthermore if wishlistId key
     // doesn't exist in firebase, it will be created via update()
     wishlistRef2.update(wishlistObj);
+    itemsArray.forEach((item) => {
+      firebase.database().ref(`items/${item.id}`).set(item);
+    })
     return wishlistRef1.push(wishlistId);
   }
 }
@@ -80,19 +88,25 @@ export const deleteWishlist = (wishlistId) => ({
   wishlistId
 })
 
-export const startWishlistDeletion = (id) => {
+export const startWishlistDeletion = (wishlist, id) => {
+  const wishlistObj = wishlist;
   const wishlistId = id;
+  const itemsIds = wishlistObj.items.reduce((accumulator, currentValue) => {
+    return [...accumulator, currentValue.id]
+  }, []);
   return () => {
     const userId = firebase.auth().currentUser.uid;
     const wishlistRef1 = firebase.database().ref(`users/${userId}/wishlistsIds`);
     const wishlistRef2 = firebase.database().ref(`wishlists/${wishlistId}`);
     wishlistRef2.remove();
+    itemsIds.forEach((itemId) => {
+      firebase.database().ref(`items/${itemId}`).remove();
+    })
     return wishlistRef1.once("value").then(snapshot => {
         snapshot.forEach(childSnapshot => {
           const key = childSnapshot.key;
           const idFromDB = snapshot.child(`${key}`).val();
           if (idFromDB === wishlistId) {
-            console.log('removing wishlist!');
             return firebase.database().ref(`users/${userId}/wishlistsIds/${key}`).remove();
           }
       });
@@ -103,11 +117,17 @@ export const startWishlistDeletion = (id) => {
 export const startEventCreation = (ev, id) => {
   const eventObj = ev;
   const eventId = id;
+  const itemsArray = eventObj.items.reduce((accumulator, currentValue) => {
+    return [...accumulator, currentValue]
+  }, []);
   return () => {
     const userId = firebase.auth().currentUser.uid;
     const eventRef1 = firebase.database().ref(`users/${userId}/eventsIds`);
     const eventRef2 = firebase.database().ref(`events/${eventId}`);
     eventRef2.update(eventObj);
+    itemsArray.forEach((item) => {
+      firebase.database().ref(`items/${item.id}`).set(item);
+    })
     return eventRef1.push(eventId);
   }
 }
@@ -122,13 +142,21 @@ export const startEventUpdate = (ev, id) => {
   }
 }
 
-export const startEventDeletion = (id) => {
+export const startEventDeletion = (ev, id) => {
+  const eventObj = ev;
   const eventId = id;
+  const itemsIds = eventObj.items.reduce((accumulator, currentValue) => {
+    return [...accumulator, currentValue.id]
+  }, []);
   return () => {
     const userId = firebase.auth().currentUser.uid;
     const eventRef1 = firebase.database().ref(`users/${userId}/eventsIds`);
     const eventRef2 = firebase.database().ref(`events/${eventId}`);
+
     eventRef2.remove();
+    itemsIds.forEach((itemId) => {
+      firebase.database().ref(`items/${itemId}`).remove();
+    })
     return eventRef1.once("value").then(snapshot => {
         snapshot.forEach(childSnapshot => {
           const key = childSnapshot.key;
