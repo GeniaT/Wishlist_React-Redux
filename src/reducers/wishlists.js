@@ -10,6 +10,7 @@ const initialState = [
       eventLinksIds: [],
       items: [
         {
+          id: "cc6ddad2-434b",
           name: "CLRS",
           description: "algorithms focused book",
           picture: "http://flickr.com/test1",
@@ -18,6 +19,7 @@ const initialState = [
           note: "linear Algebra as prerequisite"
         },
         {
+          id: "pp6ddad2-434b",
           name: "Linear Algebra",
           description: "",
           picture: "http://flickr.com/test1",
@@ -26,6 +28,7 @@ const initialState = [
           note: "math++"
         },
         {
+          id: "ww6ddad2-434b",
           name: "Algorithm Design Manual",
           description: "",
           picture: "http://flickr.com/test1",
@@ -34,6 +37,7 @@ const initialState = [
           note: "lets make it right"
         },
         {
+          id: "ee6ddad2-434b",
           name: "MIT 6 Math for CS",
           description: "",
           picture: "http://flickr.com/test1",

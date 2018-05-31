@@ -1,6 +1,5 @@
 import React from 'react';
 import ItemDetailsModal from './ItemDetailsModal';
-// import moment from 'moment';
 import { getFuturEvents } from '../selectors/events';
 
 const WishlistForm = (props) => {
@@ -50,7 +49,7 @@ const WishlistForm = (props) => {
               <li key={index}>
                 {item.name}
                 <button onClick={() => props.openModalForItemUpdate(item.name)}>Update</button>
-                <button onClick={() => props.deleteItem(item.name)}>Delete</button>
+                <button onClick={() => props.deleteItem(item.id)}>Delete</button>
               </li>)}
           </ul>
           <button onClick={props.removeAllItems}>Remove all items</button>
@@ -65,7 +64,7 @@ const WishlistForm = (props) => {
           category: props.category,
           eventLinksIds:props.eventLinksIds,
           items: props.items
-        }, props.operation, props.id, props.eventLinksIds)}>{'Save wishlist'}
+        }, props.operation, props.id, props.eventLinksIds, props.removedItemsIds)}>{'Save wishlist'}
       </button>
       <ItemDetailsModal
         showItemModal={props.showItemModal}

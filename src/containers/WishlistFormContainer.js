@@ -27,7 +27,8 @@ class WishlistFormContainer extends React.Component {
         showItemModal: false,
         operation: 'wishlistCreation',
         duplicateTitle: '',
-        error: ''
+        error: '',
+        removedItemsIds: []
       }
     } else if (props.match.path === '/updateWishlist/:id') {
       const wishlistToUpdate = getWishlist(this.props.wishlists, this.props.location.state.wishlistid);
@@ -41,16 +42,17 @@ class WishlistFormContainer extends React.Component {
           operation: 'wishlistUpdate',
           duplicateTitle: '',
           error: '',
-          eventLinksIds:[]
+          eventLinksIds:[],
+          removedItemsIds: []
          }
       }
     }
 
     onChangeTitle = (e) => {
-      const title = e.target.value.trim();
+      const title = e.target.value  ;
       this.setState(() => ({title}));
 
-      if (title !== "" && (this.props.wishlists.find(x => x.title === title) === undefined)) { //to avoid duplicates
+      if (title.trim() !== "" && (this.props.wishlists.find(x => x.title === title) === undefined)) { //to avoid duplicates
         this.setState(() => ({
           duplicateTitle: false,
           error: ''
@@ -102,14 +104,20 @@ class WishlistFormContainer extends React.Component {
       e.target.element.value = "";
     }
 
-    deleteItem = (item) => {
-      this.setState((prevState) => ({items: prevState.items.filter((x) => x.name !== item)}));
+    deleteItem = (itemId) => {
+      this.setState((prevState) => ({
+        removedItemsIds: [...this.state.removedItemsIds, itemId],
+        items: prevState.items.filter((x) => x.id !== itemId),
+      }));
     }
 
     removeAllItems = (e) => {
       e.preventDefault(e);
-      this.setState(() => ({
-        items: []
+      this.setState((prevState) => ({
+        items: [],
+        removedItemsIds: prevState.items.reduce((accumulator, currentValue) => {
+            return [...accumulator, currentValue.id]
+          }, [])
       }));
     }
 
@@ -187,14 +195,14 @@ class WishlistFormContainer extends React.Component {
     render () {
       return this.props.loggedIn ? <div>
         <NavbarContainer />
-        <WishlistForm onSaveWishlist={(wishlist, operation, id, eventLinksIds) => {
+        <WishlistForm onSaveWishlist={(wishlist, operation, id, eventLinksIds, removedItemsIds) => {
           this.props.saveWishlist(wishlist, operation);
           this.props.updateEventsWishlistsLinksMatrix(operation, id, eventLinksIds);
           this.props.history.push('/');
           if (operation === 'wishlistCreation') {
             this.props.startWishlistCreation(wishlist, id);
           } else if (operation === 'wishlistUpdate') {
-            this.props.startWishlistUpdate(wishlist, id);
+            this.props.startWishlistUpdate(wishlist, id, removedItemsIds);
           }
           }}
 
@@ -213,6 +221,7 @@ class WishlistFormContainer extends React.Component {
           id={this.state.id}
           operation={this.state.operation}
           eventLinksIds={this.state.eventLinksIds}
+          removedItemsIds={this.state.removedItemsIds}
           title={this.state.title}
           status={this.state.status}
           createdAt={moment().format("dddd, MMMM Do YYYY")}
@@ -242,7 +251,7 @@ const mapDispatchToProps = (dispatch) => ({
   saveWishlist: (wishlist, operation) => dispatch(saveWishlist(wishlist, operation)),
   updateEventsWishlistsLinksMatrix: (operation, id, linksIds) => dispatch(updateEventsWishlistsLinksMatrix(operation, id, linksIds)),
   startWishlistCreation: (wishlist, id) => dispatch(startWishlistCreation(wishlist, id)),
-  startWishlistUpdate: (wishlist, id) => dispatch(startWishlistUpdate(wishlist, id))
+  startWishlistUpdate: (wishlist, id, removedItemsIds) => dispatch(startWishlistUpdate(wishlist, id, removedItemsIds))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(WishlistFormContainer);

@@ -67,12 +67,21 @@ export const startWishlistCreation = (wishlist, id) => {
   }
 }
 
-export const startWishlistUpdate = (wishlist, id) => {
+export const startWishlistUpdate = (wishlist, id, removedItemsIds) => {
   const wishlistObj = wishlist;
   const wishlistId = id;
+  const deletedItemsIds = removedItemsIds;
   return () => {
     const userId = firebase.auth().currentUser.uid;
     const wishlistRef = firebase.database().ref(`wishlists/${wishlistId}`);
+      wishlistObj.items.forEach(item => {
+        firebase.database().ref(`items/${item.id}`).set({item});
+      });
+    if (deletedItemsIds.length > 0) {
+      deletedItemsIds.forEach(itemId => {
+        firebase.database().ref(`items/${itemId}`).remove();
+      });
+    }
     return wishlistRef.update(wishlistObj);
   }
 }
