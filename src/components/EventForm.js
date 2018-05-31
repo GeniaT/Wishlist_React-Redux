@@ -59,7 +59,7 @@ const EventForm = (props) => {
               <li key={index}>
                 {item.name}
                 <button onClick={() => props.openModalForItemUpdate(item.name)}>Update</button>
-                <button onClick={() => props.deleteItem(item.name)}>Delete</button>
+                <button onClick={() => props.deleteItem(item.id)}>Delete</button>
               </li>)}
           </ul>
           <button onClick={props.removeAllItems}>Remove all items</button>
@@ -84,7 +84,7 @@ const EventForm = (props) => {
           items: props.items,
           note: props.note,
           wishlistLinksIds: props.wishlistLinksIds
-        },props.operation ,props.id, props.wishlistLinksIds)}>{'Save Event'}
+        },props.operation ,props.id, props.wishlistLinksIds, props.removedItemsIds)}>{'Save Event'}
       </button>
       <ItemDetailsModal
         showItemModal={props.showItemModal}

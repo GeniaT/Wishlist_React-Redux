@@ -32,6 +32,7 @@ class EventFormContainer extends React.Component {
         duplicateTitle: '',
         error: '',
         wishlistLinksIds: [],
+        removedItemsIds: []
       }
     } else if (props.match.path === '/updateEvent/:id') {
       const eventToUpdate = getEvent(this.props.events, this.props.location.state.eventid);
@@ -48,7 +49,8 @@ class EventFormContainer extends React.Component {
         duplicateTitle: '',
         error: '',
         operation: 'eventUpdate',
-        wishlistLinksIds:[]
+        wishlistLinksIds:[],
+        removedItemsIds: []
       }
     }
   }
@@ -56,7 +58,7 @@ class EventFormContainer extends React.Component {
   onChangeTitle = (e) => {
     const title = e.target.value;
     this.setState(() => ({title}));
-    if (title !== "" && (this.props.events.find(x => x.title === title) === undefined)) { //to avoid duplicates
+    if (title.trim() !== "" && (this.props.events.find(x => x.title === title) === undefined)) { //to avoid duplicates
       this.setState(() => ({
         duplicateTitle: false,
         error: ''
@@ -126,13 +128,19 @@ class EventFormContainer extends React.Component {
     }
     e.target.element.value = "";
   }
-  deleteItem = (item) => {
-    this.setState((prevState) => ({items: prevState.items.filter((x) => x.name !== item)}));
+  deleteItem = (itemId) => {
+    this.setState((prevState) => ({
+      removedItemsIds: [...this.state.removedItemsIds, itemId],
+      items: prevState.items.filter((x) => x.id !== itemId),
+    }));
   }
   removeAllItems = (e) => {
     e.preventDefault(e);
-    this.setState(() => ({
-      items: []
+    this.setState((prevState) => ({
+      items: [],
+      removedItemsIds: prevState.items.reduce((accumulator, currentValue) => {
+          return [...accumulator, currentValue.id]
+        }, [])
     }));
   }
   openModalForItemUpdate = (item) => {
@@ -212,14 +220,14 @@ class EventFormContainer extends React.Component {
     return this.props.loggedIn ? <div>
       <NavbarContainer />
       <EventForm
-        onSaveEvent={(ev, operation, id, wishlistLinksIds) => {
+        onSaveEvent={(ev, operation, id, wishlistLinksIds, removedItemsIds) => {
           this.props.saveEvent(ev, operation);
           this.props.updateEventsWishlistsLinksMatrix(operation, id, wishlistLinksIds);
           this.props.history.push('/my-events');
           if (operation === 'eventCreation') {
             this.props.startEventCreation(ev, id);
           } else if (operation === 'eventUpdate') {
-            this.props.startEventUpdate(ev, id);
+            this.props.startEventUpdate(ev, id, removedItemsIds);
           }
         }}
           addItem={this.addItem}
@@ -246,7 +254,7 @@ class EventFormContainer extends React.Component {
           createdAt={moment().format("dddd, MMMM Do YYYY")}
           wishlists={this.props.wishlists}
           wishlistLinksIds={this.state.wishlistLinksIds}
-
+          removedItemsIds={this.state.removedItemsIds}
           showItemModal={this.state.showItemModal}
           closeItemModal={this.closeItemModal}
           updatingItem={this.state.updatingItem}
@@ -277,7 +285,7 @@ const mapDispatchToProps = (dispatch) => ({
   saveEvent: (ev, operation) => dispatch(saveEvent(ev, operation)),
   updateEventsWishlistsLinksMatrix: (operation, id, linksIds) => dispatch(updateEventsWishlistsLinksMatrix(operation, id, linksIds)),
   startEventCreation: (ev, id) => dispatch(startEventCreation(ev, id)),
-  startEventUpdate: (ev, id) => dispatch(startEventUpdate(ev, id))
+  startEventUpdate: (ev, id, removedItemsIds) => dispatch(startEventUpdate(ev, id, removedItemsIds))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventFormContainer);

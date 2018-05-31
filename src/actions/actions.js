@@ -55,7 +55,6 @@ export const startWishlistCreation = (wishlist, id) => {
     const userId = firebase.auth().currentUser.uid;
     const wishlistRef1 = firebase.database().ref(`users/${userId}/wishlistsIds`);
     const wishlistRef2 = firebase.database().ref(`wishlists/${wishlistId}`);
-    // const itemsRef = firebase.database().ref(`items`);
     // we use update instead of push here to simplify the update in firebase later on
     // by avoiding to iterate through all keys generated from push(). Furthermore if wishlistId key
     // doesn't exist in firebase, it will be created via update()
@@ -141,12 +140,21 @@ export const startEventCreation = (ev, id) => {
   }
 }
 
-export const startEventUpdate = (ev, id) => {
+export const startEventUpdate = (ev, id, removedItemsIds) => {
   const eventObj = ev;
   const eventId = id;
+  const deletedItemsIds = removedItemsIds;
   return () => {
     const userId = firebase.auth().currentUser.uid;
     const eventRef = firebase.database().ref(`events/${eventId}`);
+    eventObj.items.forEach(item => {
+      firebase.database().ref(`items/${item.id}`).set({item});
+    });
+  if (deletedItemsIds.length > 0) {
+    deletedItemsIds.forEach(itemId => {
+      firebase.database().ref(`items/${itemId}`).remove();
+    });
+  }
     return eventRef.update(eventObj);
   }
 }
