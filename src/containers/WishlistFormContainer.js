@@ -9,7 +9,8 @@ import {
   saveWishlist,
   updateEventsWishlistsLinksMatrix,
   startWishlistCreation,
-  startWishlistUpdate
+  startWishlistUpdate,
+  updateLinksMatrixInDB
 } from '../actions/actions';
 import { getWishlist } from '../selectors/wishlists';
 
@@ -197,13 +198,15 @@ class WishlistFormContainer extends React.Component {
         <NavbarContainer />
         <WishlistForm onSaveWishlist={(wishlist, operation, id, eventLinksIds, removedItemsIds) => {
           this.props.saveWishlist(wishlist, operation);
-          this.props.updateEventsWishlistsLinksMatrix(operation, id, eventLinksIds);
           this.props.history.push('/');
           if (operation === 'wishlistCreation') {
             this.props.startWishlistCreation(wishlist, id);
           } else if (operation === 'wishlistUpdate') {
             this.props.startWishlistUpdate(wishlist, id, removedItemsIds);
           }
+          return new Promise(resolve => {
+            this.props.updateEventsWishlistsLinksMatrix(operation, id, eventLinksIds);
+          }).then(this.props.updateLinksMatrixInDB())
           }}
 
           addItem={this.addItem}
@@ -243,15 +246,12 @@ const mapStateToProps = (state) => ({
   wishlists: state.wishlists,
 })
 
-// const mapDispatchToProps = {
-//   saveWishlist,
-//   updateEventsWishlistsLinksMatrix,
-// }
 const mapDispatchToProps = (dispatch) => ({
   saveWishlist: (wishlist, operation) => dispatch(saveWishlist(wishlist, operation)),
   updateEventsWishlistsLinksMatrix: (operation, id, linksIds) => dispatch(updateEventsWishlistsLinksMatrix(operation, id, linksIds)),
   startWishlistCreation: (wishlist, id) => dispatch(startWishlistCreation(wishlist, id)),
-  startWishlistUpdate: (wishlist, id, removedItemsIds) => dispatch(startWishlistUpdate(wishlist, id, removedItemsIds))
+  startWishlistUpdate: (wishlist, id, removedItemsIds) => dispatch(startWishlistUpdate(wishlist, id, removedItemsIds)),
+  updateLinksMatrixInDB: () => dispatch(updateLinksMatrixInDB()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(WishlistFormContainer);

@@ -204,3 +204,78 @@ export const updateEventsWishlistsLinksMatrix = (operation, id, linksIds) => ({
   id,
   linksIds
 })
+
+export const updateLinksMatrixInDB = () => {
+  return (dispatch, getState) => {
+    const userId = firebase.auth().currentUser.uid;
+    const linksMatrix = getState().eventsWishlistsLinks;
+    const matrixRef = firebase.database().ref(`users/${userId}/eventsWishlistsLinksMatrix`);
+    return matrixRef.set(linksMatrix);
+  }
+}
+
+// state init actions
+export const setWishlists = (wishlists) => ({
+  type: 'SET_WISHLISTS',
+  wishlists
+})
+
+export const setEvents = (events) => ({
+  type: 'SET_EVENTS',
+  events
+})
+
+export const setLinksMatrix = (linksMatrix) => ({
+  type: 'SET_LINKS_MATRIX',
+  linksMatrix
+})
+//Fetch from DB actions
+export const startFetchingData = () => {
+  return (dispatch, getState) => {
+    //We fetch all the data needed from DB
+    const userId = firebase.auth().currentUser.uid;
+    const matrixRef = firebase.database().ref(`users/${userId}/eventsWishlistsLinksMatrix`);
+
+    const wishlistsIdsRef = firebase.database().ref(`users/${userId}/wishlistsIds`);
+    const wishlistsIdsArray = [];
+    const wishlistsDetailsArray = [];
+    wishlistsIdsRef.once('value')
+    .then(snapshot => {
+      snapshot.forEach((child) => {
+        wishlistsIdsArray.push(child.val());
+      })
+    })
+    .then(() => wishlistsIdsArray.forEach((wishlistId, index) => {
+          return firebase.database().ref(`wishlists/${wishlistId}`).once('value')
+          .then(snapshot => {
+            wishlistsDetailsArray.push(snapshot.val());
+              console.log('WLdetailsArray: ', wishlistsDetailsArray);
+          })
+          .then(() => dispatch(setWishlists(wishlistsDetailsArray)));
+        }))
+
+    //Same approach with events items
+    const eventsIdsRef = firebase.database().ref(`users/${userId}/eventsIds`);
+    const eventsIdsArray = [];
+    const eventsDetailsArray = [];
+    eventsIdsRef.once('value')
+    .then(snapshot => {
+      snapshot.forEach((child) => {
+        eventsIdsArray.push(child.val());
+      })
+    })
+    .then(() => eventsIdsArray.forEach((eventId, index) => {
+          return firebase.database().ref(`events/${eventId}`).once('value')
+          .then(snapshot => {
+            eventsDetailsArray.push(snapshot.val());
+            console.log('eventsdetailsArray: ', eventsDetailsArray);
+          })
+          .then(() => dispatch(setEvents(eventsDetailsArray)));
+      }))
+
+    matrixRef.once("value").then(snapshot => {
+      if (snapshot.val() !== null) dispatch(setLinksMatrix(snapshot.val()))
+    });
+
+  }
+}

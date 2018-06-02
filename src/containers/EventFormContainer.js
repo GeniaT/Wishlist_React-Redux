@@ -8,7 +8,8 @@ import {
   saveEvent,
   updateEventsWishlistsLinksMatrix,
   startEventCreation,
-  startEventUpdate
+  startEventUpdate,
+  updateLinksMatrixInDB
  } from '../actions/actions';
 import { connect } from 'react-redux';
 import { getEvent } from '../selectors/events';
@@ -222,13 +223,15 @@ class EventFormContainer extends React.Component {
       <EventForm
         onSaveEvent={(ev, operation, id, wishlistLinksIds, removedItemsIds) => {
           this.props.saveEvent(ev, operation);
-          this.props.updateEventsWishlistsLinksMatrix(operation, id, wishlistLinksIds);
           this.props.history.push('/my-events');
           if (operation === 'eventCreation') {
             this.props.startEventCreation(ev, id);
           } else if (operation === 'eventUpdate') {
             this.props.startEventUpdate(ev, id, removedItemsIds);
           }
+          return new Promise(resolve => {
+            this.props.updateEventsWishlistsLinksMatrix(operation, id, wishlistLinksIds);
+          }).then(this.props.updateLinksMatrixInDB())
         }}
           addItem={this.addItem}
           addParticipant={this.addParticipant}
@@ -277,15 +280,12 @@ const mapStateToProps = (state) => ({
   wishlists: state.wishlists,
 })
 
-// const mapDispatchToProps = {
-//   saveEvent,
-//   updateEventsWishlistsLinksMatrix
-// }
 const mapDispatchToProps = (dispatch) => ({
   saveEvent: (ev, operation) => dispatch(saveEvent(ev, operation)),
   updateEventsWishlistsLinksMatrix: (operation, id, linksIds) => dispatch(updateEventsWishlistsLinksMatrix(operation, id, linksIds)),
   startEventCreation: (ev, id) => dispatch(startEventCreation(ev, id)),
-  startEventUpdate: (ev, id, removedItemsIds) => dispatch(startEventUpdate(ev, id, removedItemsIds))
+  startEventUpdate: (ev, id, removedItemsIds) => dispatch(startEventUpdate(ev, id, removedItemsIds)),
+  updateLinksMatrixInDB: () => dispatch(updateLinksMatrixInDB()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventFormContainer);
