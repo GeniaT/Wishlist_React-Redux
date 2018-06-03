@@ -79,6 +79,7 @@ const EventForm = (props) => {
           id: props.id,
           status: props.status,
           createdAt: props.createdAt,
+          date: String(props.date),
           title: props.title,
           participants: props.participants,
           items: props.items,

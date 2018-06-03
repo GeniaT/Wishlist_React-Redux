@@ -99,17 +99,21 @@ export const deleteWishlist = (wishlistId) => ({
 export const startWishlistDeletion = (wishlist, id) => {
   const wishlistObj = wishlist;
   const wishlistId = id;
-  const itemsIds = wishlistObj.items.reduce((accumulator, currentValue) => {
-    return [...accumulator, currentValue.id]
-  }, []);
-  return () => {
+  let itemsIds;
+
+  if (wishlistObj.items) {
+    itemsIds = wishlistObj.items.reduce((accumulator, currentValue) => {
+      return [...accumulator, currentValue.id]
+    }, []);
+    itemsIds.forEach((itemId) => {
+      firebase.database().ref(`items/${itemId}`).remove();
+    })
+  }
+  return (dispatch, getState) => {
     const userId = firebase.auth().currentUser.uid;
     const wishlistRef1 = firebase.database().ref(`users/${userId}/wishlistsIds`);
     const wishlistRef2 = firebase.database().ref(`wishlists/${wishlistId}`);
     wishlistRef2.remove();
-    itemsIds.forEach((itemId) => {
-      firebase.database().ref(`items/${itemId}`).remove();
-    })
     return wishlistRef1.once("value").then(snapshot => {
         snapshot.forEach(childSnapshot => {
           const key = childSnapshot.key;
@@ -118,7 +122,7 @@ export const startWishlistDeletion = (wishlist, id) => {
             return firebase.database().ref(`users/${userId}/wishlistsIds/${key}`).remove();
           }
       });
-    });
+    }).then(() => dispatch(updateLinksMatrixInDB()));
   }
 }
 
@@ -162,18 +166,23 @@ export const startEventUpdate = (ev, id, removedItemsIds) => {
 export const startEventDeletion = (ev, id) => {
   const eventObj = ev;
   const eventId = id;
-  const itemsIds = eventObj.items.reduce((accumulator, currentValue) => {
-    return [...accumulator, currentValue.id]
-  }, []);
-  return () => {
+  let itemsIds;
+
+  if (eventObj.items) {
+    itemsIds = eventObj.items.reduce((accumulator, currentValue) => {
+      return [...accumulator, currentValue.id]
+    }, []);
+    itemsIds.forEach((itemId) => {
+      firebase.database().ref(`items/${itemId}`).remove();
+    })
+  }
+  return (dispatch, getState) => {
     const userId = firebase.auth().currentUser.uid;
     const eventRef1 = firebase.database().ref(`users/${userId}/eventsIds`);
     const eventRef2 = firebase.database().ref(`events/${eventId}`);
 
     eventRef2.remove();
-    itemsIds.forEach((itemId) => {
-      firebase.database().ref(`items/${itemId}`).remove();
-    })
+
     return eventRef1.once("value").then(snapshot => {
         snapshot.forEach(childSnapshot => {
           const key = childSnapshot.key;
@@ -183,7 +192,7 @@ export const startEventDeletion = (ev, id) => {
             return firebase.database().ref(`users/${userId}/eventsIds/${key}`).remove();
           }
       });
-    });
+    }).then(() => dispatch(updateLinksMatrixInDB()))
   }
 }
 
@@ -253,6 +262,7 @@ export const startFetchingData = () => {
           })
           .then(() => dispatch(setWishlists(wishlistsDetailsArray)));
         }))
+
 
     //Same approach with events items
     const eventsIdsRef = firebase.database().ref(`users/${userId}/eventsIds`);

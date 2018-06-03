@@ -28,6 +28,7 @@ class EventFormContainer extends React.Component {
         items:[],
         reservedItems: [],
         note: '',
+        date: moment(),
         showItemModal: false,
         operation: 'eventCreation',
         duplicateTitle: '',
@@ -41,11 +42,11 @@ class EventFormContainer extends React.Component {
         id: eventToUpdate.id,
         status: eventToUpdate.status,
         title: eventToUpdate.title,
-        participants: eventToUpdate.participants,
-        items: eventToUpdate.items,
+        participants: eventToUpdate.participants || [],
+        items: eventToUpdate.items || [],
         createdAt: eventToUpdate.createdAt,
-        date: eventToUpdate.date,
-        note: eventToUpdate.note,
+        date: moment(eventToUpdate.date),
+        note: eventToUpdate.note || '',
         showItemModal: false,
         duplicateTitle: '',
         error: '',
@@ -263,7 +264,7 @@ class EventFormContainer extends React.Component {
           updatingItem={this.state.updatingItem}
           updatingItem={this.updatingItem}
 
-          date={this.state.date || moment()}
+          date={(this.state.date) || moment()}
           onDateChange={date => this.setState({ date })}
           focused={this.state.focused}
           reopenPickerOnClearDate={true}
