@@ -255,15 +255,15 @@ export const startFetchingData = () => {
       })
     })
     .then(() => wishlistsIdsArray.forEach((wishlistId, index) => {
-          return firebase.database().ref(`wishlists/${wishlistId}`).once('value')
+          firebase.database().ref(`wishlists/${wishlistId}`).once('value')
           .then(snapshot => {
             wishlistsDetailsArray.push(snapshot.val());
               console.log('WLdetailsArray: ', wishlistsDetailsArray);
+              if (index === wishlistsIdsArray.length-1) {
+                dispatch(setWishlists(wishlistsDetailsArray));
+              }
           })
-          .then(() => dispatch(setWishlists(wishlistsDetailsArray)));
         }))
-
-
     //Same approach with events items
     const eventsIdsRef = firebase.database().ref(`users/${userId}/eventsIds`);
     const eventsIdsArray = [];
@@ -279,8 +279,10 @@ export const startFetchingData = () => {
           .then(snapshot => {
             eventsDetailsArray.push(snapshot.val());
             console.log('eventsdetailsArray: ', eventsDetailsArray);
+            if (index === eventsIdsArray.length-1) {
+              dispatch(setEvents(eventsDetailsArray));
+            }
           })
-          .then(() => dispatch(setEvents(eventsDetailsArray)));
       }))
 
     matrixRef.once("value").then(snapshot => {

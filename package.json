@@ -6,8 +6,12 @@
   "scripts": {
     "serve": "live-server public/",
     "dev-server": "webpack-dev-server",
-    "build": "webpack",
-    "test": "jest"
+    "build:dev": "webpack",
+    "test": "jest",
+    "startDev": "webpack-dev-server --open --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js",
+    "start": "node server/server.js",
+    "heroku-postbuild": "npm run build"
   },
   "author": "Genia Tchistiakov",
   "license": "ISC",
@@ -39,7 +43,8 @@
     "uuid": "^3.2.1",
     "webpack": "^4.2.0",
     "webpack-cli": "^2.0.12",
-    "webpack-dev-server": "^3.1.1"
+    "webpack-dev-server": "^3.1.1",
+    "webpack-merge": "^4.1.2"
   },
   "devDependencies": {
     "jest": "^22.4.3"

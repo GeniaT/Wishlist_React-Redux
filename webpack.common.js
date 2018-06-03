@@ -21,11 +21,5 @@ module.exports = {
           'sass-loader'
         ]
       }]
-  },
-  mode: 'development',
-  devtool: 'cheap-module-eval-source-map',
-  devServer: {
-    contentBase: path.join(__dirname, "public"),
-    historyApiFallback: true
   }
 };
