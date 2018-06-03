@@ -3,7 +3,7 @@ import uuid from 'uuid';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import moment from 'moment';
-import WishlistForm from '../Components/WishlistForm';
+import WishlistForm from '../components/WishlistForm';
 import NavbarContainer from './NavbarContainer';
 import {
   saveWishlist,

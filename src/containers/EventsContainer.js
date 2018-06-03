@@ -1,6 +1,6 @@
 import React from 'react';
 import NavbarContainer from '../containers/NavbarContainer';
-import Events from '../Components/Events';
+import Events from '../components/Events';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { getPassedEvents, getFuturEvents } from '../selectors/events';

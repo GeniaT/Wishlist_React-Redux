@@ -1,7 +1,7 @@
 import React from 'react';
 import uuid from 'uuid';
 import { Redirect } from 'react-router-dom';
-import EventForm from '../Components/EventForm';
+import EventForm from '../components/EventForm';
 import NavbarContainer from './NavbarContainer';
 import moment from 'moment';
 import {

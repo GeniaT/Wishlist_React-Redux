@@ -9,9 +9,9 @@
     "build:dev": "webpack",
     "test": "jest",
     "startDev": "webpack-dev-server --open --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js",
+    "build:prod": "webpack --config webpack.prod.js",
     "start": "node server/server.js",
-    "heroku-postbuild": "npm run build"
+    "heroku-postbuild": "npm run build:prod"
   },
   "author": "Genia Tchistiakov",
   "license": "ISC",
