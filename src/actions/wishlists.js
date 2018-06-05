@@ -86,3 +86,13 @@ export const saveWishlistInStateAndDB = (ev, operation, id, eventLinksIds, remov
     }).then(dispatch(updateLinksMatrixInDB()))
   }
 }
+
+export const deleteWishlistInStateAndDB = (wishlist, operation) => {
+  return (dispatch, getState) => {
+    return new Promise ((resolve => {
+      dispatch(deleteWishlist(wishlist.id))
+    }))
+    .then(dispatch(updateEventsWishlistsLinksMatrix(operation, wishlist.id)))
+    .then(dispatch(startWishlistDeletion(wishlist, wishlist.id)));
+  }
+}

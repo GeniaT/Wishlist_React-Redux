@@ -72,7 +72,6 @@ export const startEventDeletion = (ev, id) => {
 }
 
 export const saveEventInStateAndDB = (ev, operation, id, wishlistLinksIds, removedItemsIds) => {
-  console.log('event obj: ', ev);
   return (dispatch, getState) => {
     dispatch(saveEvent(ev, operation));
     if (operation === 'eventCreation') {
@@ -83,5 +82,15 @@ export const saveEventInStateAndDB = (ev, operation, id, wishlistLinksIds, remov
     return new Promise(resolve => {
       dispatch(updateEventsWishlistsLinksMatrix(operation, id, wishlistLinksIds));
     }).then(dispatch(updateLinksMatrixInDB()))
+  }
+}
+
+export const deleteEventInStateAndDB = (ev, operation) => {
+  return (dispatch, getState) => {
+    return new Promise ((resolve => {
+      dispatch(deleteEvent(ev.id))
+    }))
+    .then(dispatch(updateEventsWishlistsLinksMatrix(operation, ev.id)))
+    .then(dispatch(startEventDeletion(ev, ev.id)));
   }
 }

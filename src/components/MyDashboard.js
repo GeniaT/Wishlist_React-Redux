@@ -3,20 +3,16 @@ import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
 import moment from 'moment';
 import NavbarContainer from '../containers/NavbarContainer';
-import { deleteWishlist, startWishlistDeletion } from '../actions/wishlists';
-import { deleteEvent, startEventDeletion } from '../actions/events';
-import { updateEventsWishlistsLinksMatrix } from '../actions/eventsWishlistsLinks';
+import { deleteWishlistInStateAndDB } from '../actions/wishlists';
+import { deleteEventInStateAndDB } from '../actions/events';
 
 const MyDashboard = (props) => {
-  const wishlistsToRender = props.wishlists.map((x, index) => {
-    return <p key={index} id={x.id}>{x.title}
-      <button onClick={() => new Promise((resolve) => {
-        props.deleteWishlist(x.id)})
-      .then(props.updateEventsWishlistsLinksMatrix('wishlistDeletion', x.id))
-      .then(props.startWishlistDeletion(x, x.id))}>Delete</button>
+  const wishlistsToRender = props.wishlists.map((wishlist, index) => {
+    return <p key={index} id={wishlist.id}>{wishlist.title}
+      <button onClick={() => props.deleteWishlistInStateAndDB(wishlist, 'wishlistDeletion')}>Delete</button>
       <Link to={{
-        pathname: `/updateWishlist/${x.id}`,
-        state: {wishlistid: x.id}
+        pathname: `/updateWishlist/${wishlist.id}`,
+        state: {wishlistid: wishlist.id}
       }} ><button>{'Update this Wishlist'}</button></Link>
     </p>
   });
@@ -25,11 +21,7 @@ const MyDashboard = (props) => {
     return (
     <p key={index} id={ev.id}>
       {ev.title} {moment(ev.date).format('YYYY-MM-DD')}
-      <button onClick={() => new Promise((resolve) => {
-        props.deleteEvent(ev.id)
-      })
-      .then(props.updateEventsWishlistsLinksMatrix('eventDeletion', ev.id))
-      .then(props.startEventDeletion(ev, ev.id))}>Delete</button>
+      <button onClick={() => props.deleteEventInStateAndDB(ev, 'eventDeletion')}>Delete</button>
       {moment(ev.date).isSameOrAfter(now, 'day') &&
         <Link to={{
           pathname: `/updateEvent/${ev.id}`,
@@ -80,11 +72,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  deleteWishlist: (wishlistId) => dispatch(deleteWishlist(wishlistId)),
-  deleteEvent: (eventId) => dispatch(deleteEvent(eventId)),
-  updateEventsWishlistsLinksMatrix: (operation, id, linksIds) => dispatch(updateEventsWishlistsLinksMatrix(operation, id, linksIds)),
-  startWishlistDeletion: (wishlist, id) => dispatch(startWishlistDeletion(wishlist, id)),
-  startEventDeletion: (ev, id) => dispatch(startEventDeletion(ev, id))
+  deleteEventInStateAndDB: (ev, operation) => dispatch(deleteEventInStateAndDB(ev, operation)),
+  deleteWishlistInStateAndDB: (wishlist, operation) => dispatch(deleteWishlistInStateAndDB(wishlist, operation)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyDashboard);

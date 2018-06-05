@@ -1,4 +1,5 @@
 import { firebase } from '../firebase/firebase';
+
 export const updateEventsWishlistsLinksMatrix = (operation, id, linksIds) => ({
   type: 'MATRIX_EVENTS_WISHLISTS_LINKS_UPDATE',
   operation,

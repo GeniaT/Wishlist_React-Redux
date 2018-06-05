@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 
-const Events = ({futurEvents, passedEvents, deleteEventAndUpdateMatrix}) => {
+const Events = ({futurEvents, passedEvents, deleteEventInStateAndDB}) => {
   return (
     <div>
       <h1>Check your Events here!</h1>
@@ -11,7 +11,7 @@ const Events = ({futurEvents, passedEvents, deleteEventAndUpdateMatrix}) => {
           <h2>My futur events:</h2>
           {futurEvents.map((ev,index) =>
             <p key={index} id={ev.id}>{ev.title} - {moment(ev.date).format('YYYY MM DD')}
-              <button onClick={() => deleteEventAndUpdateMatrix(ev, ev.id)}>Delete</button>
+              <button onClick={() => deleteEventInStateAndDB(ev, 'eventDeletion')}>Delete</button>
               <Link to={{
                   pathname: `/updateEvent/${ev.id}`,
                   state: {eventid: ev.id}
@@ -26,7 +26,7 @@ const Events = ({futurEvents, passedEvents, deleteEventAndUpdateMatrix}) => {
         <h2>My passed events:</h2>
         {passedEvents.map((ev,index) =>
           <p key={index} id={ev.id}>{ev.title} - {moment(ev.date).format('YYYY MM DD')}
-            <button onClick={() => deleteEventAndUpdateMatrix(ev, ev.id)}>Delete</button>
+            <button onClick={() => deleteEventInStateAndDB(ev, 'eventDeletion')}>Delete</button>
           </p> )}
       </div>}
     </div>
