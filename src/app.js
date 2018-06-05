@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { firebase } from './firebase/firebase';
 import AppRoutes from './routes/AppRoutes';
-import { logIn, logOut, createUser, startFetchingData } from './actions/actions';
+import { logIn, logOut, createUser } from './actions/user';
+import { startFetchingData } from  './actions/stateInit';
 import store from './store/store';
 import './styles/index.scss';
 import 'normalize.css';
@@ -38,8 +39,8 @@ firebase.auth().onAuthStateChanged(function(user) {
     .then(() => store.dispatch(startFetchingData()))
     .then(() => renderApp())
   } else {
+    history.push('/');
     store.dispatch(logOut());
     renderApp();
-    history.push('/');
   }
 });

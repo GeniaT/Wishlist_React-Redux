@@ -1,20 +1,14 @@
 import React from 'react';
-import uuid from 'uuid';
 import { Redirect } from 'react-router-dom';
-import EventForm from '../components/EventForm';
-import NavbarContainer from './NavbarContainer';
-import moment from 'moment';
-import {
-  saveEvent,
-  updateEventsWishlistsLinksMatrix,
-  startEventCreation,
-  startEventUpdate,
-  updateLinksMatrixInDB
- } from '../actions/actions';
 import { connect } from 'react-redux';
-import { getEvent } from '../selectors/events';
+import moment from 'moment';
+import uuid from 'uuid';
 import 'react-dates/initialize';
 import { SingleDatePicker } from 'react-dates';
+import EventForm from '../components/EventForm';
+import NavbarContainer from './NavbarContainer';
+import { saveEventInStateAndDB } from '../actions/events';
+import { getEvent } from '../selectors/events';
 
 class EventFormContainer extends React.Component {
   constructor(props) {
@@ -221,18 +215,9 @@ class EventFormContainer extends React.Component {
   render() {
     return this.props.loggedIn ? <div>
       <NavbarContainer />
-      <EventForm
-        onSaveEvent={(ev, operation, id, wishlistLinksIds, removedItemsIds) => {
-          this.props.saveEvent(ev, operation);
+      <EventForm onSaveEvent={(ev, operation, id, wishlistLinksIds, removedItemsIds) => {
+          this.props.saveEventInStateAndDB(ev, operation, id, wishlistLinksIds, removedItemsIds);
           this.props.history.push('/my-events');
-          if (operation === 'eventCreation') {
-            this.props.startEventCreation(ev, id);
-          } else if (operation === 'eventUpdate') {
-            this.props.startEventUpdate(ev, id, removedItemsIds);
-          }
-          return new Promise(resolve => {
-            this.props.updateEventsWishlistsLinksMatrix(operation, id, wishlistLinksIds);
-          }).then(this.props.updateLinksMatrixInDB())
         }}
           addItem={this.addItem}
           addParticipant={this.addParticipant}
@@ -282,11 +267,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  saveEvent: (ev, operation) => dispatch(saveEvent(ev, operation)),
-  updateEventsWishlistsLinksMatrix: (operation, id, linksIds) => dispatch(updateEventsWishlistsLinksMatrix(operation, id, linksIds)),
-  startEventCreation: (ev, id) => dispatch(startEventCreation(ev, id)),
-  startEventUpdate: (ev, id, removedItemsIds) => dispatch(startEventUpdate(ev, id, removedItemsIds)),
-  updateLinksMatrixInDB: () => dispatch(updateLinksMatrixInDB()),
+  saveEventInStateAndDB: (ev, operation, id, wishlistLinksIds, removedItemsIds) => dispatch(saveEventInStateAndDB(ev, operation, id, wishlistLinksIds, removedItemsIds)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventFormContainer);

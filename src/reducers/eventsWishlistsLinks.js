@@ -4,7 +4,7 @@
 //   ['1339', 0,1]
 // ]
 
-const initialState = [ //used for running tests and custom data depending on cases.
+const initialState = [
   ['X']
 ]
 export default function eventsWishlistsLinks(state = initialState, action) {

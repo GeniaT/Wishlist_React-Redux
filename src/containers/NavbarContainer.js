@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
 import { connect } from 'react-redux';
-import { logOut, startLogout } from '../actions/actions';
+import { logOut, startLogout } from '../actions/user';
 
 const NavbarContainer = (props) => {
   return (

@@ -1,15 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import NavbarContainer from '../containers/NavbarContainer';
 import { Link } from "react-router-dom";
 import moment from 'moment';
-import {
-  deleteWishlist,
-  deleteEvent,
-  updateEventsWishlistsLinksMatrix,
-  startWishlistDeletion,
-  startEventDeletion
-} from '../actions/actions';
+import NavbarContainer from '../containers/NavbarContainer';
+import { deleteWishlist, startWishlistDeletion } from '../actions/wishlists';
+import { deleteEvent, startEventDeletion } from '../actions/events';
+import { updateEventsWishlistsLinksMatrix } from '../actions/eventsWishlistsLinks';
 
 const MyDashboard = (props) => {
   const wishlistsToRender = props.wishlists.map((x, index) => {

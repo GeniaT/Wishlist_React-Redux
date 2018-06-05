@@ -2,7 +2,7 @@ import React from 'react';
 import NavbarContainer from '../containers/NavbarContainer';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { startLogin } from '../actions/actions';
+import { startLogin } from '../actions/user';
 
 const LogIn = ({ loggedIn, startLogin }) => {
   return loggedIn

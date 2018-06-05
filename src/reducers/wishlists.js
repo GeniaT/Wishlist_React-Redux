@@ -57,7 +57,7 @@ import moment from 'moment';
 //     }
 //   ]
 
-const initialState = []; //used for running tests and custom data depending on cases.
+const initialState = [];
 
 export default function wishlists(state = initialState, action) {
   switch(action.type) {

@@ -1,10 +1,12 @@
 import React from 'react';
-import NavbarContainer from '../containers/NavbarContainer';
-import Events from '../components/Events';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import NavbarContainer from '../containers/NavbarContainer';
+import Events from '../components/Events';
 import { getPassedEvents, getFuturEvents } from '../selectors/events';
-import { deleteEvent, updateEventsWishlistsLinksMatrix, startEventDeletion } from '../actions/actions';
+import { updateEventsWishlistsLinksMatrix } from '../actions/eventsWishlistsLinks';
+import { deleteEvent, startEventDeletion } from '../actions/events';
+
 import moment from 'moment';
 
 class EventsContainer extends React.Component {
@@ -40,10 +42,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-// const mapDispatchToProps = {
-//   deleteEvent,
-//   updateEventsWishlistsLinksMatrix
-// }
 const mapDispatchToProps = (dispatch) => ({
   deleteEvent: (eventId) => dispatch(deleteEvent(eventId)),
   updateEventsWishlistsLinksMatrix: (operation, id, linksIds) => dispatch(updateEventsWishlistsLinksMatrix(operation, id, linksIds)),

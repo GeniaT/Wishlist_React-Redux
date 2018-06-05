@@ -1,17 +1,11 @@
 import React from 'react';
-import uuid from 'uuid';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import moment from 'moment';
+import uuid from 'uuid';
 import WishlistForm from '../components/WishlistForm';
 import NavbarContainer from './NavbarContainer';
-import {
-  saveWishlist,
-  updateEventsWishlistsLinksMatrix,
-  startWishlistCreation,
-  startWishlistUpdate,
-  updateLinksMatrixInDB
-} from '../actions/actions';
+import { saveWishlistInStateAndDB } from '../actions/wishlists';
 import { getWishlist } from '../selectors/wishlists';
 
 class WishlistFormContainer extends React.Component {
@@ -197,16 +191,8 @@ class WishlistFormContainer extends React.Component {
       return this.props.loggedIn ? <div>
         <NavbarContainer />
         <WishlistForm onSaveWishlist={(wishlist, operation, id, eventLinksIds, removedItemsIds) => {
-          this.props.saveWishlist(wishlist, operation);
+          this.props.saveWishlistInStateAndDB(wishlist, operation, id, eventLinksIds, removedItemsIds);
           this.props.history.push('/');
-          if (operation === 'wishlistCreation') {
-            this.props.startWishlistCreation(wishlist, id);
-          } else if (operation === 'wishlistUpdate') {
-            this.props.startWishlistUpdate(wishlist, id, removedItemsIds);
-          }
-          return new Promise(resolve => {
-            this.props.updateEventsWishlistsLinksMatrix(operation, id, eventLinksIds);
-          }).then(this.props.updateLinksMatrixInDB())
           }}
 
           addItem={this.addItem}
@@ -247,11 +233,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  saveWishlist: (wishlist, operation) => dispatch(saveWishlist(wishlist, operation)),
-  updateEventsWishlistsLinksMatrix: (operation, id, linksIds) => dispatch(updateEventsWishlistsLinksMatrix(operation, id, linksIds)),
-  startWishlistCreation: (wishlist, id) => dispatch(startWishlistCreation(wishlist, id)),
-  startWishlistUpdate: (wishlist, id, removedItemsIds) => dispatch(startWishlistUpdate(wishlist, id, removedItemsIds)),
-  updateLinksMatrixInDB: () => dispatch(updateLinksMatrixInDB()),
+  saveWishlistInStateAndDB: (wishlist, operation, id, eventLinksIds, removedItemsIds) => dispatch(saveWishlistInStateAndDB(wishlist, operation, id, eventLinksIds, removedItemsIds)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(WishlistFormContainer);
