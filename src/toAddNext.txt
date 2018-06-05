@@ -2,6 +2,10 @@
 - Remove items details from 'wishlists/ids/items', need to store only itemsIds at this reference.
   - Actually for now, it leave that way so the fetch is easier from DB. When we decide to modify this, need to update the fetch fct.
 
-- test by having multiple wishlists and events and then from dashboard, delete everything.
-  - the DB may not be totally updated with many actions triggered that way. Need to check where may be the issue
-- update eventsContainer and events component to run the delete the way the save works in events/wishlists containers. 
+- update eventsContainer and events component to run the delete the way the save works in events/wishlists containers.
+- update dashboard on delete button in the same way as in eventsContainer
+- same in eventsContainer
+  Substeps:
+    - Create an action in 'events' that deletesEventAndUpdatesDb.
+    - remove the method from eventsContainer
+    - see what can be removed from dashbaord page and replace the logic by the new global action created.

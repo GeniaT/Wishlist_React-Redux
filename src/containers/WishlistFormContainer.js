@@ -23,7 +23,8 @@ class WishlistFormContainer extends React.Component {
         operation: 'wishlistCreation',
         duplicateTitle: '',
         error: '',
-        removedItemsIds: []
+        removedItemsIds: [],
+        createdAt: moment().format("dddd, MMMM Do YYYY")
       }
     } else if (props.match.path === '/updateWishlist/:id') {
       const wishlistToUpdate = getWishlist(this.props.wishlists, this.props.location.state.wishlistid);
@@ -34,6 +35,7 @@ class WishlistFormContainer extends React.Component {
           category: wishlistToUpdate.category,
           eventLinksIds: wishlistToUpdate.eventLinksIds,
           items: wishlistToUpdate.items,
+          createdAt: wishlistToUpdate.createdAt,
           operation: 'wishlistUpdate',
           duplicateTitle: '',
           error: '',
@@ -206,20 +208,9 @@ class WishlistFormContainer extends React.Component {
           onUpdateItem={this.onUpdateItem}
           openModalForItemUpdate={this.openModalForItemUpdate}
           removeAllItems={this.removeAllItems}
-
-          id={this.state.id}
-          operation={this.state.operation}
-          eventLinksIds={this.state.eventLinksIds}
-          removedItemsIds={this.state.removedItemsIds}
-          title={this.state.title}
-          status={this.state.status}
-          createdAt={moment().format("dddd, MMMM Do YYYY")}
-          category={this.state.category}
-          items={this.state.items}
-          error={this.state.error}
-          duplicateTitle={this.state.duplicateTitle}
           events={this.props.events}
-          showItemModal={this.state.showItemModal}
+
+          {...this.state}
         />
       </div> : <Redirect push to='/'/>
     }

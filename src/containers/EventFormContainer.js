@@ -25,6 +25,7 @@ class EventFormContainer extends React.Component {
         date: moment(),
         showItemModal: false,
         operation: 'eventCreation',
+        createdAt: moment().format("dddd, MMMM Do YYYY"),
         duplicateTitle: '',
         error: '',
         wishlistLinksIds: [],
@@ -212,6 +213,10 @@ class EventFormContainer extends React.Component {
     }
   }
 
+  //React-Dates library methods
+  onDateChange = date => this.setState({ date });
+  onFocusChange = ({focused}) => this.setState({ focused });
+
   render() {
     return this.props.loggedIn ? <div>
       <NavbarContainer />
@@ -219,6 +224,7 @@ class EventFormContainer extends React.Component {
           this.props.saveEventInStateAndDB(ev, operation, id, wishlistLinksIds, removedItemsIds);
           this.props.history.push('/my-events');
         }}
+          {...this.state}
           addItem={this.addItem}
           addParticipant={this.addParticipant}
           deleteItem={this.deleteItem}
@@ -227,33 +233,15 @@ class EventFormContainer extends React.Component {
           onEventNote={this.onEventNote}
           onChangeTitle={this.onChangeTitle}
           onChangeStatus={this.onChangeStatus}
+          onUpdateItem={this.onUpdateItem}
           onWishlistLink={this.onWishlistLink}
           openModalForItemUpdate={this.openModalForItemUpdate}
           removeAllItems={this.removeAllItems}
-
-          duplicateTitle={this.state.duplicateTitle}
-          error={this.state.error}
-          id={this.state.id}
-          items={this.state.items}
-          note={this.state.note}
-          operation={this.state.operation}
-          participants={this.state.participants}
-          title={this.state.title}
-          status={this.state.status}
-          createdAt={moment().format("dddd, MMMM Do YYYY")}
-          wishlists={this.props.wishlists}
-          wishlistLinksIds={this.state.wishlistLinksIds}
-          removedItemsIds={this.state.removedItemsIds}
-          showItemModal={this.state.showItemModal}
           closeItemModal={this.closeItemModal}
-          updatingItem={this.state.updatingItem}
-          updatingItem={this.updatingItem}
+          wishlists={this.props.wishlists}
 
-          date={(this.state.date) || moment()}
-          onDateChange={date => this.setState({ date })}
-          focused={this.state.focused}
-          reopenPickerOnClearDate={true}
-          onFocusChange={({ focused }) => this.setState({ focused })}
+          onDateChange={this.onDateChange}
+          onFocusChange={this.onFocusChange}
       />
     </div> : <Redirect push to='/'/>
   }
@@ -267,7 +255,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  saveEventInStateAndDB: (ev, operation, id, wishlistLinksIds, removedItemsIds) => dispatch(saveEventInStateAndDB(ev, operation, id, wishlistLinksIds, removedItemsIds)),
+  saveEventInStateAndDB: (ev, operation, id, wishlistLinksIds, removedItemsIds) => {
+    dispatch(saveEventInStateAndDB(ev, operation, id, wishlistLinksIds, removedItemsIds))
+  },
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventFormContainer);

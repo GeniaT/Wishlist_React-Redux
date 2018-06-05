@@ -72,6 +72,7 @@ export const startEventDeletion = (ev, id) => {
 }
 
 export const saveEventInStateAndDB = (ev, operation, id, wishlistLinksIds, removedItemsIds) => {
+  console.log('event obj: ', ev);
   return (dispatch, getState) => {
     dispatch(saveEvent(ev, operation));
     if (operation === 'eventCreation') {
