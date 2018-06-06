@@ -1,12 +1,7 @@
-import {
-  logIn,
-  logOut,
-  saveWishlist,
-  deleteWishlist,
-  saveEvent,
-  deleteEvent,
-  updateEventsWishlistsLinksMatrix
-} from '../../actions/actions';
+import { logIn, logOut } from '../../actions/user';
+import { saveWishlist, deleteWishlist } from '../../actions/wishlists';
+import { saveEvent, deleteEvent } from '../../actions/events';
+import { updateEventsWishlistsLinksMatrix } from '../../actions/eventsWishlistsLinks';
 
 test('should setup "log in" action object', () => {
   const action = logIn();

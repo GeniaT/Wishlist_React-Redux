@@ -16,6 +16,11 @@ export const setLinksMatrix = (linksMatrix) => ({
   linksMatrix
 })
 
+export const setFriends = (friends) => ({
+  type: 'SET_FRIENDS',
+  friends
+})
+
 //Fetch from DB actions
 export const fetchWishlistsData = (userId) => {
   const wishlistsIdsRef = firebase.database().ref(`users/${userId}/wishlistsIds`);
@@ -74,6 +79,21 @@ export const fetchLinksMatrixData = (userId) => {
   }
 }
 
+export const fetchFriendsData = (userId) => {
+  const friendsIdsRef = firebase.database().ref(`users/${userId}/friends`);
+  const friendsIdsArray = [];
+  return (dispatch) => {
+    friendsIdsRef.once('value')
+    .then(snapshot => {
+      snapshot.forEach((child) => {
+        friendsIdsArray.push(child.val());
+      })
+    })
+    .then(() => console.log('friendArray: ', friendsIdsArray))
+    .then(() => dispatch(setFriends(friendsIdsArray)))
+  }
+}
+
 export const startFetchingData = () => {
   const userId = firebase.auth().currentUser.uid;
   return (dispatch, getState) => {
@@ -81,5 +101,6 @@ export const startFetchingData = () => {
     dispatch(fetchWishlistsData(userId));
     dispatch(fetchEventsData(userId));
     dispatch(fetchLinksMatrixData(userId));
+    dispatch(fetchFriendsData(userId));
   }
 }

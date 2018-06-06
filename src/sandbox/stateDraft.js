@@ -76,8 +76,7 @@ stateDraft = {
       items: []
     }
   ]
-  following: ['Sandro', 'Steph', 'Giang', 'Thomson','Natasha'],
-  followers: ['Steph', 'Laura','Alex'],
+  friends: ['qdsjl12c', 'kazdkpod1222', '9809887nlkqd'],
   feed: ['Sandro has 3 new followers', 'Giang now follows Kevin', 'Steph updated her "TV shows" whislist', 'Thomas updated his profile!'],
   suggestions: {
     books: ['CLRS', 'Tomorrow', 'Linear Algebra'],
