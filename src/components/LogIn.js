@@ -2,26 +2,16 @@ import React from 'react';
 import NavbarContainer from '../containers/NavbarContainer';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { startLogin } from '../actions/user';
+import { startLoginWithGoogle, startLoginWithFacebook } from '../actions/user';
 
-const LogIn = ({ loggedIn, startLogin }) => {
+const LogIn = ({ loggedIn, startLoginWithGoogle, startLoginWithFacebook }) => {
   return loggedIn
   ? <Redirect push to='/'/>
   : <div>
       <NavbarContainer />
       <h1>Log In Page</h1>
-      <form>
-      <input
-          type="text"
-          placeholder="Name"
-          autoFocus
-        />
-        <input
-          type="password"
-          placeholder="Password"
-        />
-      </form>
-      <button onClick={startLogin}>Log In</button>
+      <button onClick={startLoginWithGoogle}>Log In With Google</button>
+      <button onClick={startLoginWithFacebook}>Log In With Facebook</button>
     </div>
 }
 
@@ -32,7 +22,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  startLogin
+  startLoginWithGoogle,
+  startLoginWithFacebook
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LogIn);

@@ -1,4 +1,4 @@
-import { firebase, googleAuthProvider } from '../firebase/firebase';
+import { firebase, googleAuthProvider, facebookAuthprovider } from '../firebase/firebase';
 import moment from 'moment';
 
 export const logIn = (uid) => ({
@@ -10,9 +10,15 @@ export const logOut = () => ({
   type: 'LOG_OUT'
 })
 
-export const startLogin = () => {
+export const startLoginWithGoogle = () => {
   return () => { //we return a fct instead of an obj so we can trigger async actions with firebase thanks to thunk middleware.
     return firebase.auth().signInWithPopup(googleAuthProvider);
+  }
+}
+
+export const startLoginWithFacebook = () => {
+  return () => {
+    return firebase.auth().signInWithPopup(facebookAuthprovider)
   }
 }
 
@@ -35,7 +41,8 @@ export const createUser = (uid) => {
             'First name': userNamesArray[0],
             'Last name': userNamesArray.slice(1).join(' '),
             email: userInfo.email,
-            creationDate: moment().format('MMMM Do YYYY')
+            creationDate: moment().format('MMMM Do YYYY'),
+            photo: userInfo.photoURL
           }
         }
       );

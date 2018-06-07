@@ -39,7 +39,6 @@ firebase.auth().onAuthStateChanged(function(user) {
     .then(() => store.dispatch(startFetchingData()))
     .then(() => renderApp())
   } else {
-    history.push('/');
     store.dispatch(logOut());
     renderApp();
   }
