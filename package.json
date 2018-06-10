@@ -48,5 +48,6 @@
   "devDependencies": {
     "jest": "^22.4.4",
     "prop-types": "^15.6.1",
+    "startwars-names": "^1.0.0"
   }
 }
