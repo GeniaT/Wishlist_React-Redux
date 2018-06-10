@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
-import ItemDetailsModal from './ItemDetailsModal';
 import { SingleDatePicker } from 'react-dates';
+import ItemDetailsModal from './ItemDetailsModal';
 
 const EventForm = (props) => {
   return (
@@ -31,18 +31,32 @@ const EventForm = (props) => {
         }
       </form>
       {'Wanted participants:'}<br/>
-      <form onSubmit={props.addParticipant}>
-        <input type="text" name="participant"/>
-        <button>Add Participant</button><br/>
+      <form>
+        <input type="text" name="participant" onChange={props.onParticipantInputValueChange}/>
       </form>
+      { props.participantInputValue !== "" &&
+        <div>
+        {'Click to add a participant:'}<br/>
+          {props.friends.filter(i => i.name.toLowerCase().includes(props.participantInputValue.toLowerCase()))
+          .map((item, index) => (
+            <div onClick={(e) => {
+              props.addParticipant(e, item.name, item.id);
+            }}
+              key={index}>
+              {item.name}
+            </div>
+          ))
+        }
+        </div>
+      }
       {props.participants.length !== 0 &&
         <div>
           <h3>{'Desired participants:'}</h3>
           <ul>
             {props.participants.map((participant, index) =>
               <li key={index}>
-                {participant}
-                <button onClick={() => props.deleteParticipant(participant)}>Delete</button>
+                {participant.name}
+                <button onClick={() => props.deleteParticipant(participant.name)}>Delete</button>
               </li>)}
           </ul>
       </div> }

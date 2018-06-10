@@ -29,7 +29,8 @@ class EventFormContainer extends React.Component {
         duplicateTitle: '',
         error: '',
         wishlistLinksIds: [],
-        removedItemsIds: []
+        removedItemsIds: [],
+        participantInputValue: ''
       }
     } else if (props.match.path === '/updateEvent/:id') {
       const eventToUpdate = getEvent(this.props.events, this.props.location.state.eventid);
@@ -47,7 +48,8 @@ class EventFormContainer extends React.Component {
         error: '',
         operation: 'eventUpdate',
         wishlistLinksIds:[],
-        removedItemsIds: []
+        removedItemsIds: [],
+        participantInputValue: ''
       }
     }
   }
@@ -55,7 +57,7 @@ class EventFormContainer extends React.Component {
   onChangeTitle = (e) => {
     const title = e.target.value;
     this.setState(() => ({title}));
-    if (title.trim() !== "" && (this.props.events.find(x => x.title === title) === undefined)) { //to avoid duplicates
+    if (title.trim() !== "" && (this.props.events.find(x => x.title === title) === undefined)) {
       this.setState(() => ({
         duplicateTitle: false,
         error: ''
@@ -72,7 +74,6 @@ class EventFormContainer extends React.Component {
     this.setState(() => ({status}));
   }
   onEventLink = (e) => {
-    // probably won't work well for now.
     const eventLink = e.target;
     if (eventLink.checked == true) {
       this.setState(() => ({eventLinks:[...this.state.eventLinks, eventLink.value]}));
@@ -80,18 +81,24 @@ class EventFormContainer extends React.Component {
       this.setState(() => ({eventLinks: this.state.eventLinks.filter((link) => link !== eventLink.value)}))
     }
   }
-  addParticipant = (e) => {
+
+  addParticipant = (e, friend, id) => {
     e.preventDefault();
-    const participant = e.target.participant.value.trim();
-    if (participant !== "" && (this.state.participants.find(x => x === participant) === undefined)) {
+    if (friend && (this.state.participants.find(x => x.name === friend) === undefined)) {
       this.setState(() => ({
-        participants:[...this.state.participants, participant]
+        participants:[...this.state.participants, {id:id, name: friend}]
       }));
+      return;
     }
-    e.target.participant.value = '';
   }
+
+  onParticipantInputValueChange = (e) => {
+    const participantInputValue = e.target.value;
+    this.setState(() => ({participantInputValue}));
+  }
+
   deleteParticipant = (participant) => {
-    this.setState((prevState) => ({participants: prevState.participants.filter((x) => x !== participant)}));
+    this.setState((prevState) => ({participants: prevState.participants.filter((x) => x.name !== participant)}));
   }
   onEventNote = (e) => {
     const note = e.target.value;
@@ -212,6 +219,10 @@ class EventFormContainer extends React.Component {
       this.setState(() => ({wishlistLinksIds: (this.state.wishlistLinksIds).concat(additionalLinks)}));
     }
   }
+  onEventNote = (e) => {
+    const note = e.target.value;
+    this.setState(() => ({note}));
+  }
 
   //React-Dates library methods
   onDateChange = date => this.setState({ date });
@@ -240,6 +251,9 @@ class EventFormContainer extends React.Component {
           closeItemModal={this.closeItemModal}
           wishlists={this.props.wishlists}
 
+          friends={this.props.friends}
+          onParticipantInputValueChange={this.onParticipantInputValueChange}
+          participantInputValue={this.state.participantInputValue}
           onDateChange={this.onDateChange}
           onFocusChange={this.onFocusChange}
       />
@@ -252,6 +266,7 @@ const mapStateToProps = (state) => ({
   eventsWishlistsLinks: state.eventsWishlistsLinks,
   loggedIn: state.user.loggedIn,
   wishlists: state.wishlists,
+  friends: state.friends,
 })
 
 const mapDispatchToProps = (dispatch) => ({

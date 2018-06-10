@@ -80,8 +80,9 @@ export const fetchLinksMatrixData = (userId) => {
 }
 
 export const fetchFriendsData = (userId) => {
-  const friendsIdsRef = firebase.database().ref(`users/${userId}/friends`);
+  const friendsIdsRef = firebase.database().ref(`users/${userId}/friendsIds`);
   const friendsIdsArray = [];
+  const friendsDetailsArray = [];
   return (dispatch) => {
     friendsIdsRef.once('value')
     .then(snapshot => {
@@ -89,8 +90,16 @@ export const fetchFriendsData = (userId) => {
         friendsIdsArray.push(child.val());
       })
     })
-    .then(() => console.log('friendArray: ', friendsIdsArray))
-    .then(() => dispatch(setFriends(friendsIdsArray)))
+    .then(() => friendsIdsArray.forEach((friendId, index) => {
+          return firebase.database().ref(`users/${friendId}`).once('value')
+          .then(snapshot => {
+            friendsDetailsArray.push({id: friendId, name: snapshot.val().userInfos.displayName});
+            // console.log('friendsDetailsArray: ', friendsDetailsArray);
+            if (index === friendsIdsArray.length-1) {
+              dispatch(setFriends(friendsDetailsArray));
+            }
+          })
+      }))
   }
 }
 

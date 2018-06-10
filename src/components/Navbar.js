@@ -1,8 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { firebase } from '../firebase/firebase';
-
 import store from '../store/store';
+
 const Navbar = ({loggedIn, logOut, startLogout }) => {
   return loggedIn
   ? <div>

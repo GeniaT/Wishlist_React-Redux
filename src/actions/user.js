@@ -40,6 +40,7 @@ export const createUser = (uid) => {
           userInfos: {
             'First name': userNamesArray[0],
             'Last name': userNamesArray.slice(1).join(' '),
+            displayName: userInfo.displayName,
             email: userInfo.email,
             creationDate: moment().format('MMMM Do YYYY'),
             photo: userInfo.photoURL
