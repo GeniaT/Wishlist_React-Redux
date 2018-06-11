@@ -13,44 +13,25 @@ import { getEvent } from '../selectors/events';
 class EventFormContainer extends React.Component {
   constructor(props) {
     super(props);
-    if (props.location.pathname === '/create-event') {
-      this.state = {
-        id: uuid(),
-        status: 'public',
-        title: '',
-        participants: [],
-        items:[],
-        reservedItems: [],
-        note: '',
-        date: moment(),
-        showItemModal: false,
-        operation: 'eventCreation',
-        createdAt: moment().format("dddd, MMMM Do YYYY"),
-        duplicateTitle: '',
-        error: '',
-        wishlistLinksIds: [],
-        removedItemsIds: [],
-        participantInputValue: ''
-      }
-    } else if (props.match.path === '/updateEvent/:id') {
-      const eventToUpdate = getEvent(this.props.events, this.props.location.state.eventid);
-      this.state = {
-        id: eventToUpdate.id,
-        status: eventToUpdate.status,
-        title: eventToUpdate.title,
-        participants: eventToUpdate.participants || [],
-        items: eventToUpdate.items || [],
-        createdAt: eventToUpdate.createdAt,
-        date: moment(eventToUpdate.date),
-        note: eventToUpdate.note || '',
-        showItemModal: false,
-        duplicateTitle: '',
-        error: '',
-        operation: 'eventUpdate',
-        wishlistLinksIds:[],
-        removedItemsIds: [],
-        participantInputValue: ''
-      }
+    if (props.match.path === '/updateEvent/:id') {
+      var eventToUpdate = getEvent(this.props.events, this.props.location.state.eventid);
+    }
+    this.state = {
+      id: eventToUpdate && eventToUpdate.id || uuid(),
+      status: eventToUpdate && eventToUpdate.status || 'public',
+      title: eventToUpdate && eventToUpdate.title || '',
+      participants: eventToUpdate && eventToUpdate.participants || [],
+      items: eventToUpdate && eventToUpdate.items || [],
+      createdAt: eventToUpdate && eventToUpdate.createdAt || moment().format("dddd, MMMM Do YYYY"),
+      date: eventToUpdate && moment(eventToUpdate.date) || moment(),
+      note: eventToUpdate && eventToUpdate.note || '',
+      showItemModal: false,
+      duplicateTitle: '',
+      error: '',
+      operation: props.location.pathname === '/create-event' ? 'eventCreation' : 'eventUpdate',
+      wishlistLinksIds:[],
+      removedItemsIds: [],
+      participantInputValue: ''
     }
   }
 
@@ -229,6 +210,13 @@ class EventFormContainer extends React.Component {
   onFocusChange = ({focused}) => this.setState({ focused });
 
   render() {
+    const {addItem, deleteItem, addParticipant, deleteParticipant, itemInfoInit,
+      onEventNote, onDateChange, onFocusChange, onChangeTitle, onChangeStatus, onUpdateItem, onWishlistLink, openModalForItemUpdate,
+      removeAllItems, closeItemModal, onParticipantInputValueChange} = this;
+    const eventFormMethods = {addItem, deleteItem, addParticipant, deleteParticipant, itemInfoInit,
+      onEventNote, onDateChange, onFocusChange, onChangeTitle, onChangeStatus, onUpdateItem, onWishlistLink, openModalForItemUpdate,
+      removeAllItems, closeItemModal, onParticipantInputValueChange};
+
     return this.props.loggedIn ? <div>
       <NavbarContainer />
       <EventForm onSaveEvent={(ev, operation, id, wishlistLinksIds, removedItemsIds) => {
@@ -236,26 +224,8 @@ class EventFormContainer extends React.Component {
           this.props.history.push('/my-events');
         }}
           {...this.state}
-          addItem={this.addItem}
-          addParticipant={this.addParticipant}
-          deleteItem={this.deleteItem}
-          deleteParticipant={this.deleteParticipant}
-          itemInfoInit={this.itemInfoInit}
-          onEventNote={this.onEventNote}
-          onChangeTitle={this.onChangeTitle}
-          onChangeStatus={this.onChangeStatus}
-          onUpdateItem={this.onUpdateItem}
-          onWishlistLink={this.onWishlistLink}
-          openModalForItemUpdate={this.openModalForItemUpdate}
-          removeAllItems={this.removeAllItems}
-          closeItemModal={this.closeItemModal}
-          wishlists={this.props.wishlists}
-
-          friends={this.props.friends}
-          onParticipantInputValueChange={this.onParticipantInputValueChange}
-          participantInputValue={this.state.participantInputValue}
-          onDateChange={this.onDateChange}
-          onFocusChange={this.onFocusChange}
+          {...this.props}
+          {...eventFormMethods}
       />
     </div> : <Redirect push to='/'/>
   }

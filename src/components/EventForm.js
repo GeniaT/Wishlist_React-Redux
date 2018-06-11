@@ -31,7 +31,7 @@ const EventForm = (props) => {
         }
       </form>
       {'Wanted participants:'}<br/>
-      <form>
+      <form onSubmit={(e) => e.preventDefault()}>
         <input type="text" name="participant" onChange={props.onParticipantInputValueChange}/>
       </form>
       { props.participantInputValue !== "" &&
