@@ -1,8 +1,9 @@
 import { firebase } from '../firebase/firebase';
 
-export const addFriend = (id) => ({
+export const addFriend = (id, name) => ({
   type: 'FRIEND_ADD',
-  id
+  id,
+  name
 })
 
 export const deleteFriend = (id) => ({
@@ -10,7 +11,31 @@ export const deleteFriend = (id) => ({
   id
 })
 
+export const setPotentialFriendsInState = (suggestions) => ({
+  type: 'SET_POTENTIAL_FRIENDS',
+  suggestions
+})
+
+export const startPotentialFriends = () => {
+  const userId = firebase.auth().currentUser.uid;
+  const ref = firebase.database().ref(`users`);
+  let suggestions = [];
+  return (dispatch, getState) => {
+    return ref.once("value")
+    .then(snapshot => {
+      // const result = snapshot.val();
+      snapshot.forEach(childSnapshot => {
+        const id = childSnapshot.key;
+        const name = childSnapshot.child('userInfos/displayName').val();
+        id !== userId ? suggestions.push({id, name}) : null;
+      })
+    })
+    .then(() => dispatch(setPotentialFriendsInState(suggestions)));
+  }
+}
+
 export const startFriendAddition = (id) => {
+  console.log('in start friend id addition to db');
   const userId = firebase.auth().currentUser.uid;
   const friendRef = firebase.database().ref(`users/${userId}/friendsIds`);
   return () => friendRef.push(id);

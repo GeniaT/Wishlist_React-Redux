@@ -9,7 +9,7 @@ export default function friends(state = initialState, action) {
       return [...state.filter((id) => id !== action.id)]
       break;
     case 'FRIEND_ADD':
-      return [...state.concat(action.id)]      
+      return [...state, {id: action.id, name: action.name}]      
       break;
     default:
       return state
