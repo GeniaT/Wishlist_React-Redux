@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { startPotentialFriends, addFriend, startFriendAddition } from '../actions/friends';
+import { startPotentialFriends, addFriendInStateAndDB, updatePotentialFriendsInState } from '../actions/friends';
 
 class FriendsSearch extends React.Component {
   constructor(props) {
@@ -30,11 +30,9 @@ class FriendsSearch extends React.Component {
           {'Click to add a friend:'}<br/>
             {this.props.suggestions.filter(i => i.name.toLowerCase().includes(this.state.friendsSearchInputValue.toLowerCase()))
             .map((item, index) => (
-              <div onClick={(e) => {
-                return new Promise ((resolve) => {
-                  this.props.addFriend(item.id, item.name)
-                }).then(this.props.startFriendAddition(item.id))
-
+              <div onClick={() => {
+                this.props.addFriendInStateAndDB(item.id, item.name);
+                this.props.updatePotentialFriendsInState(item.id, 'add', item.name);
               }}
                 key={index}>
                 {item.name}
@@ -54,8 +52,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   startPotentialFriends: () => dispatch(startPotentialFriends()),
-  addFriend: (id, name) => dispatch(addFriend(id, name)),
-  startFriendAddition: (id) => dispatch(startFriendAddition(id))
+  addFriendInStateAndDB: (id, name) => dispatch(addFriendInStateAndDB(id, name)),
+  updatePotentialFriendsInState: (id, operation, name) => dispatch(updatePotentialFriendsInState(id, operation, name))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(FriendsSearch);

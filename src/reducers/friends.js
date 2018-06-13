@@ -6,10 +6,10 @@ export default function friends(state = initialState, action) {
       return action.friends;
       break;
     case 'FRIEND_DELETE':
-      return [...state.filter((id) => id !== action.id)]
+      return [...state.filter((friend) => friend.id !== action.id)]
       break;
     case 'FRIEND_ADD':
-      return [...state, {id: action.id, name: action.name}]      
+      return [...state, {id: action.id, name: action.name}]
       break;
     default:
       return state

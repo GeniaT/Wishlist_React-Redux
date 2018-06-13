@@ -16,26 +16,43 @@ export const setPotentialFriendsInState = (suggestions) => ({
   suggestions
 })
 
+export const updatePotentialFriendsInState = (id, operation, name) => ({
+  type: 'UPDATE_POTENTIAL_FRIENDS',
+  id,
+  operation,
+  name
+})
+
 export const startPotentialFriends = () => {
   const userId = firebase.auth().currentUser.uid;
-  const ref = firebase.database().ref(`users`);
+  const usersRef = firebase.database().ref(`users`);
+  const friendsIdsRef = firebase.database().ref(`users/${userId}/friendsIds`);
+  let friendsIdsArray = [];
   let suggestions = [];
+
+  friendsIdsRef.once("value").then(snapshot => {
+    snapshot.forEach(childSnapshot => {
+      friendsIdsArray.push(childSnapshot.val());
+    });
+  })
+
   return (dispatch, getState) => {
-    return ref.once("value")
+    return usersRef.once("value")
     .then(snapshot => {
       // const result = snapshot.val();
       snapshot.forEach(childSnapshot => {
         const id = childSnapshot.key;
         const name = childSnapshot.child('userInfos/displayName').val();
-        id !== userId ? suggestions.push({id, name}) : null;
+        id !== userId && friendsIdsArray.indexOf(id) === -1 ? suggestions.push({id, name}) : null;
       })
     })
     .then(() => dispatch(setPotentialFriendsInState(suggestions)));
   }
 }
 
+
+
 export const startFriendAddition = (id) => {
-  console.log('in start friend id addition to db');
   const userId = firebase.auth().currentUser.uid;
   const friendRef = firebase.database().ref(`users/${userId}/friendsIds`);
   return () => friendRef.push(id);
@@ -44,7 +61,7 @@ export const startFriendAddition = (id) => {
 export const startFriendDeletion = (id) => {
   const userId = firebase.auth().currentUser.uid;
   const friendRef = firebase.database().ref(`users/${userId}/friendsIds`);
-  return friendRef.once("value").then(snapshot => {
+  return () => friendRef.once("value").then(snapshot => {
       snapshot.forEach(childSnapshot => {
         const key = childSnapshot.key;
         const idFromDB = snapshot.child(`${key}`).val();
@@ -56,10 +73,10 @@ export const startFriendDeletion = (id) => {
   })
 }
 
-export const addFriendInStateAndDB = (id) => {
+export const addFriendInStateAndDB = (id, name) => {
   return (dispatch, getState) => {
     return new Promise ((resolve => {
-      dispatch(addFriend(id))
+      dispatch(addFriend(id, name))
     })).then(dispatch(startFriendAddition(id)));
   }
 }

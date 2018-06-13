@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import moment from 'moment';
 import NavbarContainer from '../containers/NavbarContainer';
 import FriendsSearch from '../containers/FriendsSearch';
+import FriendsListContainer from '../containers/FriendsListContainer';
+
 import { deleteWishlistInStateAndDB } from '../actions/wishlists';
 import { deleteEventInStateAndDB } from '../actions/events';
 
@@ -48,7 +50,14 @@ const MyDashboard = (props) => {
       </div>
       <div>
         <h2>Social</h2>
+        <h3>{'Search for friends?'}</h3>
         <FriendsSearch />
+        {props.friends.length > 0 && (
+          <div>
+            <h3>Friends list</h3>
+            <FriendsListContainer />
+          </div>
+        )}
       </div>
     </div>
   )
@@ -57,7 +66,8 @@ const MyDashboard = (props) => {
 const mapStateToProps = (state) => {
   return {
     wishlists: state.wishlists,
-    events: state.events
+    events: state.events,
+    friends: state.friends,
   }
 }
 
