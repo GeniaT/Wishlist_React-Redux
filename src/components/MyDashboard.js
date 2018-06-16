@@ -5,7 +5,6 @@ import moment from 'moment';
 import NavbarContainer from '../containers/NavbarContainer';
 import FriendsSearch from '../containers/FriendsSearch';
 import FriendsListContainer from '../containers/FriendsListContainer';
-
 import { deleteWishlistInStateAndDB } from '../actions/wishlists';
 import { deleteEventInStateAndDB } from '../actions/events';
 

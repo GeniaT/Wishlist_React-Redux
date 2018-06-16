@@ -1,6 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { startPotentialFriends, addFriendInStateAndDB, updatePotentialFriendsInState } from '../actions/friends';
+import {
+  startPotentialFriends,
+  addFriendInStateAndDB,
+  updatePotentialFriendsInState
+} from '../actions/friends';
 
 class FriendsSearch extends React.Component {
   constructor(props) {
@@ -25,7 +29,7 @@ class FriendsSearch extends React.Component {
         }}>{'Search for a friend!'}</button>
         {this.state.initButtonClicked ? <input type="text" onChange={this.onfriendsSearchInputValueChange}/> : null}
 
-        { this.state.friendsSearchInputValue !== "" &&
+        { this.state.friendsSearchInputValue !== "" && this.props.suggestions.length > 0 &&
           <div>
           {'Click to add a friend:'}<br/>
             {this.props.suggestions.filter(i => i.name.toLowerCase().includes(this.state.friendsSearchInputValue.toLowerCase()))
@@ -41,6 +45,9 @@ class FriendsSearch extends React.Component {
           }
           </div>
         }
+        {this.state.friendsSearchInputValue !== "" && this.props.suggestions.length === 0 &&
+        <div>{'No suggestions for your input, sorry!'}</div>
+      }
       </div>
     )
   }

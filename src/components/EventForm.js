@@ -30,36 +30,47 @@ const EventForm = (props) => {
           </div>
         }
       </form>
-      {'Wanted participants:'}<br/>
-      <form onSubmit={(e) => e.preventDefault()}>
-        <input type="text" name="participant" onChange={props.onParticipantInputValueChange}/>
-      </form>
-      { props.participantInputValue !== "" &&
+
+      {props.friends.length > 0 &&
         <div>
-        {'Click to add a participant:'}<br/>
-          {props.friends.filter(i => i.name.toLowerCase().includes(props.participantInputValue.toLowerCase()))
-          .map((item, index) => (
-            <div onClick={(e) => {
-              props.addParticipant(e, item.name, item.id);
-            }}
-              key={index}>
-              {item.name}
+          {'Wanted friends:'}<br/>
+          <form onSubmit={(e) => e.preventDefault()}>
+            <input type="text" name="participant" onChange={props.onParticipantInputValueChange}/>
+          </form>
+          { props.participantInputValue !== "" &&
+            <div>
+            {
+              props.friends.filter(i => i.name.toLowerCase().includes(props.participantInputValue.toLowerCase())).length > 0 &&
+              <div>{'Click to add a participant:'}<br/>
+                {props.friends.filter(i => i.name.toLowerCase().includes(props.participantInputValue.toLowerCase()))
+                .map((item, index) => (
+                  <div onClick={(e) => {
+                    props.addParticipant(e, item.name, item.id);
+                  }}
+                    key={index}>
+                    {item.name}
+                  </div>
+                ))
+              }</div>
+            }
             </div>
-          ))
-        }
+          }
+          {props.friends.filter(i => i.name.toLowerCase().includes(props.participantInputValue.toLowerCase())).length === 0 &&
+            <div>{'No friends to add with such input, sorry!'}</div>
+          }
+          {props.participants.length !== 0 &&
+            <div>
+              <h3>{'Desired participants:'}</h3>
+              <ul>
+                {props.participants.map((participant, index) =>
+                  <li key={index}>
+                    {participant.name}
+                    <button onClick={() => props.deleteParticipant(participant.name)}>Delete</button>
+                  </li>)}
+              </ul>
+          </div>}
         </div>
-      }
-      {props.participants.length !== 0 &&
-        <div>
-          <h3>{'Desired participants:'}</h3>
-          <ul>
-            {props.participants.map((participant, index) =>
-              <li key={index}>
-                {participant.name}
-                <button onClick={() => props.deleteParticipant(participant.name)}>Delete</button>
-              </li>)}
-          </ul>
-      </div> }
+    }
       {'Add another item to this event outside your linked wishlists?'}<br/>
       <form onSubmit={props.addItem}>
         <input type="text" name="element"/>

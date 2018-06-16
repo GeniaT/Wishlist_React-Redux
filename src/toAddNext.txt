@@ -1,9 +1,7 @@
 - Make sure the auth pop up doesn't appear if there user is still in memory or logged to the app.
-- Remove items details from 'wishlists/ids/items', need to store only itemsIds at this reference.
-  - Actually for now, it leave that way so the fetch is easier from DB. When we decide to modify this, need to update the fetch fct.
-- remove the if/else in wishlist & event container state init. Instead, use xx||yy for update/create scenario.
 - add proptypes in my components/containers.
 - Investigate why firebase.auth() doesn't work as expected on mobile device.
+
 - add more precise messages when giving empty suggestions when looking for friends like 'no such friend available'
 - and in a similar way, add precise message for participant suggestion in event when the user doesnt have friends.
-- update participants suggestions in event as I did with friends suggestions. 
+- update participants suggestions in event as I did with friends suggestions.

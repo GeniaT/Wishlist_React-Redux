@@ -11,7 +11,6 @@ class FriendsListContainer extends React.Component {
     // }
   }
 
-
   render () {
     return (
       <div>
