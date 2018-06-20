@@ -54,23 +54,14 @@ export const startPotentialFriends = () => {
 
 export const startFriendAddition = (id) => {
   const userId = firebase.auth().currentUser.uid;
-  const friendRef = firebase.database().ref(`users/${userId}/friendsIds`);
-  return () => friendRef.push(id);
+  const friendRef = firebase.database().ref(`users/${userId}/friendsIds/${id}`);
+  return () => friendRef.set({id});
 }
 
 export const startFriendDeletion = (id) => {
   const userId = firebase.auth().currentUser.uid;
-  const friendRef = firebase.database().ref(`users/${userId}/friendsIds`);
-  return () => friendRef.once("value").then(snapshot => {
-      snapshot.forEach(childSnapshot => {
-        const key = childSnapshot.key;
-        const idFromDB = snapshot.child(`${key}`).val();
-        if (idFromDB === id) {
-          console.log('removing friend!');
-          return firebase.database().ref(`users/${userId}/friendsIds/${key}`).remove();
-        }
-    });
-  })
+  const friendRef = firebase.database().ref(`users/${userId}/friendsIds/${id}`);
+  return () => friendRef.remove();
 }
 
 export const addFriendInStateAndDB = (id, name) => {

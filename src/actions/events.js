@@ -57,7 +57,7 @@ export const startEventUpdate = (ev, id, removedItemsIds, removedParticipantsIds
 
 export const startEventDeletion = (ev, id) => {
   const userId = firebase.auth().currentUser.uid;
-  const eventRef1 = firebase.database().ref(`users/${userId}/eventsIds/${id}`)
+  const eventRef1 = firebase.database().ref(`users/${userId}/eventsIds/${id}`);
   const eventRef2 = firebase.database().ref(`events/${id}`);
   const participants = ev.participants;
 

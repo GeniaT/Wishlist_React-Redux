@@ -21,8 +21,7 @@ export const startWishlistCreation = (wishlist, id) => {
   }, []);
 
   return () => {
-    // we use update instead of push here to simplify the update in firebase later on (no generated keys)
-    wishlistRef1.push(id);
+    wishlistRef1.set({[id]:wishlist.title});
     wishlistRef2.update(wishlist);
     itemsArray.forEach(item => firebase.database().ref(`items/${item.id}`).set(item))
   }
@@ -47,7 +46,7 @@ export const startWishlistUpdate = (wishlist, id, removedItemsIds) => {
 
 export const startWishlistDeletion = (wishlist, id) => {
   const userId = firebase.auth().currentUser.uid;
-  const wishlistRef1 = firebase.database().ref(`users/${userId}/wishlistsIds`);
+  const wishlistRef1 = firebase.database().ref(`users/${userId}/wishlistsIds/${id}`);
   const wishlistRef2 = firebase.database().ref(`wishlists/${id}`);
   let itemsIds;
 
@@ -61,15 +60,7 @@ export const startWishlistDeletion = (wishlist, id) => {
       })
     }
     wishlistRef2.remove();
-    return wishlistRef1.once("value").then(snapshot => {
-        snapshot.forEach(childSnapshot => {
-          const key = childSnapshot.key;
-          const idFromDB = snapshot.child(`${key}`).val();
-          if (idFromDB === id) {
-            return firebase.database().ref(`users/${userId}/wishlistsIds/${key}`).remove();
-          }
-      });
-    }).then(() => dispatch(updateLinksMatrixInDB()));
+    return wishlistRef1.remove().then(() => dispatch(updateLinksMatrixInDB()));
   }
 }
 

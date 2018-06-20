@@ -63,7 +63,6 @@ const WishlistForm = (props) => {
           createdBy: props.uid,
           title: props.title,
           category: props.category,
-          eventLinksIds:props.eventLinksIds,
           items: props.items
         }, props.operation, props.id, props.eventLinksIds, props.removedItemsIds)}>{'Save wishlist'}
       </button>

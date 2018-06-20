@@ -4,3 +4,4 @@
 
 - make the "add participants suggestions" dynamic while I add participants. If there are 2 suggestions and I add one participant,
   the number of suggestions should now be 1.
+- when deleting or adding a friend, add/delete as well from the other person DB so the link is bidirectional

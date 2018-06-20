@@ -35,8 +35,7 @@ export const fetchWishlistsData = (userId) => {
     wishlistsIdsRef.once('value')
     .then(snapshot => {
       snapshot.forEach((child) => {
-        //to modify when working on wishlistIds ! 
-        wishlistsIdsArray.push(child.val());
+        wishlistsIdsArray.push(child.key);
       })
     })
     .then(() => wishlistsIdsArray.forEach((wishlistId, index) => {

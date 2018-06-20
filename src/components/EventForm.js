@@ -110,7 +110,6 @@ const EventForm = (props) => {
           participants: props.participants,
           items: props.items,
           note: props.note,
-          wishlistLinksIds: props.wishlistLinksIds
         },props.operation ,props.id, props.wishlistLinksIds, props.removedItemsIds, props.removedParticipantsIds)}>{'Save Event'}
       </button>
       <ItemDetailsModal
