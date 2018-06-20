@@ -18,6 +18,7 @@ class EventFormContainer extends React.Component {
     }
     this.state = {
       id: eventToUpdate && eventToUpdate.id || uuid(),
+      createdBy: eventToUpdate && eventToUpdate.createdBy || props.uid,
       status: eventToUpdate && eventToUpdate.status || 'public',
       title: eventToUpdate && eventToUpdate.title || '',
       participants: eventToUpdate && eventToUpdate.participants || [],
@@ -31,6 +32,7 @@ class EventFormContainer extends React.Component {
       operation: props.location.pathname === '/create-event' ? 'eventCreation' : 'eventUpdate',
       wishlistLinksIds:[],
       removedItemsIds: [],
+      removedParticipantsIds: [],
       participantInputValue: ''
     }
   }
@@ -79,7 +81,11 @@ class EventFormContainer extends React.Component {
   }
 
   deleteParticipant = (participant) => {
-    this.setState((prevState) => ({participants: prevState.participants.filter((x) => x.name !== participant)}));
+    //update removedParticipants to then update their list of events in the DB
+    this.setState(() => ({
+      removedParticipantsIds: [...this.state.removedParticipantsIds, participant.id]
+    }));
+    this.setState((prevState) => ({participants: prevState.participants.filter((x) => x.name !== participant.name)}));
   }
   onEventNote = (e) => {
     const note = e.target.value;
@@ -93,6 +99,7 @@ class EventFormContainer extends React.Component {
       this.setState(() => ({wishlistLinksIds: this.state.wishlistLinksIds.filter((link) => link !== wishlistLink.value)}))
     }
   }
+
   addItem = (e) => {
     e.preventDefault();
     const item = e.target.element.value.trim();
@@ -219,8 +226,8 @@ class EventFormContainer extends React.Component {
 
     return this.props.loggedIn ? <div>
       <NavbarContainer />
-      <EventForm onSaveEvent={(ev, operation, id, wishlistLinksIds, removedItemsIds) => {
-          this.props.saveEventInStateAndDB(ev, operation, id, wishlistLinksIds, removedItemsIds);
+      <EventForm onSaveEvent={(ev, operation, id, wishlistLinksIds, removedItemsIds, removedParticipantsIds) => {
+          this.props.saveEventInStateAndDB(ev, operation, id, wishlistLinksIds, removedItemsIds, removedParticipantsIds);
           this.props.history.push('/my-events');
         }}
           {...this.state}
@@ -237,11 +244,12 @@ const mapStateToProps = (state) => ({
   loggedIn: state.user.loggedIn,
   wishlists: state.wishlists,
   friends: state.friends,
+  uid: state.user.uid
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  saveEventInStateAndDB: (ev, operation, id, wishlistLinksIds, removedItemsIds) => {
-    dispatch(saveEventInStateAndDB(ev, operation, id, wishlistLinksIds, removedItemsIds))
+  saveEventInStateAndDB: (ev, operation, id, wishlistLinksIds, removedItemsIds, removedParticipantsIds) => {
+    dispatch(saveEventInStateAndDB(ev, operation, id, wishlistLinksIds, removedItemsIds, removedParticipantsIds))
   },
 })
 

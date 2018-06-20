@@ -65,7 +65,7 @@ const EventForm = (props) => {
                 {props.participants.map((participant, index) =>
                   <li key={index}>
                     {participant.name}
-                    <button onClick={() => props.deleteParticipant(participant.name)}>Delete</button>
+                    <button onClick={() => props.deleteParticipant(participant)}>Delete</button>
                   </li>)}
               </ul>
           </div>}
@@ -104,13 +104,14 @@ const EventForm = (props) => {
           id: props.id,
           status: props.status,
           createdAt: props.createdAt,
+          createdBy: props.uid,
           date: String(props.date),
           title: props.title,
           participants: props.participants,
           items: props.items,
           note: props.note,
           wishlistLinksIds: props.wishlistLinksIds
-        },props.operation ,props.id, props.wishlistLinksIds, props.removedItemsIds)}>{'Save Event'}
+        },props.operation ,props.id, props.wishlistLinksIds, props.removedItemsIds, props.removedParticipantsIds)}>{'Save Event'}
       </button>
       <ItemDetailsModal
         showItemModal={props.showItemModal}

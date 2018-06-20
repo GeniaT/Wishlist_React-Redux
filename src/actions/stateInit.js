@@ -21,6 +21,11 @@ export const setFriends = (friends) => ({
   friends
 })
 
+export const setEventsParticipation = (eventsParticipation) => ({
+  type: 'SET_EVENTS_PARTICIPATION',
+  eventsParticipation
+})
+
 //Fetch from DB actions
 export const fetchWishlistsData = (userId) => {
   const wishlistsIdsRef = firebase.database().ref(`users/${userId}/wishlistsIds`);
@@ -30,6 +35,7 @@ export const fetchWishlistsData = (userId) => {
     wishlistsIdsRef.once('value')
     .then(snapshot => {
       snapshot.forEach((child) => {
+        //to modify when working on wishlistIds ! 
         wishlistsIdsArray.push(child.val());
       })
     })
@@ -54,7 +60,7 @@ export const fetchEventsData = (userId) => {
     eventsIdsRef.once('value')
     .then(snapshot => {
       snapshot.forEach((child) => {
-        eventsIdsArray.push(child.val());
+        eventsIdsArray.push(child.key);
       })
     })
     .then(() => eventsIdsArray.forEach((eventId, index) => {
@@ -94,7 +100,6 @@ export const fetchFriendsData = (userId) => {
           return firebase.database().ref(`users/${friendId}`).once('value')
           .then(snapshot => {
             friendsDetailsArray.push({id: friendId, name: snapshot.val().userInfos.displayName});
-            // console.log('friendsDetailsArray: ', friendsDetailsArray);
             if (index === friendsIdsArray.length-1) {
               dispatch(setFriends(friendsDetailsArray));
             }
@@ -103,6 +108,14 @@ export const fetchFriendsData = (userId) => {
   }
 }
 
+export const fetchEventsParticipationData = (userId) => {
+  const participationRef = firebase.database().ref(`users/${userId}/eventsParticipation`);
+  return (dispatch) => {
+    participationRef.once("value").then(snapshot => {
+      if (snapshot.val() !== null) dispatch(setEventsParticipation(snapshot.val()))
+    });
+  }
+}
 export const startFetchingData = () => {
   const userId = firebase.auth().currentUser.uid;
   return (dispatch, getState) => {
@@ -111,5 +124,6 @@ export const startFetchingData = () => {
     dispatch(fetchEventsData(userId));
     dispatch(fetchLinksMatrixData(userId));
     dispatch(fetchFriendsData(userId));
+    dispatch(fetchEventsParticipationData(userId));
   }
 }

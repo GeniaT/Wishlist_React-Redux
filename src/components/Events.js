@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 
-const Events = ({futurEvents, passedEvents, deleteEventInStateAndDB}) => {
+const Events = ({futurEvents, passedEvents, deleteEventInStateAndDB, eventsParticipation}) => {
   return (
     <div>
       <h1>Check your Events here!</h1>
@@ -29,6 +29,12 @@ const Events = ({futurEvents, passedEvents, deleteEventInStateAndDB}) => {
             <button onClick={() => deleteEventInStateAndDB(ev, 'eventDeletion')}>{'Delete'}</button>
           </p> )}
       </div>}
+      {eventsParticipation.length > 0
+        && <div>
+            <h1>Also registered to the following events:</h1>
+            {eventsParticipation.map((ev, index) => <p key={index} id={Object.keys(ev)[0]}>{ev[Object.keys(ev)[0]]}</p>)}
+          </div>
+      }
     </div>
   )
 }

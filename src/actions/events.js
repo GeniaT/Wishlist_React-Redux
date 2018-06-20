@@ -14,38 +14,53 @@ export const deleteEvent = (eventId) => ({
 
 export const startEventCreation = (ev, id) => {
   const userId = firebase.auth().currentUser.uid;
-  const eventRef1 = firebase.database().ref(`users/${userId}/eventsIds`);
+  const eventRef1 = firebase.database().ref(`users/${userId}/eventsIds/${id}`);
   const eventRef2 = firebase.database().ref(`events/${id}`);
   const itemsArray = ev.items.reduce((accumulator, currentValue) => {
     return [...accumulator, currentValue]
   }, []);
+  const participants = ev.participants;
 
   return () => {
-    eventRef1.push(id);
+    eventRef1.set({[id]:ev.title});
     eventRef2.update(ev);
-    itemsArray.forEach(item => firebase.database().ref(`items/${item.id}`).set(item))
+    itemsArray.forEach(item => firebase.database().ref(`items/${item.id}`).set(item));
+    if (participants) {
+      participants.forEach(friend => firebase.database().ref(`users/${friend.id}/eventsParticipation/${id}`).set({[id]:ev.title}));
+    }
   }
 }
 
-export const startEventUpdate = (ev, id, removedItemsIds) => {
+export const startEventUpdate = (ev, id, removedItemsIds, removedParticipantsIds) => {
   const userId = firebase.auth().currentUser.uid;
   const eventRef = firebase.database().ref(`events/${id}`);
+  const participants = ev.participants;
 
   return () => {
     ev.items.forEach(item => firebase.database().ref(`items/${item.id}`).set({item}));
     eventRef.update(ev);
+    if (participants) {
+      participants.forEach(friend => firebase.database().ref(`users/${friend.id}/eventsParticipation/${id}`).set({[id]:ev.title}));
+    }
     if (removedItemsIds.length > 0) {
       removedItemsIds.forEach(itemId => {
         firebase.database().ref(`items/${itemId}`).remove();
       });
+    }
+    if (removedParticipantsIds.length > 0) {
+      removedParticipantsIds.forEach(participantId => {
+        firebase.database().ref(`users/${participantId}/eventsParticipation/${id}`).remove();
+      })
     }
   }
 }
 
 export const startEventDeletion = (ev, id) => {
   const userId = firebase.auth().currentUser.uid;
-  const eventRef1 = firebase.database().ref(`users/${userId}/eventsIds`);
+  const eventRef1 = firebase.database().ref(`users/${userId}/eventsIds/${id}`)
   const eventRef2 = firebase.database().ref(`events/${id}`);
+  const participants = ev.participants;
+
   let itemsIds;
 
   return (dispatch, getState) => {
@@ -57,27 +72,21 @@ export const startEventDeletion = (ev, id) => {
         firebase.database().ref(`items/${itemId}`).remove();
       })
     }
+    if (participants) {
+      participants.forEach(friend => firebase.database().ref(`users/${friend.id}/eventsParticipation/${id}`).remove());
+    }
     eventRef2.remove();
-    return eventRef1.once("value").then(snapshot => {
-        snapshot.forEach(childSnapshot => {
-          const key = childSnapshot.key;
-          const idFromDB = snapshot.child(`${key}`).val();
-          if (idFromDB === id) {
-            console.log('removing event!');
-            return firebase.database().ref(`users/${userId}/eventsIds/${key}`).remove();
-          }
-      });
-    }).then(() => dispatch(updateLinksMatrixInDB()))
+    return eventRef1.remove().then(() => dispatch(updateLinksMatrixInDB()))
   }
 }
 
-export const saveEventInStateAndDB = (ev, operation, id, wishlistLinksIds, removedItemsIds) => {
+export const saveEventInStateAndDB = (ev, operation, id, wishlistLinksIds, removedItemsIds, removedParticipantsIds) => {
   return (dispatch, getState) => {
     dispatch(saveEvent(ev, operation));
     if (operation === 'eventCreation') {
       dispatch(startEventCreation(ev, id));
     } else if (operation === 'eventUpdate') {
-      dispatch(startEventUpdate(ev, id, removedItemsIds));
+      dispatch(startEventUpdate(ev, id, removedItemsIds, removedParticipantsIds));
     }
     return new Promise(resolve => {
       dispatch(updateEventsWishlistsLinksMatrix(operation, id, wishlistLinksIds));

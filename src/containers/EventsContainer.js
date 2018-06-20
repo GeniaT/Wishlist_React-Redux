@@ -20,6 +20,7 @@ class EventsContainer extends React.Component {
           futurEvents={futurEvents}
           passedEvents={passedEvents}
           deleteEventInStateAndDB={this.props.deleteEventInStateAndDB}
+          eventsParticipation={this.props.eventsParticipation}
         />
       </div>
     : <Redirect push to='/'/>
@@ -30,7 +31,8 @@ class EventsContainer extends React.Component {
 const mapStateToProps = (state) => {
   return {
     loggedIn: state.user.loggedIn,
-    events: state.events
+    events: state.events,
+    eventsParticipation: state.eventsParticipation,
   }
 }
 

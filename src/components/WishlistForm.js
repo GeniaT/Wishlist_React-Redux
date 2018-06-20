@@ -60,6 +60,7 @@ const WishlistForm = (props) => {
           id: props.id,
           status: props.status,
           createdAt: props.createdAt,
+          createdBy: props.uid,
           title: props.title,
           category: props.category,
           eventLinksIds:props.eventLinksIds,

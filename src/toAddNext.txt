@@ -2,6 +2,5 @@
 - add proptypes in my components/containers.
 - Investigate why firebase.auth() doesn't work as expected on mobile device.
 
-- add more precise messages when giving empty suggestions when looking for friends like 'no such friend available'
-- and in a similar way, add precise message for participant suggestion in event when the user doesnt have friends.
-- update participants suggestions in event as I did with friends suggestions.
+- make the "add participants suggestions" dynamic while I add participants. If there are 2 suggestions and I add one participant,
+  the number of suggestions should now be 1.

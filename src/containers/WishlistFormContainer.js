@@ -16,6 +16,7 @@ class WishlistFormContainer extends React.Component {
     }
       this.state = {
         id: wishlistToUpdate && wishlistToUpdate.id || uuid(),
+        createdBy: wishlistToUpdate && wishlistToUpdate.createdBy || props.uid,
         status: wishlistToUpdate && wishlistToUpdate.status || 'public',
         title: wishlistToUpdate && wishlistToUpdate.title || '',
         category: wishlistToUpdate && wishlistToUpdate.category || 'no category',
@@ -198,6 +199,7 @@ const mapStateToProps = (state) => ({
   events: state.events,
   eventsWishlistsLinks: state.eventsWishlistsLinks,
   loggedIn: state.user.loggedIn,
+  uid: state.user.uid,
   wishlists: state.wishlists,
 })
 
