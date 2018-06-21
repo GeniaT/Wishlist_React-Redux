@@ -8,10 +8,12 @@ This app is an attempt to make your life a bit easier by:
 
 ## Tools used for this app
 
-Languages: JS(ES6), JSX & CSS/SCSS
-<img src="https://walde.co/wp-content/uploads/2016/05/es6-logo.png" alt="ES6" width="200px" height="50px"/><img src="https://cdn-images-1.medium.com/max/1200/1*G6rj2IevhkL3hxDWdFX9cg.png" alt="JSX" width="200px" height="50px"/><img src="https://appendto.com/wp-content/uploads/2016/05/css3-420x210.jpg" alt="CSS" width="200px" height="50px"/>
+Languages: JS(ES6), JSX & CSS/SCSS<br>
+<img src="https://walde.co/wp-content/uploads/2016/05/es6-logo.png" alt="ES6" width="200px" height="70px"/><img src="https://cdn-images-1.medium.com/max/1200/1*G6rj2IevhkL3hxDWdFX9cg.png" alt="JSX" width="200px" height="70px"/><img src="https://appendto.com/wp-content/uploads/2016/05/css3-420x210.jpg" alt="CSS" width="200px" height="70px"/>
 
-Main libraries: React, Redux, React Router & Firebase for authentication and CRUD operations
+Main libraries: React, Redux, React Router & Firebase for authentication and CRUD operations <br>
+<img src="http://www.jsweet.org/wp-content/uploads/2016/04/react-logo-300x289.png" alt="React" width="200px" height="70px"/><img src="https://react-etc.net/files/2018-03/redux-harmful.png" alt="Redux" width="200px" height="70px"/><img src="https://cdn-images-1.medium.com/max/1200/1*TKvlTeNqtkp1s-eVB5Hrvg.png" alt="React-Router" width="200px" height="70px"/><img src="https://cdn-images-1.medium.com/max/2000/0*DigfG6xRmNAuJ2To.png" alt="Firebase" width="200px" height="70px"/>
+
 Additional useful libraries: moment, react-dates
 Bundler: Webpack
 Testing: Jest
