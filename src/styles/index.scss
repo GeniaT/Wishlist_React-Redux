@@ -1,17 +1,6 @@
-$redish : #e85c5c;
-$blueish: #44a5f4;
-$standardFonts: Helvetica, Arial, sans-serif;
+@import './base/base';
 
-div {
-  font-family: $standardFonts;
-  color:$redish;
-  h1 {
-    color:$blueish;
-  }
-  h2 {
-    color: darken($blueish, 20%);
-  }
-}
+
 
 .link {
   color:black;
@@ -20,27 +9,3 @@ div {
 .selected {
   font-weight: bold;
 }
-
-// .ReactModalPortal>div {
-//   opacity: 0;
-// }
-//
-// .ReactModalPortal .ReactModal__Overlay {
-//   align-items: center;
-//   display: flex;
-//   justify-content: center;
-//   transition: opacity 200ms ease-in-out;
-// }
-//
-// .ReactModalPortal .ReactModal__Overlay--after-open {
-//   opacity: 1;
-// }
-//
-// .ReactModalPortal .ReactModal__Overlay--before-close {
-//   opacity: 0;
-// }
-//
-// .modal {
-//   max-width: 30rem;
-//   text-align: center;
-// }
