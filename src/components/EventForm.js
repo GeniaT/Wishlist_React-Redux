@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import { SingleDatePicker } from 'react-dates';
 import ItemDetailsModal from './ItemDetailsModal';
@@ -121,6 +122,26 @@ const EventForm = (props) => {
       />
     </div>
   )
+}
+
+EventForm.propTypes = {
+  date: PropTypes.object,
+  operation: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  wishlistLinksIds: PropTypes.array,
+  removedItemsIds: PropTypes.array,
+  removedParticipantsIds: PropTypes.array,
+  onSaveEvent: PropTypes.func.isRequired,
+  openModalForItemUpdate: PropTypes.func.isRequired,
+  onChangeTitle: PropTypes.func.isRequired,
+  onDateChange: PropTypes.func.isRequired,
+  onChangeStatus: PropTypes.func.isRequired,
+  onWishlistLink: PropTypes.func.isRequired,
+  onParticipantInputValueChange: PropTypes.func.isRequired,
+  deleteParticipant: PropTypes.func.isRequired,
+  deleteItem: PropTypes.func.isRequired,
+  removeAllItems: PropTypes.func.isRequired,
+  onEventNote: PropTypes.func.isRequired,
 }
 
 export default EventForm;

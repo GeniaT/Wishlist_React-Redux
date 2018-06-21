@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import NavbarContainer from '../containers/NavbarContainer';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
@@ -24,6 +25,12 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   startLoginWithGoogle,
   startLoginWithFacebook
+}
+
+LogIn.propTypes = {
+  loggedIn: PropTypes.bool.isRequired,
+  startLoginWithGoogle: PropTypes.func.isRequired,
+  startLoginWithFacebook: PropTypes.func.isRequired,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LogIn);

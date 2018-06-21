@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const FriendsList = (props) => {
   return (
@@ -17,5 +18,10 @@ const FriendsList = (props) => {
   )
 }
 
+FriendsList.propTypes = {
+  deleteFriendInStateAndDB: PropTypes.func.isRequired,
+  updatePotentialFriendsInState: PropTypes.func.isRequired,
+  friends: PropTypes.array.isRequired,
+}
 
 export default FriendsList;

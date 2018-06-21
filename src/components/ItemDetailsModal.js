@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Modal from 'react-modal';
 
 Modal.setAppElement('#app');
@@ -51,6 +52,12 @@ const ItemDetailsModal = (props) => {
     </form>
     <button onClick={props.closeItemModal}>Click me to close!</button>
   </Modal>
+}
+
+ItemDetailsModal.propTypes = {
+  showItemModal: PropTypes.bool.isRequired,
+  itemInfoInit: PropTypes.func.isRequired,
+  onUpdateItem: PropTypes.func.isRequired,
 }
 
 export default ItemDetailsModal;

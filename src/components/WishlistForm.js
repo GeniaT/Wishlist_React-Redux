@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ItemDetailsModal from './ItemDetailsModal';
 import { getFuturEvents } from '../selectors/events';
 
@@ -77,5 +78,20 @@ const WishlistForm = (props) => {
   )
 }
 
+WishlistForm.propTypes = {
+  title: PropTypes.string.isRequired,
+  operation: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  eventLinksIds: PropTypes.array,
+  removedItemsIds: PropTypes.array,
+  onSaveWishlist: PropTypes.func.isRequired,
+  openModalForItemUpdate: PropTypes.func.isRequired,
+  onChangeTitle: PropTypes.func.isRequired,
+  onChangeStatus: PropTypes.func.isRequired,
+  onChangeCategory: PropTypes.func.isRequired,
+  onEventLink: PropTypes.func.isRequired,
+  deleteItem: PropTypes.func.isRequired,
+  removeAllItems: PropTypes.func.isRequired,
+}
 
 export default WishlistForm;

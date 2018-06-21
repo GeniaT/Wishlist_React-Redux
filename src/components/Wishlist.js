@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import NavbarContainer from '../containers/NavbarContainer';
 
 const Wishlist = (props) => (

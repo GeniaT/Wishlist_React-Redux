@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 
@@ -37,6 +38,13 @@ const Events = ({futurEvents, passedEvents, deleteEventInStateAndDB, eventsParti
       }
     </div>
   )
+}
+
+Events.propTypes = {
+  futurEvents: PropTypes.arrayOf(PropTypes.object),
+  passedEvents: PropTypes.arrayOf(PropTypes.object),
+  deleteEventInStateAndDB: PropTypes.func.isRequired,
+  eventsParticipation: PropTypes.array,
 }
 
 export default Events;

@@ -1,9 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import { firebase } from '../firebase/firebase';
 import store from '../store/store';
 
-const Navbar = ({loggedIn, logOut, startLogout }) => {
+const Navbar = ({loggedIn, startLogout }) => {
   return loggedIn
   ? <div>
       <NavLink to="/" exact={true} activeClassName="selected" className="link">Dashboard</NavLink>
@@ -16,4 +17,8 @@ const Navbar = ({loggedIn, logOut, startLogout }) => {
     </div>
 }
 
+Navbar.propTypes = {
+  loggedIn: PropTypes.bool.isRequired,
+  startLogout: PropTypes.func.isRequired,
+}
 export default Navbar;

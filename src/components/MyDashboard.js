@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
 import moment from 'moment';
@@ -74,5 +75,12 @@ const mapDispatchToProps = (dispatch) => ({
   deleteEventInStateAndDB: (ev, operation) => dispatch(deleteEventInStateAndDB(ev, operation)),
   deleteWishlistInStateAndDB: (wishlist, operation) => dispatch(deleteWishlistInStateAndDB(wishlist, operation)),
 })
+
+MyDashboard.propTypes = {
+  wishlists: PropTypes.arrayOf(PropTypes.object),
+  events: PropTypes.arrayOf(PropTypes.object),
+  deleteEventInStateAndDB: PropTypes.func.isRequired,
+  deleteWishlistInStateAndDB: PropTypes.func.isRequired,
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyDashboard);
