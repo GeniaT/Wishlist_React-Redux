@@ -32,7 +32,7 @@ export const startPotentialFriends = () => {
 
   friendsIdsRef.once("value").then(snapshot => {
     snapshot.forEach(childSnapshot => {
-      friendsIdsArray.push(childSnapshot.val());
+      friendsIdsArray.push(childSnapshot.key);
     });
   })
 
