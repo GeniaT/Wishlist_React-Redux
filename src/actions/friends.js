@@ -34,6 +34,7 @@ export const startPotentialFriends = () => {
     snapshot.forEach(childSnapshot => {
       friendsIdsArray.push(childSnapshot.key);
     });
+    console.log('friendsIdArray: ', friendsIdsArray);
   })
 
   return (dispatch, getState) => {

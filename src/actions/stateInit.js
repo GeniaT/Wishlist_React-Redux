@@ -92,7 +92,7 @@ export const fetchFriendsData = (userId) => {
     friendsIdsRef.once('value')
     .then(snapshot => {
       snapshot.forEach((child) => {
-        friendsIdsArray.push(child.val());
+        friendsIdsArray.push(child.key);
       })
     })
     .then(() => friendsIdsArray.forEach((friendId, index) => {
