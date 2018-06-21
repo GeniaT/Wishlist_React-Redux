@@ -9,9 +9,8 @@ This app is an attempt to make your life a bit easier by:
 ## Tools used for this app
 
 Languages: JS(ES6), JSX & CSS/SCSS
-![alt text](https://walde.co/wp-content/uploads/2016/05/es6-logo.png "ES6")
-![alt text](https://cdn-images-1.medium.com/max/1200/1*G6rj2IevhkL3hxDWdFX9cg.png "JSX")
-![alt text](https://appendto.com/wp-content/uploads/2016/05/css3-420x210.jpg "CSS")
+<img src="https://walde.co/wp-content/uploads/2016/05/es6-logo.png" alt="ES6" width="200px" height="50px"/><img src="https://cdn-images-1.medium.com/max/1200/1*G6rj2IevhkL3hxDWdFX9cg.png" alt="JSX" width="200px" height="50px"/><img src="https://appendto.com/wp-content/uploads/2016/05/css3-420x210.jpg" alt="CSS" width="200px" height="50px"/>
+
 Main libraries: React, Redux, React Router & Firebase for authentication and CRUD operations
 Additional useful libraries: moment, react-dates
 Bundler: Webpack
