@@ -1,9 +1,9 @@
 # Wishlist App
 
 We all struggle when thinking about what gifts would interest my friends or family.
-This app is an attempt to make your life a bit easier by:
-:page_with_curl: listing the wish lists of your friends
-:calendar: creating events and add wish lists and other items to it
+This app is an attempt to make your life a bit easier by:<br>
+:page_with_curl: listing the wish lists of your friends <br>
+:calendar: creating events and add wish lists and other items to it<br>
 :convenience_store: give enough information about each item to make it easy to find and order the item
 
 ## Tools used for this app
@@ -14,8 +14,7 @@ Languages: JS(ES6), JSX & CSS/SCSS<br>
 Main libraries: React, Redux, React Router & Firebase for authentication and CRUD operations <br>
 <img src="http://www.jsweet.org/wp-content/uploads/2016/04/react-logo-300x289.png" alt="React" width="200px" height="100px"/><img src="https://react-etc.net/files/2018-03/redux-harmful.png" alt="Redux" width="200px" height="100px"/><img src="https://cdn-images-1.medium.com/max/1200/1*TKvlTeNqtkp1s-eVB5Hrvg.png" alt="React-Router" width="200px" height="100px"/><img src="https://cdn-images-1.medium.com/max/2000/0*DigfG6xRmNAuJ2To.png" alt="Firebase" width="200px" height="100px"/>
 
-Additional useful libraries: <a href="https://momentjs.com/">moment</a>, <a href="https://github.com/airbnb/react-dates">react-dates</a>
-
+Additional useful libraries: <a href="https://momentjs.com/">moment</a>, <a href="https://github.com/airbnb/react-dates">react-dates</a><br>
 Deployment: <a href="https://www.heroku.com/">Heroku</a><br>
 Bundler: <a href="https://webpack.js.org/">Webpack</a><br>
 Testing: <a href="https://facebook.github.io/jest/">Jest</a>
@@ -23,6 +22,6 @@ Testing: <a href="https://facebook.github.io/jest/">Jest</a>
 ### The development of the app is still running.
 If interested, you can test the app by logging to it and creating some lists on https://wishlistss.herokuapp.com/
 #### Next steps:
-:runner: Add "reserve an item from an event" feature so people don't buy same things.
-:runner: test on other support than desktop.
-:runner: Design the app, mobile first.
+:runner: Add "reserve an item from an event" feature so people don't buy same things.<br>
+:runner: test on other support than desktop.<br>
+:runner: Design the app, mobile first.<br>
