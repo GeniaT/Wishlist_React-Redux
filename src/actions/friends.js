@@ -34,7 +34,6 @@ export const startPotentialFriends = () => {
     snapshot.forEach(childSnapshot => {
       friendsIdsArray.push(childSnapshot.key);
     });
-    console.log('friendsIdArray: ', friendsIdsArray);
   })
 
   return (dispatch, getState) => {
@@ -56,13 +55,21 @@ export const startPotentialFriends = () => {
 export const startFriendAddition = (id) => {
   const userId = firebase.auth().currentUser.uid;
   const friendRef = firebase.database().ref(`users/${userId}/friendsIds/${id}`);
-  return () => friendRef.set({id});
+  const myFriendRef = firebase.database().ref(`users/${id}/friendsIds/${userId}`);
+  return () => {
+    friendRef.set({id});
+    myFriendRef.set({id: userId});
+  }
 }
 
 export const startFriendDeletion = (id) => {
   const userId = firebase.auth().currentUser.uid;
   const friendRef = firebase.database().ref(`users/${userId}/friendsIds/${id}`);
-  return () => friendRef.remove();
+  const myFriendRef = firebase.database().ref(`users/${id}/friendsIds/${userId}`);
+  return () => {
+    friendRef.remove();
+    myFriendRef.remove();
+  }
 }
 
 export const addFriendInStateAndDB = (id, name) => {
@@ -80,3 +87,23 @@ export const deleteFriendInStateAndDB = (id) => {
     })).then(dispatch(startFriendDeletion(id)));
   }
 }
+
+// export const fetchFriendsWishlists = (friendId) => {
+//   const friendRef = firebase.database().ref(`users/${friendId}/wishlistsIds`);
+//   let wishlistsIdsArray = [];
+//   let wishlists = [];
+//   return (dispatch, getState) => {
+//     friendRef.once("value")
+//     .then(function(snapshot) {
+//       snapshot.forEach(function(childSnapshot) {
+//         wishlistsIdsArray.push(childSnapshot.key);
+//     });
+//   }).then(() => wishlistsIdsArray.forEach((listId) => {
+//     const ref = firebase.database().ref(`wishlists/${listId}`);
+//     ref.once('value')
+//     .then(function(snapshot) {
+//       wishlists.push(snapshot.val());
+//     })
+//   })).then(() => console.log(wishlists)).then((wishlists) => wishlists);
+//   }
+// }

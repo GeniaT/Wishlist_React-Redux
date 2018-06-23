@@ -21,7 +21,7 @@ export const startWishlistCreation = (wishlist, id) => {
   }, []);
 
   return () => {
-    wishlistRef1.set({[id]:wishlist.title});
+    wishlistRef1.update({[id]:wishlist.title});
     wishlistRef2.update(wishlist);
     itemsArray.forEach(item => firebase.database().ref(`items/${item.id}`).set(item))
   }

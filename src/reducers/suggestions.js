@@ -7,7 +7,6 @@ export default function suggestions(state = initialState, action) {
       return action.suggestions;
       break;
     case 'UPDATE_POTENTIAL_FRIENDS':
-    console.log('updating suggestions!');
     if (action.operation === 'add') {
       return [...state.filter(potentialFriend => potentialFriend.id !== action.id)];
     } else if (action.operation === 'delete') {

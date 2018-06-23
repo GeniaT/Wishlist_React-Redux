@@ -8,6 +8,7 @@ import LogIn from '../components/LogIn';
 import WishlistFormContainer from '../containers/WishlistFormContainer';
 import EventFormContainer from '../containers/EventFormContainer';
 import EventsContainer from '../containers/EventsContainer';
+import friendsWishlistsContainer from '../containers/friendsWishlistsContainer';
 
 const AppRoutes = () => (
   <BrowserRouter>
@@ -21,6 +22,7 @@ const AppRoutes = () => (
       <Route path="/my-events" component={EventsContainer}/>
       <Route path="/event/:id" component={Event}/>
       <Route path="/LogIn" component={LogIn}/>
+      <Route path="/friendsWishlists" component={friendsWishlistsContainer}/>
       <Route component={WrongPage}/>
     </Switch>
   </BrowserRouter>

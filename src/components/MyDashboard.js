@@ -79,6 +79,7 @@ const mapDispatchToProps = (dispatch) => ({
 MyDashboard.propTypes = {
   wishlists: PropTypes.arrayOf(PropTypes.object),
   events: PropTypes.arrayOf(PropTypes.object),
+  friends: PropTypes.arrayOf(PropTypes.object),
   deleteEventInStateAndDB: PropTypes.func.isRequired,
   deleteWishlistInStateAndDB: PropTypes.func.isRequired,
 }

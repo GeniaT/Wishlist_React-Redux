@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 const FriendsList = (props) => {
@@ -8,6 +9,7 @@ const FriendsList = (props) => {
         {props.friends.map((friend, index) =>
           <li key={index}>
             {friend.name}
+            <Link to={{pathname: '/friendsWishlists', state: { friendId: friend.id }}}><button>{'See wishlists!'}</button></Link>
             <button onClick={() => {
               props.deleteFriendInStateAndDB(friend.id);
               props.updatePotentialFriendsInState(friend.id, 'delete', friend.name);

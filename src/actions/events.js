@@ -22,7 +22,7 @@ export const startEventCreation = (ev, id) => {
   const participants = ev.participants;
 
   return () => {
-    eventRef1.set({[id]:ev.title});
+    eventRef1.update({[id]:ev.title});
     eventRef2.update(ev);
     itemsArray.forEach(item => firebase.database().ref(`items/${item.id}`).set(item));
     if (participants) {
