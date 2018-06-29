@@ -104,7 +104,7 @@ class WishlistFormContainer extends React.Component {
       }));
     }
 
-    // Modal functions:
+    // Modal functions: openModalForItemUpdate & closeItemModal
     openModalForItemUpdate = (item) => {
       this.setState(() => ({
         showItemModal: true,

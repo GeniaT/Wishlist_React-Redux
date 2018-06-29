@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { firebase } from '../firebase/firebase';
 
 class friendsWishlistsContainer extends React.Component {
@@ -10,8 +11,10 @@ class friendsWishlistsContainer extends React.Component {
     }
   }
 
-  changeWishlists (wishlists) {
+  setFetchedWishlistsInState (wishlists) {
     this.setState({...this.state, wishlists: wishlists});
+    console.log("wishlists ", wishlists);
+    console.log("new state: ", this.state);
   }
 
   componentDidMount() {
@@ -30,10 +33,23 @@ class friendsWishlistsContainer extends React.Component {
           wishlists.push(snapshot.val());
         })
         .then(() => {
-          this.changeWishlists(wishlists);
+          this.setFetchedWishlistsInState(wishlists);
         });
       });
     })
+  }
+
+  // Modal functions: openModalForItemUpdate & closeItemModal
+  openModalForItemDisplay = (item) => {
+    this.setState(() => ({
+      showItemModal: true,
+    }))
+  }
+
+  closeItemModal = () => {
+    this.setState(() => ({
+      showItemModal: false,
+    }))
   }
 
   render() {
@@ -41,9 +57,14 @@ class friendsWishlistsContainer extends React.Component {
       <div>
         <h1>{"My friend's wishlists"}</h1>
         {this.state.wishlists.length > 0 &&
-          <div>
-            {this.state.wishlists.map((x, index) => <p key={index}>{x.title}</p>)}
-          </div>
+          <ul>
+            {this.state.wishlists.map((wishlist, index) => <li key={index}><Link
+              to={{pathname: `/displayWishlist/${wishlist.id}`,
+              state: {
+                wishlist: wishlist
+              }}}><p id={wishlist.id}>{wishlist.title}</p></Link></li>
+            )}
+          </ul>
         }
       </div>
     )

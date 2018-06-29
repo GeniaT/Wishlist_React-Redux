@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 
 Modal.setAppElement('#app');
 
-const ItemDetailsModal = (props) => {
+const ItemDetailsModalUpdate = (props) => {
   return <Modal
      isOpen={props.showItemModal}
      onRequestClose={props.closeItemModal}
@@ -54,10 +54,10 @@ const ItemDetailsModal = (props) => {
   </Modal>
 }
 
-ItemDetailsModal.propTypes = {
+ItemDetailsModalUpdate.propTypes = {
   showItemModal: PropTypes.bool.isRequired,
   itemInfoInit: PropTypes.func.isRequired,
   onUpdateItem: PropTypes.func.isRequired,
 }
 
-export default ItemDetailsModal;
+export default ItemDetailsModalUpdate;

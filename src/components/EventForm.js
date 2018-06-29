@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { SingleDatePicker } from 'react-dates';
-import ItemDetailsModal from './ItemDetailsModal';
+import ItemDetailsModalUpdate from './ItemDetailsModalUpdate';
 
 const EventForm = (props) => {
   return (
@@ -113,7 +113,7 @@ const EventForm = (props) => {
           note: props.note,
         },props.operation ,props.id, props.wishlistLinksIds, props.removedItemsIds, props.removedParticipantsIds)}>{'Save Event'}
       </button>
-      <ItemDetailsModal
+      <ItemDetailsModalUpdate
         showItemModal={props.showItemModal}
         closeItemModal={props.closeItemModal}
         itemInfoInit={props.itemInfoInit}

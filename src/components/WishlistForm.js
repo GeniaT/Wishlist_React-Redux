@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ItemDetailsModal from './ItemDetailsModal';
+import ItemDetailsModalUpdate from './ItemDetailsModalUpdate';
 import { getFuturEvents } from '../selectors/events';
 
 const WishlistForm = (props) => {
@@ -67,7 +67,7 @@ const WishlistForm = (props) => {
           items: props.items
         }, props.operation, props.id, props.eventLinksIds, props.removedItemsIds)}>{'Save wishlist'}
       </button>
-      <ItemDetailsModal
+      <ItemDetailsModalUpdate
         showItemModal={props.showItemModal}
         closeItemModal={props.closeItemModal}
         itemInfoInit={props.itemInfoInit}
