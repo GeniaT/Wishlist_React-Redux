@@ -4,25 +4,43 @@ import Modal from 'react-modal';
 
 Modal.setAppElement('#app');
 
-const ItemDetailsModalDisplay = (props) => {
-  return <Modal
-     isOpen={props.showItemModal}
-     onRequestClose={props.closeItemModal}
-     onAfterOpen={props.itemInfoInit}
-  >
-    <h1>{props.updatingItem}</h1>
-    Description: {props.item.description}<br/>
-    Picture link: {props.item.picture}<br/>
-    Link to buy the item: {props.item.urlToBuy}<br/>
-    Approximative price: {props.item.appriximatePrice}<br/>
-    {"Here are some details that may help you with the item :"}<br/>
-    {props.item.note}<br/>
-    <button onClick={props.closeItemModal}>Click me to close!</button>
-  </Modal>
+class ItemDetailsModalDisplay extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showItemModal: false,
+      itemToShowIndex: null,
+    }
+  }
+
+  // Modal functions: openModalForItemUpdate & closeItemModal
+  openModalForItemDisplay = (item, index) => {
+    this.setState(() => ({
+      showItemModal: true,
+      itemToShowIndex: index
+    }))
+  }
+
+  closeItemModal = () => {
+    this.setState(() => ({
+      showItemModal: false,
+    }))
+  }
+
+
+
+  render() {
+    return <Modal
+       isOpen={this.state.showItemModal}
+       onRequestClose={this.closeItemModal}
+    >
+    {this.renderModal}
+    </Modal>
+  }
 }
 
-ItemDetailsModalDisplay.propTypes = {
-  showItemModal: PropTypes.bool.isRequired,
-}
+// ItemDetailsModalDisplay.propTypes = {
+//   showItemModal: PropTypes.bool.isRequired,
+// }
 
 export default ItemDetailsModalDisplay;
