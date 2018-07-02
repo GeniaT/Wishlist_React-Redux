@@ -109,12 +109,19 @@ export const fetchFriendsData = (userId) => {
 
 export const fetchEventsParticipationData = (userId) => {
   const participationRef = firebase.database().ref(`users/${userId}/eventsParticipation`);
+  const participationEventsDetails = [];
   return (dispatch) => {
-    participationRef.once("value").then(snapshot => {
-      if (snapshot.val() !== null) dispatch(setEventsParticipation(snapshot.val()))
-    });
+    return participationRef.once("value").then(snapshot => {
+      snapshot.forEach(function(childSnapshot) {
+        const val = childSnapshot.val();
+        console.log('val: ', val);
+        participationEventsDetails.push(val);
+      });
+    })
+    .then(() => dispatch(setEventsParticipation(participationEventsDetails)));
   }
 }
+
 export const startFetchingData = () => {
   const userId = firebase.auth().currentUser.uid;
   return (dispatch, getState) => {

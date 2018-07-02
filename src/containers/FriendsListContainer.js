@@ -6,9 +6,6 @@ import { deleteFriendInStateAndDB, updatePotentialFriendsInState } from '../acti
 class FriendsListContainer extends React.Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //
-    // }
   }
 
   render () {

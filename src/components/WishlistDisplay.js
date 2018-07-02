@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import NavbarContainer from '../containers/NavbarContainer';
-import ItemDetailsModalDisplay from './ItemDetailsModalDisplay';
 import Modal from 'react-modal';
 
 
-class Wishlist extends React.Component {
+class WishlistDisplay extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -28,23 +27,24 @@ class Wishlist extends React.Component {
   }
 
   renderModal() {
-    const ref = this.props.location.state.wishlist.items;
+    const items = this.props.location.state.wishlist.items;
     const index = this.state.itemToShowIndex;
+    const item = items[index];
 
     if (!this.state.showItemModal) {
       return null;
     }
     return (
       <div>
-        <h1>{ref[index].name}</h1>
-        <p>Description: {ref[index].description}</p>
-        <p>PictureUrl: {ref[index].picture}</p>
-        <p>Url to buy the item: {ref[index].urlToBuy}</p>
-        <p>Approximate price: {ref[index].appriximatePrice}</p>
-        <p>Note about the item: {ref[index].note}</p>
+        <h1>{item.name}</h1>
+        <p>Description: {item.description}</p>
+        <p>PictureUrl: {item.picture}</p>
+        <p>Url to buy the item: {item.urlToBuy}</p>
+        <p>Approximate price: {item.appriximatePrice}</p>
+        <p>Note about the item: {item.note}</p>
+        <button onClick={() => this.closeItemModal()}>Click me to close!</button>
       </div>
     )
-
   }
 
   render () {
@@ -62,17 +62,16 @@ class Wishlist extends React.Component {
               }}>See details</button>
             </li>
           )}
-        <Modal
-             isOpen={this.state.showItemModal}
-             onRequestClose={this.closeItemModal}
-          >
-          {this.renderModal()}
-        </Modal>
-        </ul>
-        }
-    </div>
-  )
+          <Modal
+               isOpen={this.state.showItemModal}
+               onRequestClose={this.closeItemModal}
+            >
+            {this.renderModal()}
+          </Modal>
+        </ul>}
+      </div>
+    )
   }
 }
 
-export default Wishlist;
+export default WishlistDisplay;

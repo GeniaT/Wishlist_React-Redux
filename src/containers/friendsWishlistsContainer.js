@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { firebase } from '../firebase/firebase';
+import NavbarContainer from './NavbarContainer';
 
 class friendsWishlistsContainer extends React.Component {
   constructor(props) {
@@ -13,8 +14,6 @@ class friendsWishlistsContainer extends React.Component {
 
   setFetchedWishlistsInState (wishlists) {
     this.setState({...this.state, wishlists: wishlists});
-    console.log("wishlists ", wishlists);
-    console.log("new state: ", this.state);
   }
 
   componentDidMount() {
@@ -39,22 +38,10 @@ class friendsWishlistsContainer extends React.Component {
     })
   }
 
-  // Modal functions: openModalForItemUpdate & closeItemModal
-  openModalForItemDisplay = (item) => {
-    this.setState(() => ({
-      showItemModal: true,
-    }))
-  }
-
-  closeItemModal = () => {
-    this.setState(() => ({
-      showItemModal: false,
-    }))
-  }
-
   render() {
     return (
       <div>
+        <NavbarContainer />
         <h1>{"My friend's wishlists"}</h1>
         {this.state.wishlists.length > 0 &&
           <ul>

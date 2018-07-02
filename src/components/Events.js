@@ -31,11 +31,17 @@ const Events = ({futurEvents, passedEvents, deleteEventInStateAndDB, eventsParti
           </p> )}
       </div>}
       {eventsParticipation.length > 0
-        && <div>
+        && <ul>
             <h1>Also registered to the following events:</h1>
-            {eventsParticipation.map((ev, index) => <p key={index} id={Object.keys(ev)[0]}>{ev[Object.keys(ev)[0]]}</p>)}
-          </div>
-      }
+            {eventsParticipation.map((ev, index) => <li key={index}><Link
+            to={{pathname: `/displayEvent/${ev.id}`,
+            state: {
+              'event': ev
+            }}}>
+              <p>{ev.title}</p>
+            </Link></li>)}
+          </ul>
+          }
     </div>
   )
 }
