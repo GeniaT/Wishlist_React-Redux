@@ -31,7 +31,7 @@ export const startEventCreation = (ev, id) => {
   }
 }
 
-export const startEventUpdate = (ev, id, removedItemsIds, removedParticipantsIds) => {
+export const startEventUpdate = (ev, id, removedItemsIds, removedParticipantsIds, reservedItems, unreservedItems) => {
   const userId = firebase.auth().currentUser.uid;
   const eventRef = firebase.database().ref(`events/${id}`);
   const participants = ev.participants;
@@ -42,15 +42,59 @@ export const startEventUpdate = (ev, id, removedItemsIds, removedParticipantsIds
     if (participants) {
       participants.forEach(friend => firebase.database().ref(`users/${friend.id}/eventsParticipation/${id}`).set({[id]:ev.title}));
     }
-    if (removedItemsIds.length > 0) {
+    if (removedItemsIds && removedItemsIds.length > 0) {
       removedItemsIds.forEach(itemId => {
         firebase.database().ref(`items/${itemId}`).remove();
       });
     }
-    if (removedParticipantsIds.length > 0) {
+    if (removedParticipantsIds && removedParticipantsIds.length > 0) {
       removedParticipantsIds.forEach(participantId => {
         firebase.database().ref(`users/${participantId}/eventsParticipation/${id}`).remove();
       })
+    }
+    if (reservedItems && reservedItems.length > 0) {
+      firebase.database().ref(`events/${id}/items`).once("value")
+      .then(function(snapshot) {
+        let counter = 0;
+        console.log('snap val: ', snapshot.val());
+        snapshot.forEach(function(childSnapshot) {
+          var key = childSnapshot.key;
+          var childData = childSnapshot.val();
+          // console.log('childkey: ', key);
+          // console.log("childData: ", childData);
+          // console.log('childData.id: ', childData.id);
+          // console.log('counter: ', counter);
+          if (reservedItems.indexOf(childData.id) !== -1) {
+            const reservedItemref = firebase.database().ref(`events/${id}/items/${counter}`);
+            // console.log("found in DB the item to be reserved!");
+            reservedItemref.update({ reservedBy: userId });
+          }
+          counter += 1;
+          console.log('counter: ', counter);
+      });
+    });
+      console.log('reserved Items: ', reservedItems);
+    }
+    if (unreservedItems && unreservedItems.length > 0) {
+      firebase.database().ref(`events/${id}/items`).once("value")
+        .then(function(snapshot) {
+          let counter = 0;
+          console.log('snap val: ', snapshot.val());
+          snapshot.forEach(function(childSnapshot) {
+            var key = childSnapshot.key;
+            var childData = childSnapshot.val();
+            // console.log('childkey: ', key);
+            // console.log("childData: ", childData);
+            // console.log('childData.id: ', childData.id);
+            // console.log('counter: ', counter);
+            if (unreservedItems.indexOf(childData.id) !== -1) {
+              const unreservedItemref = firebase.database().ref(`events/${id}/items/${counter}`);
+              // console.log("found in DB the item to be reserved!");
+              unreservedItemref.update({ reservedBy: '' });
+            }
+            counter += 1;
+        });
+      });
     }
   }
 }
@@ -82,7 +126,6 @@ export const startEventDeletion = (ev, id) => {
 
 export const saveEventInStateAndDB = (ev, operation, id, wishlistLinksIds, removedItemsIds, removedParticipantsIds) => {
   return (dispatch, getState) => {
-    dispatch(saveEvent(ev, operation));
     if (operation === 'eventCreation') {
       dispatch(startEventCreation(ev, id));
     } else if (operation === 'eventUpdate') {

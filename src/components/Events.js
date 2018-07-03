@@ -30,9 +30,10 @@ const Events = ({futurEvents, passedEvents, deleteEventInStateAndDB, eventsParti
             <button onClick={() => deleteEventInStateAndDB(ev, 'eventDeletion')}>{'Delete'}</button>
           </p> )}
       </div>}
-      {eventsParticipation.length > 0
-        && <ul>
-            <h1>Also registered to the following events:</h1>
+      {eventsParticipation.length > 0 &&
+        <div>
+          <h1>Also registered to the following events:</h1>
+          <ul>
             {eventsParticipation.map((ev, index) => <li key={index}><Link
             to={{pathname: `/displayEvent/${ev.id}`,
             state: {
@@ -41,7 +42,8 @@ const Events = ({futurEvents, passedEvents, deleteEventInStateAndDB, eventsParti
               <p>{ev.title}</p>
             </Link></li>)}
           </ul>
-          }
+        </div>
+      }
     </div>
   )
 }

@@ -1,8 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import NavbarContainer from '../containers/NavbarContainer';
 import Modal from 'react-modal';
 import moment from 'moment';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import NavbarContainer from '../containers/NavbarContainer';
+import { startEventUpdate } from '../actions/events';
+
 
 class EventDisplay extends React.Component {
   constructor(props) {
@@ -10,9 +14,35 @@ class EventDisplay extends React.Component {
     this.state = {
       showItemModal: false,
       itemToShowIndex: null,
+      reservedItems: [],
+      unreservedItems: [],
     }
   }
-  // Modal functions: openModalForItemUpdate & closeItemModal
+
+  reserveAnItem = (item) => {
+    const participation = this.props.location.state.event;
+    this.setState(() => ({
+      reservedItems: this.state.reservedItems.concat(item.id)
+    }), () => {
+      this.props.startEventUpdate(participation, participation.id, null, null, this.state.reservedItems, this.state.unreservedItems)
+    });
+    this.setState(() => ({
+      unreservedItems: this.state.unreservedItems.filter((id) => id !== item.id)
+    }))
+  }
+
+  unreserveAnItem = (item) => {
+    const participation = this.props.location.state.event;
+    this.setState(() => ({
+      reservedItems: this.state.reservedItems.filter((id) => id !== item.id)
+    }));
+    this.setState(() => ({
+      unreservedItems: this.state.unreservedItems.concat(item.id)
+    }), () => {
+      this.props.startEventUpdate(participation, participation.id, null, null, this.state.reservedItems, this.state.unreservedItems)
+    })
+  }
+  // Modal functions
   openModalForItemDisplay = (item, index) => {
     this.setState(() => ({
       showItemModal: true,
@@ -47,12 +77,22 @@ class EventDisplay extends React.Component {
     )
   }
 
+  componentDidMount() {
+    const participation = this.props.location.state.event;
+    participation.items.forEach((item) => {
+      if (item.reservedBy !== "") {
+        this.setState((prevState) => ({
+          reservedItems: [...prevState.reservedItems, item.id]
+        }))
+      }
+    })
+  }
+
   render () {
     const participation = this.props.location.state.event;
-    return (
-      <div>
+    return this.props.loggedIn ? <div>
         <NavbarContainer />
-        <h1>Wishlist {participation.title}</h1>
+        <h1>{'Event'} {participation.title}</h1>
         <h2>{'When?'} {moment(participation.date).format("dddd, MMMM Do YYYY")}</h2>
         {participation.items && <ul>
           {participation.items.map((item, index) =>
@@ -61,6 +101,13 @@ class EventDisplay extends React.Component {
               <button onClick={() => {
                 this.openModalForItemDisplay(item.name, index);
               }}>See details</button>
+              <button onClick={() => {
+                if (this.state.reservedItems.length === 0 || this.state.reservedItems.indexOf(item.id) === -1) {
+                  this.reserveAnItem(item);
+                } else if (this.state.reservedItems.length > 0 && this.state.reservedItems.indexOf(item.id) !== -1) {
+                  this.unreserveAnItem(item);
+                }
+              }}>{'Reserve this item/Unbook it'}</button>
             </li>
           )}
           <Modal
@@ -78,9 +125,17 @@ class EventDisplay extends React.Component {
         </ul>
         <h2>{'Note about the event'}</h2>
         <p>{participation.note}</p>
-      </div>
-    )
+      </div> : <Redirect push to='/'/>
   }
 }
 
-export default EventDisplay;
+const mapStateToProps = (state) => ({
+  loggedIn: state.user.loggedIn,
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  startEventUpdate: (ev, id, removedItemsIds, removedParticipantsIds, reservedItems, unreservedItems) =>
+    dispatch(startEventUpdate(ev, id, removedItemsIds, removedParticipantsIds, reservedItems, unreservedItems)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(EventDisplay);

@@ -114,7 +114,8 @@ class EventFormContainer extends React.Component {
           picture: '',
           urlToBuy: '',
           appriximatePrice: '',
-          note: ''
+          note: '',
+          reservedBy: '',
         }]
       }));
     }

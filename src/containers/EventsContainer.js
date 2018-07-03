@@ -37,7 +37,6 @@ class EventsContainer extends React.Component {
         })
         .then(() => {
           this.setFetchedEventsInState(events);
-          console.log('events: ', events);
         });
       });
     });

@@ -114,7 +114,6 @@ export const fetchEventsParticipationData = (userId) => {
     return participationRef.once("value").then(snapshot => {
       snapshot.forEach(function(childSnapshot) {
         const val = childSnapshot.val();
-        console.log('val: ', val);
         participationEventsDetails.push(val);
       });
     })
