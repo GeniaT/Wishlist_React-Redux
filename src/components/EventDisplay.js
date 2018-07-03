@@ -16,6 +16,7 @@ class EventDisplay extends React.Component {
       itemToShowIndex: null,
       reservedItems: [],
       unreservedItems: [],
+      lockedItems: [],
     }
   }
 
@@ -80,12 +81,16 @@ class EventDisplay extends React.Component {
   componentDidMount() {
     const participation = this.props.location.state.event;
     participation.items.forEach((item) => {
-      if (item.reservedBy !== "") {
+      if (item.reservedBy !== this.props.uid && item.reservedBy !== "") {
+        this.setState(() => ({
+          lockedItems: [...this.state.lockedItems, item.id]
+        }))
+      } else if (item.reservedBy === this.props.uid) {
         this.setState((prevState) => ({
           reservedItems: [...prevState.reservedItems, item.id]
-        }))
+        }));
       }
-    })
+    });
   }
 
   render () {
@@ -102,12 +107,12 @@ class EventDisplay extends React.Component {
                 this.openModalForItemDisplay(item.name, index);
               }}>See details</button>
               <button onClick={() => {
-                if (this.state.reservedItems.length === 0 || this.state.reservedItems.indexOf(item.id) === -1) {
+                if (this.state.lockedItems.indexOf(item.id) === -1 && (this.state.reservedItems.length === 0 || this.state.reservedItems.indexOf(item.id) === -1)) {
                   this.reserveAnItem(item);
-                } else if (this.state.reservedItems.length > 0 && this.state.reservedItems.indexOf(item.id) !== -1) {
+                } else if (this.state.lockedItems.indexOf(item.id) === -1 && this.state.reservedItems.indexOf(item.id) !== -1) {
                   this.unreserveAnItem(item);
                 }
-              }}>{'Reserve this item/Unbook it'}</button>
+              }} disabled={this.state.lockedItems.indexOf(item.id) !== -1}>{'Reserve this item/Unbook it'}</button>
             </li>
           )}
           <Modal
@@ -131,6 +136,7 @@ class EventDisplay extends React.Component {
 
 const mapStateToProps = (state) => ({
   loggedIn: state.user.loggedIn,
+  uid: state.user.uid,
 })
 
 const mapDispatchToProps = (dispatch) => ({

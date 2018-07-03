@@ -56,40 +56,27 @@ export const startEventUpdate = (ev, id, removedItemsIds, removedParticipantsIds
       firebase.database().ref(`events/${id}/items`).once("value")
       .then(function(snapshot) {
         let counter = 0;
-        console.log('snap val: ', snapshot.val());
         snapshot.forEach(function(childSnapshot) {
-          var key = childSnapshot.key;
-          var childData = childSnapshot.val();
-          // console.log('childkey: ', key);
-          // console.log("childData: ", childData);
-          // console.log('childData.id: ', childData.id);
-          // console.log('counter: ', counter);
+          const key = childSnapshot.key;
+          const childData = childSnapshot.val();
+
           if (reservedItems.indexOf(childData.id) !== -1) {
             const reservedItemref = firebase.database().ref(`events/${id}/items/${counter}`);
-            // console.log("found in DB the item to be reserved!");
             reservedItemref.update({ reservedBy: userId });
           }
           counter += 1;
-          console.log('counter: ', counter);
       });
     });
-      console.log('reserved Items: ', reservedItems);
     }
     if (unreservedItems && unreservedItems.length > 0) {
       firebase.database().ref(`events/${id}/items`).once("value")
         .then(function(snapshot) {
           let counter = 0;
-          console.log('snap val: ', snapshot.val());
           snapshot.forEach(function(childSnapshot) {
-            var key = childSnapshot.key;
-            var childData = childSnapshot.val();
-            // console.log('childkey: ', key);
-            // console.log("childData: ", childData);
-            // console.log('childData.id: ', childData.id);
-            // console.log('counter: ', counter);
+            const key = childSnapshot.key;
+            const childData = childSnapshot.val();
             if (unreservedItems.indexOf(childData.id) !== -1) {
               const unreservedItemref = firebase.database().ref(`events/${id}/items/${counter}`);
-              // console.log("found in DB the item to be reserved!");
               unreservedItemref.update({ reservedBy: '' });
             }
             counter += 1;
