@@ -80,7 +80,8 @@ class WishlistFormContainer extends React.Component {
             picture: '',
             urlToBuy: '',
             appriximatePrice: '',
-            note: ''
+            note: '',
+            reservedBy: '',
           }]
         }));
       }

@@ -4,6 +4,7 @@ import Modal from 'react-modal';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import { firebase } from '../firebase/firebase';
 import NavbarContainer from '../containers/NavbarContainer';
 import { startEventUpdate } from '../actions/events';
 
@@ -80,27 +81,81 @@ class EventDisplay extends React.Component {
 
   componentDidMount() {
     const participation = this.props.location.state.event;
-    participation.items.forEach((item) => {
-      if (item.reservedBy !== this.props.uid && item.reservedBy !== "") {
-        this.setState(() => ({
-          lockedItems: [...this.state.lockedItems, item.id]
-        }))
-      } else if (item.reservedBy === this.props.uid) {
-        this.setState((prevState) => ({
-          reservedItems: [...prevState.reservedItems, item.id]
-        }));
-      }
+    //Need to fetch all items of any wishlists linked to this event by the creator.
+      //Get the creator of the event
+    const creator = this.props.location.state.event.createdBy;
+    const userId = firebase.auth().currentUser.uid;
+    const eventId = this.props.location.state.event.id;
+    //Get the linksMatrix from the DB
+    const linksMatrixRef = firebase.database().ref(`users/${creator}/eventsWishlistsLinksMatrix`);
+    let matrix;
+    const linkedwishlists = [];
+    const itemsFromWishlistsArray = [];
+    let globalItemsArray;
+    //Start identifying the line of the opened event
+    linksMatrixRef.once("value")
+    .then(function(snapshot) {
+      matrix = snapshot.val();
+      //check if there is any links to any wishlist
+        //push indexes of '1's into an array
+        //check each index in this array to get the wishlists Ids that this event is linked to
+      if (matrix[0].length === 1) { return }
+      matrix.forEach((line) => {
+        if (line[0] === eventId) {
+          line.forEach((potentialLink, index) => {
+            if (potentialLink === 1) {
+              linkedwishlists.push(matrix[0][index]);
+            }
+          });
+        }
+      });
+    })
+    .then(() => {
+      //get each wishlist id and push each item from that wishlist to an new array
+      // finally concat that array of items from wishlists with the items from this event to a global array
+      linkedwishlists.forEach((wishlistId) => {
+        const wishlistItemsRef = firebase.database().ref(`wishlists/${wishlistId}/items`);
+        wishlistItemsRef.once('value')
+        .then(function(snapshot) {
+          snapshot.forEach(function(childSnapshot) {
+              const childData = childSnapshot.val();
+              itemsFromWishlistsArray.push(childData);
+          });
+        })
+        .then(() => {
+          globalItemsArray = participation.items.concat(itemsFromWishlistsArray);
+          //based on all items fetched from the DB, we update the state dividing the items into 2 categories:
+          //"locked" because it was already reserved by someone and "reserved" for items that I previously reserved
+          this.setState(() => ({
+            allItems: globalItemsArray
+          }))
+          globalItemsArray.forEach((item) => {
+            if (item.reservedBy !== this.props.uid && item.reservedBy !== "") {
+              this.setState(() => ({
+                lockedItems: [...this.state.lockedItems, item.id]
+              }))
+            } else if (item.reservedBy === this.props.uid) {
+              this.setState((prevState) => ({
+                reservedItems: [...prevState.reservedItems, item.id]
+              }));
+            }
+          });
+        })
+      })
     });
   }
 
   render () {
     const participation = this.props.location.state.event;
+    const items = this.state.allItems;
     return this.props.loggedIn ? <div>
         <NavbarContainer />
         <h1>{'Event'} {participation.title}</h1>
-        <h2>{'When?'} {moment(participation.date).format("dddd, MMMM Do YYYY")}</h2>
-        {participation.items && <ul>
-          {participation.items.map((item, index) =>
+        <h2>{'When?'}</h2>
+        <p>{moment(participation.date).format("dddd, MMMM Do YYYY")}</p>
+        <h2>{'Wished items for this event'}</h2>
+        {items && <ul>
+          {items.map((item, index) =>
             <li key={index}>
               {item.name}
               <button onClick={() => {
