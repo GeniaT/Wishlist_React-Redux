@@ -6,6 +6,7 @@ import user from './user';
 import wishlists from './wishlists';
 import friends from './friends';
 import suggestions from './suggestions';
+import items from './items';
 
 export default combineReducers({
   events,
@@ -14,5 +15,6 @@ export default combineReducers({
   user,
   wishlists,
   friends,
-  suggestions
+  suggestions,
+  items
 });

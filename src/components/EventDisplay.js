@@ -26,7 +26,7 @@ class EventDisplay extends React.Component {
     this.setState(() => ({
       reservedItems: this.state.reservedItems.concat(item.id)
     }), () => {
-      this.props.startEventUpdate(participation, participation.id, null, null, this.state.reservedItems, this.state.unreservedItems)
+      this.reserveItemInDB(item);
     });
     this.setState(() => ({
       unreservedItems: this.state.unreservedItems.filter((id) => id !== item.id)
@@ -41,8 +41,21 @@ class EventDisplay extends React.Component {
     this.setState(() => ({
       unreservedItems: this.state.unreservedItems.concat(item.id)
     }), () => {
-      this.props.startEventUpdate(participation, participation.id, null, null, this.state.reservedItems, this.state.unreservedItems)
+      this.dereserveItemInDB(item);
     })
+  }
+
+  reserveItemInDB = (item) => {
+    const userId = firebase.auth().currentUser.uid;
+    const itemRef = firebase.database().ref(`items/${item.id}/item`);
+    itemRef.update({reservedBy: userId});
+
+  }
+
+  dereserveItemInDB = (item) => {
+    const userId = firebase.auth().currentUser.uid;
+    const itemRef = firebase.database().ref(`items/${item.id}/item`);
+    itemRef.update({reservedBy: ''});
   }
   // Modal functions
   openModalForItemDisplay = (item, index) => {
@@ -59,7 +72,8 @@ class EventDisplay extends React.Component {
   }
 
   renderModal() {
-    const items = this.props.location.state.event.items;
+    // const items = this.props.location.state.event.items;
+    const items = this.state.allItems;
     const index = this.state.itemToShowIndex;
     const item = items[index];
 
@@ -81,6 +95,14 @@ class EventDisplay extends React.Component {
 
   componentDidMount() {
     const participation = this.props.location.state.event;
+    const itemsFromEventArray = [];
+    participation.items.forEach((item) => {
+      const itemId = item.id;
+      const itemRef = firebase.database().ref(`items/${itemId}/item`);
+      itemRef.once("value").then(snapshot => {
+        itemsFromEventArray.push(snapshot.val());
+      }).then(() => console.log('itemsFromEventArray: ', itemsFromEventArray))
+    })
     //Need to fetch all items of any wishlists linked to this event by the creator.
       //Get the creator of the event
     const creator = this.props.location.state.event.createdBy;
@@ -92,6 +114,7 @@ class EventDisplay extends React.Component {
     const linkedwishlists = [];
     const itemsFromWishlistsArray = [];
     let globalItemsArray;
+    const itemsIds = [];
     //Start identifying the line of the opened event
     linksMatrixRef.once("value")
     .then(function(snapshot) {
@@ -116,29 +139,32 @@ class EventDisplay extends React.Component {
       linkedwishlists.forEach((wishlistId) => {
         const wishlistItemsRef = firebase.database().ref(`wishlists/${wishlistId}/items`);
         wishlistItemsRef.once('value')
-        .then(function(snapshot) {
-          snapshot.forEach(function(childSnapshot) {
+        .then(snapshot => {
+          snapshot.forEach(childSnapshot => {
               const childData = childSnapshot.val();
-              itemsFromWishlistsArray.push(childData);
-          });
-        })
-        .then(() => {
-          globalItemsArray = participation.items.concat(itemsFromWishlistsArray);
-          //based on all items fetched from the DB, we update the state dividing the items into 2 categories:
-          //"locked" because it was already reserved by someone and "reserved" for items that I previously reserved
-          this.setState(() => ({
-            allItems: globalItemsArray
-          }))
-          globalItemsArray.forEach((item) => {
-            if (item.reservedBy !== this.props.uid && item.reservedBy !== "") {
-              this.setState(() => ({
-                lockedItems: [...this.state.lockedItems, item.id]
-              }))
-            } else if (item.reservedBy === this.props.uid) {
-              this.setState((prevState) => ({
-                reservedItems: [...prevState.reservedItems, item.id]
-              }));
-            }
+              const itemRef = firebase.database().ref(`items/${childData.id}/item`);
+              itemRef.once("value").then(snapshot => {
+                itemsFromWishlistsArray.push(snapshot.val());
+              })
+              .then(() => globalItemsArray = itemsFromEventArray.concat(itemsFromWishlistsArray))
+              .then(() => {
+                //based on all items fetched from the DB, we update the state dividing the items into 2 categories:
+                //"locked" because it was already reserved by someone and "reserved" for items that I previously reserved
+                this.setState(() => ({
+                  allItems: globalItemsArray
+                }))
+                globalItemsArray.forEach((item) => {
+                  if (item.reservedBy !== this.props.uid && item.reservedBy !== "" && this.state.lockedItems.indexOf(item.id) === -1) {
+                    this.setState(() => ({
+                      lockedItems: [...this.state.lockedItems, item.id]
+                    }))
+                  } else if (this.state.reservedItems.indexOf(item.id) === -1 && item.reservedBy === this.props.uid) {
+                    this.setState(() => ({
+                      reservedItems: [...this.state.reservedItems, item.id]
+                    }));
+                  }
+                });
+              })
           });
         })
       })
@@ -194,9 +220,10 @@ const mapStateToProps = (state) => ({
   uid: state.user.uid,
 })
 
-const mapDispatchToProps = (dispatch) => ({
-  startEventUpdate: (ev, id, removedItemsIds, removedParticipantsIds, reservedItems, unreservedItems) =>
-    dispatch(startEventUpdate(ev, id, removedItemsIds, removedParticipantsIds, reservedItems, unreservedItems)),
-})
+// const mapDispatchToProps = (dispatch) => ({
+//   // reserveItem: (item) => dispatch(reserveItem(item)),
+//   // dereserveItem: (item) => dispatch(dereserveItem(item)),
+//   // startEventUpdate: () => dispatch(startEventUpdate()),
+// })
 
-export default connect(mapStateToProps, mapDispatchToProps)(EventDisplay);
+export default connect(mapStateToProps)(EventDisplay);

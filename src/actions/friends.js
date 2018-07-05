@@ -87,23 +87,3 @@ export const deleteFriendInStateAndDB = (id) => {
     })).then(dispatch(startFriendDeletion(id)));
   }
 }
-
-// export const fetchFriendsWishlists = (friendId) => {
-//   const friendRef = firebase.database().ref(`users/${friendId}/wishlistsIds`);
-//   let wishlistsIdsArray = [];
-//   let wishlists = [];
-//   return (dispatch, getState) => {
-//     friendRef.once("value")
-//     .then(function(snapshot) {
-//       snapshot.forEach(function(childSnapshot) {
-//         wishlistsIdsArray.push(childSnapshot.key);
-//     });
-//   }).then(() => wishlistsIdsArray.forEach((listId) => {
-//     const ref = firebase.database().ref(`wishlists/${listId}`);
-//     ref.once('value')
-//     .then(function(snapshot) {
-//       wishlists.push(snapshot.val());
-//     })
-//   })).then(() => console.log(wishlists)).then((wishlists) => wishlists);
-//   }
-// }
