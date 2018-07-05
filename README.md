@@ -23,6 +23,6 @@ Testing: <a href="https://facebook.github.io/jest/">Jest</a>
 If interested, you can test the app by logging to it and creating some lists on https://wishlistss.herokuapp.com/ <br>
 :warning: The authentication through Safari doesn't work on mobile, see defect https://github.com/firebase/quickstart-js/issues/94
 ## Next steps:
-:runner: Add "reserve an item from an event" feature so people don't buy same things.<br>
+:white_check_mark: Add "reserve an item from an event" feature so people don't buy same things.<br>
 :runner: test on other support than desktop.<br>
-:runner: Design the app, mobile first.<br>
+:black_square_button: Design the app, mobile first.<br>
