@@ -193,7 +193,12 @@ class EventDisplay extends React.Component {
                 } else if (this.state.lockedItems.indexOf(item.id) === -1 && this.state.reservedItems.indexOf(item.id) !== -1) {
                   this.unreserveAnItem(item);
                 }
-              }} disabled={this.state.lockedItems.indexOf(item.id) !== -1}>{'Reserve this item/Unbook it'}</button>
+              }} disabled={this.state.lockedItems.indexOf(item.id) !== -1}>
+              {this.state.lockedItems.includes(item.id)
+                ? 'Already booked by someone'
+                : this.state.reservedItems.includes(item.id)
+                  ? 'Unbook it'
+                  : 'Reserve this item'}</button>
             </li>
           )}
           <Modal
