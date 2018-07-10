@@ -8,11 +8,15 @@ import { startLoginWithGoogle, startLoginWithFacebook } from '../actions/user';
 const LogIn = ({ loggedIn, startLoginWithGoogle, startLoginWithFacebook }) => {
   return loggedIn
   ? <Redirect push to='/'/>
-  : <div>
+  : <div className="logInMainContainer">
       <NavbarContainer />
-      <h1>Log In Page</h1>
-      <button onClick={startLoginWithGoogle}>Log In With Google</button>
-      <button onClick={startLoginWithFacebook}>Log In With Facebook</button>
+      <div className="header">
+        <h1>Welcome to Wishlists!</h1>
+        <p>Stop to unwanted items and imagination about an ideal gift.</p>
+        <p>Choose the gift that will please from a wishlist and also receive what you really want!</p>
+      </div>
+      <button className="loginBtn loginBtn--google" onClick={startLoginWithGoogle}>Log In With Google</button>
+      <button className="loginBtn loginBtn--facebook" onClick={startLoginWithFacebook}>Log In With Facebook</button>
     </div>
 }
 

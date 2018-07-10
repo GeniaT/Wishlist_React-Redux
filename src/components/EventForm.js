@@ -6,9 +6,12 @@ import ItemDetailsModalUpdate from './ItemDetailsModalUpdate';
 
 const EventForm = (props) => {
   return (
-    <div>
+    <div className="eventFormOutterContainer">
+    <div className="eventFormInnerContainer">
+      <h1>{props.title || 'New Event...'}</h1>
       <form>
-        {'Event Title: '}<input type="text" value={props.title} onChange={props.onChangeTitle}/>
+        {'Event Title: '}<br/>
+        <input type="text" id="eventTitle" value={props.title} onChange={props.onChangeTitle}/>
         <SingleDatePicker
           date={props.date}
           onDateChange={props.onDateChange}
@@ -16,8 +19,9 @@ const EventForm = (props) => {
           reopenPickerOnClearDate={props.reopenPickerOnClearDate}
           onFocusChange={props.onFocusChange}
         /><br/>
-        <input type="radio" name="status" value="public" checked={props.status === "public"} onChange={props.onChangeStatus}/>Public
-        <input type="radio" name="status" value="private" checked={props.status === "private"} onChange={props.onChangeStatus}/>Private <br/>
+        {'Status of the Event:'}<br/>
+        <input type="radio" name="status" value="public" id="statusPublic"checked={props.status === "public"} onChange={props.onChangeStatus}/>Public<br/>
+        <input type="radio" name="status" value="private" id="statusPrivate"checked={props.status === "private"} onChange={props.onChangeStatus}/>Private <br/>
 
         {props.wishlists.length > 0 &&
           <div>
@@ -45,7 +49,7 @@ const EventForm = (props) => {
               <div>{'Click to add a participant:'}<br/>
                 {props.friends.filter(i => i.name.toLowerCase().includes(props.participantInputValue.toLowerCase()))
                 .map((item, index) => (
-                  <div onClick={(e) => {
+                  <div className="potentialParticipant" onClick={(e) => {
                     props.addParticipant(e, item.name, item.id);
                   }}
                     key={index}>
@@ -66,31 +70,31 @@ const EventForm = (props) => {
                 {props.participants.map((participant, index) =>
                   <li key={index}>
                     {participant.name}
-                    <button onClick={() => props.deleteParticipant(participant)}>Delete</button>
+                    <button className="btn" onClick={() => props.deleteParticipant(participant)}>Delete</button>
                   </li>)}
               </ul>
           </div>}
         </div>
     }
-      {'Add another item to this event outside your linked wishlists?'}<br/>
-      <form onSubmit={props.addItem}>
+      <p>{'Add another item to this event outside your linked wishlists?'}</p>
+      <form onSubmit={props.addItem} id="newItemForm">
         <input type="text" name="element"/>
-        <button>Add item</button>
+        <button className="btn">Add item</button>
       </form>
       {props.items.length > 0 &&
         <div>
           <h3>{'Your additional items outside your premade wishlists:'}</h3>
-          <ul>
+          <div>
             {props.items.map((item, index) =>
-              <li key={index}>
+              <p key={index}>
+                <button className="btn" onClick={() => props.openModalForItemUpdate(item.name)}>Update</button>
+                <button className="btn" id="btnDelete" onClick={() => props.deleteItem(item.id)}>Delete</button>
                 {item.name}
-                <button onClick={() => props.openModalForItemUpdate(item.name)}>Update</button>
-                <button onClick={() => props.deleteItem(item.id)}>Delete</button>
-              </li>)}
-          </ul>
-          <button onClick={props.removeAllItems}>Remove all items</button>
+              </p>)}
+          </div>
+          <button className="btn" id="btnRemoveAll" onClick={props.removeAllItems}>Remove all items</button>
       </div> }
-      {'Note about this event:'}<br/>
+      <p>{'Note about this event:'}</p>
       <textarea
         rows="4"
         cols="50"
@@ -100,7 +104,7 @@ const EventForm = (props) => {
       >
       </textarea><br/>
     {props.error && <p>{props.error}</p>}
-      <button disabled={props.title.trim() === "" || props.duplicateTitle}
+      <button className="btn" id="btnSaveForm" disabled={props.title.trim() === "" || props.duplicateTitle}
         onClick={(ev) => props.onSaveEvent({
           id: props.id,
           status: props.status,
@@ -111,7 +115,7 @@ const EventForm = (props) => {
           participants: props.participants,
           items: props.items,
           note: props.note,
-        },props.operation ,props.id, props.wishlistLinksIds, props.removedItemsIds, props.removedParticipantsIds)}>{'Save Event'}
+        },props.operation ,props.id, props.wishlistLinksIds, props.removedItemsIds, props.removedParticipantsIds)}>{'Save'}
       </button>
       <ItemDetailsModalUpdate
         showItemModal={props.showItemModal}
@@ -120,6 +124,7 @@ const EventForm = (props) => {
         updatingItem={props.updatingItem}
         onUpdateItem={props.onUpdateItem}
       />
+    </div>
     </div>
   )
 }

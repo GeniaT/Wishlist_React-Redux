@@ -5,7 +5,7 @@ import Modal from 'react-modal';
 Modal.setAppElement('#app');
 
 const ItemDetailsModalUpdate = (props) => {
-  return <Modal
+  return <Modal className="modal"
      isOpen={props.showItemModal}
      onRequestClose={props.closeItemModal}
      onAfterOpen={props.itemInfoInit}
@@ -33,7 +33,7 @@ const ItemDetailsModalUpdate = (props) => {
         id="buyLink"
         onChange={props.onUpdateItem}
       /><br/>
-      Approximative price:
+      Approximate price:
       <input
         type="text"
         name="price"

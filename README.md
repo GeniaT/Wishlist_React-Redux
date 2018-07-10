@@ -19,10 +19,11 @@ Deployment: <a href="https://www.heroku.com/">Heroku</a><br>
 Bundler: <a href="https://webpack.js.org/">Webpack</a><br>
 Testing: <a href="https://facebook.github.io/jest/">Jest</a>
 
-## The development of the app is still running.
-If interested, you can test the app by logging to it and creating some lists on https://wishlistss.herokuapp.com/ <br>
-:warning: The authentication through Safari doesn't work on mobile, see defect https://github.com/firebase/quickstart-js/issues/94
 ## Next steps:
 :white_check_mark: Add "reserve an item from an event" feature so people don't buy same things.<br>
 :runner: test on other support than desktop.<br>
 :black_square_button: Design the app, mobile first.<br>
+
+## The development of the app is still running.
+If interested, you can test the app by logging to it and creating some lists on https://wishlistss.herokuapp.com/ <br>
+:warning: The authentication through Safari doesn't work on mobile by default but a turnaround exists but isn't implemented yet.  

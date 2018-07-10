@@ -1,0 +1,59 @@
+@import '../base/base';
+
+.eventFormOutterContainer {
+  background-color: $backgroundColor;
+  max-width: 600px;
+  margin:70px auto;
+  padding-top: 30px;
+  padding-bottom: 130px;
+}
+
+.eventFormInnerContainer {
+  padding-left: 90px;
+}
+
+.btn {
+  background-color: $buttonsDefaultBackground;
+  color: $buttonsDefaultText;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.btn:hover, input:hover, .potentialParticipant:hover {
+  cursor:pointer;
+}
+
+textarea {
+    width:79%;
+}
+
+.SingleDatePicker {
+  margin-top: 5px;
+}
+.afterParticipants {
+  padding-top: 25px;
+}
+
+#statusPrivate {
+  margin-bottom: 25px;
+}
+#eventTitle, #btnRemoveAll {
+  margin-bottom: 25px;
+}
+#eventTitle {
+  margin-right: 30px;
+}
+#newItemForm {
+  padding: 0px;
+}
+
+#btnDelete {
+  margin-right: 20px;
+  margin-left: 5px;
+}
+
+#btnSaveForm {
+  width:80%;
+  height: 45px;
+  margin-top: 15px;
+}

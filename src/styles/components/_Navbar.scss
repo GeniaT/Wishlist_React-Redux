@@ -1,0 +1,25 @@
+@import '../base/base';
+
+.navigationBar {
+  font-size: 18px;
+  height: 70px;
+  background-color: $navBarBackground;
+  display:flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.navbarlink {
+  color:$navBarText;
+  text-decoration: none;
+}
+.selected {
+  font-weight: bold;
+}
+
+.logoutbutton {
+  background-color: $buttonsDefaultBackground;
+  color: $buttonsDefaultText;
+  padding: 5px 10px 5px 10px;
+  font-weight: bold;
+  border-radius: 5px;
+}

@@ -6,14 +6,14 @@ import store from '../store/store';
 
 const Navbar = ({loggedIn, startLogout }) => {
   return loggedIn
-  ? <div>
-      <NavLink to="/" exact={true} activeClassName="selected" className="link">Dashboard</NavLink>
-      <NavLink to="/create-wishlist" activeClassName="selected" className="link">Create a wishlist</NavLink>
-      <NavLink to="/my-events" activeClassName="selected" className="link">My Events</NavLink>
-      <button onClick={() => store.dispatch(startLogout)}>Log Out</button>
+  ? <div className="navigationBar">
+      <NavLink to="/" exact={true} activeClassName="selected" className="navbarlink">Dashboard</NavLink>
+      <NavLink to="/create-wishlist" activeClassName="selected" className="navbarlink">Create a wishlist</NavLink>
+      <NavLink to="/my-events" activeClassName="selected" className="navbarlink">My Events</NavLink>
+      <button className="logoutbutton" onClick={() => store.dispatch(startLogout)}>Log Out</button>
     </div>
   : <div>
-      <NavLink to="/" exact={true} activeClassName="selected" className="link">Home</NavLink>
+      {/*<NavLink to="/" exact={true} activeClassName="selected" className="link">Home</NavLink>*/}
     </div>
 }
 

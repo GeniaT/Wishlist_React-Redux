@@ -62,7 +62,7 @@ class WishlistDisplay extends React.Component {
               }}>See details</button>
             </li>
           )}
-          <Modal
+          <Modal className="modal"
                isOpen={this.state.showItemModal}
                onRequestClose={this.closeItemModal}
             >

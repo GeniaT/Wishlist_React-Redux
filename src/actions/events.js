@@ -52,39 +52,6 @@ export const startEventUpdate = (ev, id, removedItemsIds, removedParticipantsIds
         firebase.database().ref(`users/${participantId}/eventsParticipation/${id}`).remove();
       })
     }
-
-    // if (reservedItems && reservedItems.length > 0) {
-    //   firebase.database().ref(`events/${id}/items`).once("value")
-    //   .then(function(snapshot) {
-    //     let counter = 0;
-    //     snapshot.forEach(function(childSnapshot) {
-    //       const key = childSnapshot.key;
-    //       const childData = childSnapshot.val();
-    //
-    //       if (reservedItems.indexOf(childData.id) !== -1) {
-    //         const reservedItemref = firebase.database().ref(`events/${id}/items/${counter}`);
-    //         reservedItemref.update({ reservedBy: userId });
-    //       }
-    //       counter += 1;
-    //   });
-    // });
-    // }
-
-    // if (unreservedItems && unreservedItems.length > 0) {
-    //   firebase.database().ref(`events/${id}/items`).once("value")
-    //     .then(function(snapshot) {
-    //       let counter = 0;
-    //       snapshot.forEach(function(childSnapshot) {
-    //         const key = childSnapshot.key;
-    //         const childData = childSnapshot.val();
-    //         if (unreservedItems.indexOf(childData.id) !== -1) {
-    //           const unreservedItemref = firebase.database().ref(`events/${id}/items/${counter}`);
-    //           unreservedItemref.update({ reservedBy: '' });
-    //         }
-    //         counter += 1;
-    //     });
-    //   });
-    // }
   }
 }
 
@@ -122,7 +89,9 @@ export const saveEventInStateAndDB = (ev, operation, id, wishlistLinksIds, remov
     }
     return new Promise(resolve => {
       dispatch(updateEventsWishlistsLinksMatrix(operation, id, wishlistLinksIds));
-    }).then(dispatch(updateLinksMatrixInDB()))
+    })
+    .then(dispatch(updateLinksMatrixInDB()))
+    .then(dispatch(saveEvent(ev, operation)))
   }
 }
 
