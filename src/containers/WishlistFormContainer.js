@@ -14,22 +14,23 @@ class WishlistFormContainer extends React.Component {
     if (props.match.path === '/updateWishlist/:id') {
       var wishlistToUpdate = getWishlist(this.props.wishlists, this.props.location.state.wishlistid);
     }
-      this.state = {
-        id: wishlistToUpdate && wishlistToUpdate.id || uuid(),
-        createdBy: wishlistToUpdate && wishlistToUpdate.createdBy || props.uid,
-        status: wishlistToUpdate && wishlistToUpdate.status || 'public',
-        title: wishlistToUpdate && wishlistToUpdate.title || '',
-        category: wishlistToUpdate && wishlistToUpdate.category || 'no category',
-        eventLinksIds: wishlistToUpdate && wishlistToUpdate.eventLinksIds || [],
-        items: wishlistToUpdate && wishlistToUpdate.items || [],
-        showItemModal: false,
-        createdAt: wishlistToUpdate && wishlistToUpdate.createdAt || moment().format("dddd, MMMM Do YYYY"),
-        operation: props.location.pathname === '/create-wishlist' ? 'wishlistCreation' : 'wishlistUpdate',
-        duplicateTitle: '',
-        error: '',
-        removedItemsIds: []
-      }
+    this.state = {
+      id: wishlistToUpdate && wishlistToUpdate.id || uuid(),
+      createdBy: wishlistToUpdate && wishlistToUpdate.createdBy || props.uid,
+      status: wishlistToUpdate && wishlistToUpdate.status || 'public',
+      title: wishlistToUpdate && wishlistToUpdate.title || '',
+      category: wishlistToUpdate && wishlistToUpdate.category || 'no category',
+      eventLinksIds: wishlistToUpdate && wishlistToUpdate.eventLinksIds || [],
+      items: wishlistToUpdate && wishlistToUpdate.items || [],
+      showItemModal: false,
+      createdAt: wishlistToUpdate && wishlistToUpdate.createdAt || moment().format("dddd, MMMM Do YYYY"),
+      operation: props.location.pathname === '/create-wishlist' ? 'wishlistCreation' : 'wishlistUpdate',
+      location: props.location.pathname,
+      duplicateTitle: '',
+      error: '',
+      removedItemsIds: [],
     }
+  }
 
     onChangeTitle = (e) => {
       const title = e.target.value  ;
@@ -176,12 +177,34 @@ class WishlistFormContainer extends React.Component {
     }
   }
 
+  // Method built only to handle the case when the user is updating a wishlist and
+  // suddently decides to create a new one by clicking on "createWishlist" menu link.
+  edgeCase() {
+    if (this.state.location !== this.props.location.pathname) {
+      this.setState(() => ({
+        id: uuid(),
+        createdBy: this.props.uid,
+        status: 'public',
+        title: '',
+        category: 'no category',
+        eventLinksIds: [],
+        items: [],
+        showItemModal: false,
+        createdAt: moment().format("dddd, MMMM Do YYYY"),
+        operation: 'wishlistCreation',
+        location: this.props.location.pathname,
+        duplicateTitle: '',
+        error: '',
+        removedItemsIds: [],
+      }))
+    }
+  }
+
     render () {
       const {addItem, deleteItem, closeItemModal, itemInfoInit, onChangeCategory, onChangeStatus,
          onChangeTitle, onEventLink, onUpdateItem, openModalForItemUpdate, removeAllItems} = this;
       const wishlistFormMethods = {addItem, deleteItem, closeItemModal, itemInfoInit, onChangeCategory,
          onChangeStatus, onChangeTitle, onEventLink, onUpdateItem, openModalForItemUpdate, removeAllItems};
-
       return this.props.loggedIn ? <div>
         <NavbarContainer />
         <WishlistForm onSaveWishlist={(wishlist, operation, id, eventLinksIds, removedItemsIds) => {
@@ -192,6 +215,7 @@ class WishlistFormContainer extends React.Component {
           {...this.props}
           {...wishlistFormMethods}
         />
+      {this.props.location.state ? null : this.edgeCase()}
       </div> : <Redirect push to='/'/>
     }
 }

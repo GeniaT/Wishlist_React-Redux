@@ -14,7 +14,7 @@ const AppRoutes = () => (
   <BrowserRouter>
     <Switch>
       <Route path="/" component={Home} exact={true}/>
-      <Route path="/create-wishlist" component={WishlistFormContainer}/>
+      <Route path="/create-wishlist" component={WishlistFormContainer} />
       <Route path="/create-event" component={EventFormContainer}/>
       <Route path="/displayWishlist/:id" component={WishlistDisplay}/>
       <Route path="/updateWishlist/:id" component={WishlistFormContainer}/>
