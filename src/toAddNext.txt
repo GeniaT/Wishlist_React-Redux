@@ -1,11 +1,2 @@
-- Make sure the auth pop up doesn't appear if there user is still in memory or logged to the app.
-- add proptypes in my components/containers.
-
-
-- make the "add participants suggestions" dynamic while I add participants. If there are 2 suggestions and I add one participant,
-  the number of suggestions should now be 1.
-- when deleting or adding a friend, add/delete as well from the other person DB so the link is bidirectional
-
-
 - Investigate why firebase.auth() doesn't work as expected on mobile device.
   defect on google auth side: see https://github.com/firebase/quickstart-js/issues/94

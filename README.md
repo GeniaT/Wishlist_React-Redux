@@ -24,6 +24,6 @@ Testing: <a href="https://facebook.github.io/jest/">Jest</a>
 :runner: test on other support than desktop.<br>
 :black_square_button: Design the app, mobile first.<br>
 
-## The development of the app is still running.
+## The app is deployed.
 If interested, you can test the app by logging to it and creating some lists on https://wishlistss.herokuapp.com/ <br>
 :warning: The authentication through Safari doesn't work on mobile by default but a turnaround exists but isn't implemented yet.  
