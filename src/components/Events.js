@@ -5,7 +5,8 @@ import moment from 'moment';
 
 const Events = ({futurEvents, passedEvents, deleteEventInStateAndDB, eventsParticipation}) => {
   return (
-    <div>
+    <div className="eventsOutterContainer">
+    <div className="eventsInnerContainer">
       <h1>{'Events Summary'}</h1>
       {futurEvents.length > 0 &&
         <div>
@@ -22,7 +23,7 @@ const Events = ({futurEvents, passedEvents, deleteEventInStateAndDB, eventsParti
             </p>)}
         </div>}
 
-      <Link to={`/create-event`}><button className="btn">{'Create a new Event'}</button></Link>
+      <Link to={`/create-event`}><button className="btn" id="btnCreateEvent">{'Create a new Event'}</button></Link>
       {passedEvents.length > 0 && <div>
         <h2>My passed events:</h2>
         {passedEvents.map((ev,index) =>
@@ -44,6 +45,7 @@ const Events = ({futurEvents, passedEvents, deleteEventInStateAndDB, eventsParti
           </ul>
         </div>
       }
+    </div>
     </div>
   )
 }

@@ -1,0 +1,13 @@
+@import './base/base';
+
+.dashboardOutterContainer {
+  background-color: $backgroundColor;
+  max-width: 500px;
+  margin:70px auto;
+  padding-top: 30px;
+  padding-bottom: 130px;
+}
+
+.dashboardInnerContainer {
+  padding-left: 90px;
+}

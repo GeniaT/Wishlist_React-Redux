@@ -41,22 +41,26 @@ const MyDashboard = (props) => {
   return (
     <div>
       <NavbarContainer />
-      <h1>My Dashboard</h1>
-      <div>
-        <h2>My wishlists</h2>
-        {wishlistsToRender}
-        <h2>My Events</h2>
-        {events}
+      <div className="dashboardOutterContainer">
+      <div className="dashboardInnerContainer">
+        <h1>My Dashboard</h1>
+        <div>
+          <h2>My wishlists</h2>
+          {wishlistsToRender}
+          <h2>My Events</h2>
+          {events}
+        </div>
+        <div>
+          <FriendsSearch />
+          {props.friends.length > 0 && (
+            <div>
+              <h3>Friends list</h3>
+              <FriendsListContainer />
+            </div>
+          )}
+        </div>
       </div>
-      <div>
-        <FriendsSearch />
-        {props.friends.length > 0 && (
-          <div>
-            <h3>Friends list</h3>
-            <FriendsListContainer />
-          </div>
-        )}
-      </div>
+    </div>
     </div>
   )
 }

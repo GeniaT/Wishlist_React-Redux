@@ -1,0 +1,19 @@
+@import './base/base';
+
+.eventsOutterContainer {
+  background-color: $backgroundColor;
+  max-width: 500px;
+  margin:70px auto;
+  padding-top: 30px;
+  padding-bottom: 130px;
+}
+
+.eventsInnerContainer {
+  padding-left: 90px;
+}
+
+#btnCreateEvent {
+  width:80%;
+  height: 45px;
+  margin-top: 15px;
+}
