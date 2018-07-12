@@ -16,9 +16,9 @@ const MyDashboard = (props) => {
           pathname: `/updateWishlist/${wishlist.id}`,
           state: {wishlistid: wishlist.id}
         }}>
-        <button>{'Update this Wishlist'}</button>
+        <button className="btn">{'Update'}</button>
       </Link>
-      <button onClick={() => props.deleteWishlistInStateAndDB(wishlist, 'wishlistDeletion')}>{'Delete'}</button>
+      <button className="btn" onClick={() => props.deleteWishlistInStateAndDB(wishlist, 'wishlistDeletion')}>{'Delete'}</button>
     </p>
   });
   const now = moment();
@@ -31,10 +31,10 @@ const MyDashboard = (props) => {
           pathname: `/updateEvent/${ev.id}`,
           state: {eventid: ev.id}
         }}>
-          <button>{'Update this Event'}</button>
+          <button className="btn">{'Update'}</button>
         </Link>
       }
-      <button onClick={() => props.deleteEventInStateAndDB(ev, 'eventDeletion')}>{'Delete'}</button>
+      <button className="btn" onClick={() => props.deleteEventInStateAndDB(ev, 'eventDeletion')}>{'Delete'}</button>
     </p>)
   });
 
@@ -49,8 +49,6 @@ const MyDashboard = (props) => {
         {events}
       </div>
       <div>
-        <h2>Social</h2>
-        <h3>{'Search for friends?'}</h3>
         <FriendsSearch />
         {props.friends.length > 0 && (
           <div>

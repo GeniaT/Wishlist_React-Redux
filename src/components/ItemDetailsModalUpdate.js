@@ -10,31 +10,36 @@ const ItemDetailsModalUpdate = (props) => {
      onRequestClose={props.closeItemModal}
      onAfterOpen={props.itemInfoInit}
   >
-    <h1>{props.updatingItem}</h1>
-    <form>
-      Description:
+  <div className="outterModalContainer">
+    <form className="modalForm">
+      <h1>{props.updatingItem}</h1>
+      Description:<br/>
       <input
+        className="modalInput"
         type="text"
         name="description"
         id="description"
         onChange={props.onUpdateItem}
       /><br/>
-      Picture link:
+      Picture link:<br/>
       <input
+        className="modalInput"
         type="text"
         name="pictureLink"
         id="pictureLink"
         onChange={props.onUpdateItem}
       /><br/>
-      Link to buy the item:
+      Link to buy the item:<br/>
       <input
+        className="modalInput"
         type="text"
         name="buyLink"
         id="buyLink"
         onChange={props.onUpdateItem}
       /><br/>
-      Approximate price:
+      Approximate price:<br/>
       <input
+        className="modalInput"
         type="text"
         name="price"
         id="price"
@@ -42,15 +47,15 @@ const ItemDetailsModalUpdate = (props) => {
       /><br/>
       {"Here are some details that may help you with the item :"}<br/>
       <textarea
-        rows="4"
-        cols="50"
+        className="modalInput"
         name="note"
         id="note"
         onChange={props.onUpdateItem}
       >
       </textarea><br/>
+      <button className="btn btnCloseModal" onClick={props.closeItemModal}>Close</button>
     </form>
-    <button onClick={props.closeItemModal}>Click me to close!</button>
+    </div>
   </Modal>
 }
 

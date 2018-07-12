@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import NavbarContainer from '../containers/NavbarContainer';
 import Modal from 'react-modal';
 
@@ -42,36 +44,42 @@ class WishlistDisplay extends React.Component {
         <p>Url to buy the item: {item.urlToBuy}</p>
         <p>Approximate price: {item.appriximatePrice}</p>
         <p>Note about the item: {item.note}</p>
-        <button onClick={() => this.closeItemModal()}>Click me to close!</button>
+        <button className="btn" onClick={() => this.closeItemModal()}>Close</button>
       </div>
     )
   }
 
   render () {
-    return (
-      <div>
+        return this.props.loggedIn ? <div>
         <NavbarContainer />
-        <h1>Wishlist {this.props.location.state.wishlist.title}</h1>
-        <h2>{`Categorie: ${this.props.location.state.wishlist.category}`}</h2>
-        {this.props.location.state.wishlist.items && <ul>
-          {this.props.location.state.wishlist.items.map((item, index) =>
-            <li key={index}>
-              {item.name}
-              <button onClick={() => {
-                this.openModalForItemDisplay(item.name, index);
-              }}>See details</button>
-            </li>
-          )}
-          <Modal className="modal"
-               isOpen={this.state.showItemModal}
-               onRequestClose={this.closeItemModal}
-            >
-            {this.renderModal()}
-          </Modal>
-        </ul>}
-      </div>
-    )
+        <div className="wishlistDisplayOutterContainer">
+        <div className="wishlistDisplayInnerContainer">
+          <h1>Wishlist {this.props.location.state.wishlist.title}</h1>
+          <h2>{`Categorie: ${this.props.location.state.wishlist.category}`}</h2>
+          {this.props.location.state.wishlist.items && <div>
+            {this.props.location.state.wishlist.items.map((item, index) =>
+              <p key={index}>
+                <button className="btn itemBtnWishlistDisplay" onClick={() => {
+                  this.openModalForItemDisplay(item.name, index);
+                }}>See details</button>
+                {item.name}
+              </p>
+            )}
+            <Modal className="modal"
+                 isOpen={this.state.showItemModal}
+                 onRequestClose={this.closeItemModal}
+              >
+              {this.renderModal()}
+            </Modal>
+          </div>}
+        </div>
+        </div>
+      </div> : <Redirect push to='/'/>
   }
 }
 
-export default WishlistDisplay;
+const mapStateToProps = (state) => ({
+  loggedIn: state.user.loggedIn
+})
+
+export default connect(mapStateToProps)(WishlistDisplay);

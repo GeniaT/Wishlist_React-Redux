@@ -8,6 +8,7 @@ $buttonsDefaultBackground: hsl(287, 59%, 95%); //whitish
 $buttonsDefaultText: hsl(287, 15%, 42%); //Grayish
 $navBarBackground: hsl(287, 59%, 35%);
 $navBarText: hsl(287, 59%, 95%);
+$disabledButton: hsl(287, 3%, 80%);
 
 body,html {
   font-family: $standardFonts;
@@ -17,10 +18,21 @@ body,html {
     background-color: $activePageOrModalColor;
     color: $textColor;
     width: 500px;
-    height: auto;
+    // height: auto;
     margin: auto;
     margin-top: 10%;
     padding: 4% 5% 30% 5%;
     box-shadow: 0 10px 6px -6px #777;
   }
+}
+
+.btn {
+  background-color: $buttonsDefaultBackground;
+  color: $buttonsDefaultText;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.btn:hover, input:hover {
+  cursor:pointer;
 }

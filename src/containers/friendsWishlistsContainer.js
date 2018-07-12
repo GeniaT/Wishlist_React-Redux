@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { firebase } from '../firebase/firebase';
 import NavbarContainer from './NavbarContainer';
@@ -39,23 +41,27 @@ class friendsWishlistsContainer extends React.Component {
   }
 
   render() {
-    return (
-      <div>
+    return this.props.loggedIn ? <div>
         <NavbarContainer />
+        <div className="friendsWishlistsOutterContainer">
         <h1>{"My friend's wishlists"}</h1>
         {this.state.wishlists.length > 0 &&
-          <ul>
-            {this.state.wishlists.map((wishlist, index) => <li key={index}><Link
+          <div className="friendsWishlistsInnerContainer">
+            {this.state.wishlists.map((wishlist, index) => <div key={index} className="friendWishlist"><Link
               to={{pathname: `/displayWishlist/${wishlist.id}`,
               state: {
                 wishlist: wishlist
-              }}}><p id={wishlist.id}>{wishlist.title}</p></Link></li>
+              }}}><h2 className="friendWishlistTitle" id={wishlist.id}>{wishlist.title}</h2></Link></div>
             )}
-          </ul>
+          </div>
         }
-      </div>
-    )
+        </div>
+      </div> : <Redirect push to='/'/>
   }
 }
 
-export default friendsWishlistsContainer;
+const mapStateToProps = (state) => ({
+  loggedIn: state.user.loggedIn,
+})
+
+export default connect(mapStateToProps)(friendsWishlistsContainer);

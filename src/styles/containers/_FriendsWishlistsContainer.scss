@@ -1,0 +1,36 @@
+@import './base/base';
+
+.friendsWishlistsOutterContainer {
+  max-width: 500px;
+  min-height: 700px;
+  margin:70px auto;
+  padding-top: 30px;
+  padding-bottom: 130px;
+  background-color: $backgroundColor;
+  text-align: center;
+}
+
+.friendsWishlistsInnerContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 6%;
+}
+
+.friendWishlist {
+  height: 250px;
+  width: 45%;
+  background-color: $activePageOrModalColor;
+  margin: 0 10px 10px 0;
+  box-shadow: inset 0 0 10px $navBarBackground;
+}
+
+.friendWishlistTitle {
+  color: $textColor;
+  padding-top:30%;
+}
+
+a:link {
+    text-decoration: none;
+}

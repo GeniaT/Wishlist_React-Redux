@@ -1,0 +1,21 @@
+@import './base/base';
+
+.eventDisplayOutterContainer {
+  background-color: $backgroundColor;
+  max-width: 500px;
+  margin:70px auto;
+  padding-top: 30px;
+  padding-bottom: 130px;
+}
+
+.eventDisplayInnerContainer {
+  padding-left: 90px;
+}
+
+.bookingBtn:disabled {
+  color: $disabledButton
+}
+
+.itemBtnEventDisplay {
+  margin-right: 10px;
+}

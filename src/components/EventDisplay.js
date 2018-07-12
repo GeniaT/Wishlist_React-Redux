@@ -8,7 +8,6 @@ import { firebase } from '../firebase/firebase';
 import NavbarContainer from '../containers/NavbarContainer';
 import { startEventUpdate } from '../actions/events';
 
-
 class EventDisplay extends React.Component {
   constructor(props) {
     super(props);
@@ -81,14 +80,14 @@ class EventDisplay extends React.Component {
       return null;
     }
     return (
-      <div>
+      <div className="outterModalContainer">
         <h1>{item.name}</h1>
         <p>Description: {item.description}</p>
         <p>PictureUrl: {item.picture}</p>
         <p>Url to buy the item: {item.urlToBuy}</p>
         <p>Approximate price: {item.appriximatePrice}</p>
         <p>Note about the item: {item.note}</p>
-        <button onClick={() => this.closeItemModal()}>Click me to close!</button>
+        <button className="btn btnCloseModal" onClick={() => this.closeItemModal()}>Close</button>
       </div>
     )
   }
@@ -175,19 +174,20 @@ class EventDisplay extends React.Component {
     const participation = this.props.location.state.event;
     const items = this.state.allItems;
     return this.props.loggedIn ? <div>
-        <NavbarContainer />
+      <NavbarContainer />
+      <div className="eventDisplayOutterContainer">
+      <div className="eventDisplayInnerContainer">
         <h1>{'Event'} {participation.title}</h1>
         <h2>{'When?'}</h2>
         <p>{moment(participation.date).format("dddd, MMMM Do YYYY")}</p>
         <h2>{'Wished items for this event'}</h2>
-        {items && <ul>
+        {items && <div>
           {items.map((item, index) =>
-            <li key={index}>
-              {item.name}
-              <button onClick={() => {
+            <p key={index}>
+                <button className="btn itemBtnEventDisplay" onClick={() => {
                 this.openModalForItemDisplay(item.name, index);
-              }}>See details</button>
-              <button onClick={() => {
+              }}>{'...'}</button>
+              <button className="btn bookingBtn itemBtnEventDisplay" onClick={() => {
                 if (this.state.lockedItems.indexOf(item.id) === -1 && (this.state.reservedItems.length === 0 || this.state.reservedItems.indexOf(item.id) === -1)) {
                   this.reserveAnItem(item);
                 } else if (this.state.lockedItems.indexOf(item.id) === -1 && this.state.reservedItems.indexOf(item.id) !== -1) {
@@ -195,27 +195,31 @@ class EventDisplay extends React.Component {
                 }
               }} disabled={this.state.lockedItems.indexOf(item.id) !== -1}>
               {this.state.lockedItems.includes(item.id)
-                ? 'Already booked by someone'
+                ? 'Booked by someone'
                 : this.state.reservedItems.includes(item.id)
                   ? 'Unbook it'
                   : 'Reserve this item'}</button>
-            </li>
+              {item.name}
+            </p>
           )}
           <Modal
+               className="modal"
                isOpen={this.state.showItemModal}
                onRequestClose={this.closeItemModal}
             >
             {this.renderModal()}
           </Modal>
-        </ul>}
+        </div>}
         <h2>Participants: </h2>
-        <ul>
+        <div>
         {participation.participants.map((person, index) =>
-          <li key={index}>{person.name}</li>
+          <p key={index}>{person.name}</p>
         )}
-        </ul>
+        </div>
         <h2>{'Note about the event'}</h2>
         <p>{participation.note}</p>
+        </div>
+        </div>
       </div> : <Redirect push to='/'/>
   }
 }

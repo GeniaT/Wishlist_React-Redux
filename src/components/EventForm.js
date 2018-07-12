@@ -79,7 +79,7 @@ const EventForm = (props) => {
       <p>{'Add another item to this event outside your linked wishlists?'}</p>
       <form onSubmit={props.addItem} id="newItemForm">
         <input type="text" name="element"/>
-        <button className="btn">Add item</button>
+        <button className="btn btnAddItem">Add</button>
       </form>
       {props.items.length > 0 &&
         <div>

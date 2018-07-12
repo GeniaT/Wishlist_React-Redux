@@ -9,8 +9,8 @@ const FriendsList = (props) => {
         {props.friends.map((friend, index) =>
           <li key={index}>
             {friend.name}
-            <Link to={{pathname: '/friendsWishlists', state: { friendId: friend.id }}}><button>{'See wishlists!'}</button></Link>
-            <button onClick={() => {
+            <Link to={{pathname: '/friendsWishlists', state: { friendId: friend.id }}}><button className="btn">{'See wishlists!'}</button></Link>
+            <button className="btn" onClick={() => {
               props.deleteFriendInStateAndDB(friend.id);
               props.updatePotentialFriendsInState(friend.id, 'delete', friend.name);
             }}>Delete</button>

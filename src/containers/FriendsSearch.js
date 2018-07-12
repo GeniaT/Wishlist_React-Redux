@@ -23,7 +23,7 @@ class FriendsSearch extends React.Component {
   render () {
     return (
       <div>
-        <button onClick={() => {
+        <button className="btn" onClick={() => {
           this.props.startPotentialFriends();
           this.setState({...this.state, initButtonClicked: true});
         }}>{'Search for a friend!'}</button>

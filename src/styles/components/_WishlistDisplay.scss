@@ -1,0 +1,21 @@
+@import './base/base';
+
+.wishlistDisplayOutterContainer {
+  background-color: $backgroundColor;
+  max-width: 500px;
+  margin:70px auto;
+  padding-top: 30px;
+  padding-bottom: 130px;
+}
+
+.wishlistDisplayInnerContainer {
+  padding-left: 90px;
+}
+
+.bookingBtn:disabled {
+  color: $disabledButton
+}
+
+.itemBtnWishlistDisplay {
+  margin-right: 10px;
+}
