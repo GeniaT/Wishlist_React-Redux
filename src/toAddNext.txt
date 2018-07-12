@@ -1,2 +1,1 @@
-- Investigate why firebase.auth() doesn't work as expected on mobile device.
-  defect on google auth side: see https://github.com/firebase/quickstart-js/issues/94
+- Erase the state when user logsOut so the app is fresh on new login. 
