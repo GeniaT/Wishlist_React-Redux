@@ -12,6 +12,7 @@ $disabledButton: hsl(287, 3%, 80%);
 
 body,html {
   font-family: $standardFonts;
+  font-size: 2vmin;
   background-color: $activePageOrModalColor;
   color: $textColor;
   .modal {
@@ -27,6 +28,16 @@ body,html {
   }
 }
 
+@media screen and (max-width: 678px) {
+  body, html {
+     font-size: 15px;
+     h1, h2 {
+       font-size:27px;
+     }
+  }
+}
+
+
 .btn {
   background-color: $buttonsDefaultBackground;
   color: $buttonsDefaultText;
@@ -37,4 +48,13 @@ body,html {
 
 .btn:hover, input:hover {
   cursor:pointer;
+}
+
+
+h1 {
+  font-size: 6vw;
+}
+
+h2 {
+  font-size: 3vw;
 }

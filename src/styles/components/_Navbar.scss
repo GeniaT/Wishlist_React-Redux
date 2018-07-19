@@ -1,8 +1,8 @@
 @import '../base/base';
 
 .navigationBar {
-  font-size: 18px;
-  height: 70px;
+  font-size: 3vmin;
+  height: 90px;
   background-color: $navBarBackground;
   display:-webkit-box;
   display:-ms-flexbox;
@@ -27,4 +27,10 @@
   padding: 5px 10px 5px 10px;
   font-weight: bold;
   border-radius: 5px;
+}
+
+@media screen and (min-width: 832px) {
+  .navigationBar {
+     font-size: 25px;
+  }
 }
