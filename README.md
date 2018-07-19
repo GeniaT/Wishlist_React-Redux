@@ -28,5 +28,5 @@ If interested, you can test the app by logging to it and creating some lists on 
 :bookmark_tabs: Add additional items to an event outside existing wishlists.<br>
 :couple: Add friends so I can see their wishlists.<br>
 :negative_squared_cross_mark: Book items inside an event I am participating to so people don't buy same things.<br>
-Controls are in place so the creator of the event doesn't see items booked for him and people can't book/unbook something that has been booked by someone else. <br>
+:no_entry_sign: Controls are in place so the creator of the event doesn't see items booked for him and people can't book/unbook something that has been booked by someone else. <br>
 :clock130: All this information is synced with DB and updated in almost real-time (perfect real-time doesn't exist they say :smirk:)<br>
