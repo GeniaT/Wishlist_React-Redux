@@ -8,7 +8,7 @@ import friends from './friends';
 import suggestions from './suggestions';
 import items from './items';
 
-export default combineReducers({
+const appReducer = combineReducers({
   events,
   eventsParticipation,
   eventsWishlistsLinks,
@@ -18,3 +18,10 @@ export default combineReducers({
   suggestions,
   items
 });
+
+export const rootReducer = (state, action) => {
+  if (action.type === 'LOG_OUT') {
+    state = undefined
+  }
+  return appReducer(state, action)
+}
