@@ -93,48 +93,47 @@ class EventDisplay extends React.Component {
   }
 
   componentDidMount() {
-    const participation = this.props.location.state.event;
     const itemsFromEventArray = [];
-    participation.items.forEach((item) => {
-      const itemId = item.id;
-      const itemRef = firebase.database().ref(`items/${itemId}/item`);
-      itemRef.once("value").then(snapshot => {
-        itemsFromEventArray.push(snapshot.val());
-      }).then(() => console.log('itemsFromEventArray: ', itemsFromEventArray))
-    })
-    //Need to fetch all items of any wishlists linked to this event by the creator.
-      //Get the creator of the event
-    const creator = this.props.location.state.event.createdBy;
-    const userId = firebase.auth().currentUser.uid;
-    const eventId = this.props.location.state.event.id;
-    //Get the linksMatrix from the DB
-    const linksMatrixRef = firebase.database().ref(`users/${creator}/eventsWishlistsLinksMatrix`);
-    let matrix;
+    let globalItemsArray;
     const linkedwishlists = [];
     const itemsFromWishlistsArray = [];
-    let globalItemsArray;
-    const itemsIds = [];
-    //Start identifying the line of the opened event
-    linksMatrixRef.once("value")
-    .then(function(snapshot) {
-      matrix = snapshot.val();
-      //check if there is any links to any wishlist
-        //push indexes of '1's into an array
-        //check each index in this array to get the wishlists Ids that this event is linked to
-      if (matrix[0].length === 1) { return }
-      matrix.forEach((line) => {
-        if (line[0] === eventId) {
-          line.forEach((potentialLink, index) => {
-            if (potentialLink === 1) {
-              linkedwishlists.push(matrix[0][index]);
-            }
-          });
+
+    function getItemsFromCurrentEvent() {
+      const participation = this.props.location.state.event;
+      participation.items.forEach((item) => {
+        const itemId = item.id;
+        const itemRef = firebase.database().ref(`items/${itemId}/item`);
+        itemRef.once("value").then(snapshot => {
+          itemsFromEventArray.push(snapshot.val());
+        }).then(() => console.log('itemsFromEventArray: ', itemsFromEventArray))
+      })
+    }
+
+    function identifyLinkedWishlists() {
+      const creator = this.props.location.state.event.createdBy;
+      const eventId = this.props.location.state.event.id;
+      const linksMatrixRef = firebase.database().ref(`users/${creator}/eventsWishlistsLinksMatrix`);
+      let matrix;
+      //Start identifying the line of the opened event
+      linksMatrixRef.once("value")
+      .then(function(snapshot) {
+        matrix = snapshot.val();
+        if (matrix[0].length === 1) {
+          return;
         }
-      });
-    })
-    .then(() => {
-      //get each wishlist id and push each item from that wishlist to an new array
-      // finally concat that array of items from wishlists with the items from this event to a global array
+        matrix.forEach((line) => {
+          if (line[0] === eventId) {
+            line.forEach((potentialLink, index) => {
+              if (potentialLink === 1) {
+                linkedwishlists.push(matrix[0][index]);
+              }
+            });
+          }
+        });
+      })
+    }
+
+    function getItemsFromLinkedWishlists() {
       linkedwishlists.forEach((wishlistId) => {
         const wishlistItemsRef = firebase.database().ref(`wishlists/${wishlistId}/items`);
         wishlistItemsRef.once('value')
@@ -142,32 +141,43 @@ class EventDisplay extends React.Component {
           snapshot.forEach(childSnapshot => {
               const childData = childSnapshot.val();
               const itemRef = firebase.database().ref(`items/${childData.id}/item`);
-              itemRef.once("value").then(snapshot => {
+              itemRef.once("value")
+              .then(snapshot => {
                 itemsFromWishlistsArray.push(snapshot.val());
               })
               .then(() => globalItemsArray = itemsFromEventArray.concat(itemsFromWishlistsArray))
-              .then(() => {
-                //based on all items fetched from the DB, we update the state dividing the items into 2 categories:
-                //"locked" because it was already reserved by someone and "reserved" for items that I previously reserved
-                this.setState(() => ({
-                  allItems: globalItemsArray
-                }))
-                globalItemsArray.forEach((item) => {
-                  if (item.reservedBy !== this.props.uid && item.reservedBy !== "" && this.state.lockedItems.indexOf(item.id) === -1) {
-                    this.setState(() => ({
-                      lockedItems: [...this.state.lockedItems, item.id]
-                    }))
-                  } else if (this.state.reservedItems.indexOf(item.id) === -1 && item.reservedBy === this.props.uid) {
-                    this.setState(() => ({
-                      reservedItems: [...this.state.reservedItems, item.id]
-                    }));
-                  }
-                });
-              })
           });
         })
       })
-    });
+    }
+
+    function updateStateWithLockedAndBookedItems () {
+      this.setState(() => ({
+        allItems: globalItemsArray
+      }))
+      globalItemsArray.forEach((item) => {
+        if (item.reservedBy !== this.props.uid && item.reservedBy !== "" && this.state.lockedItems.indexOf(item.id) === -1) {
+          this.setState(() => ({
+            lockedItems: [...this.state.lockedItems, item.id]
+          }))
+        } else if (this.state.reservedItems.indexOf(item.id) === -1 && item.reservedBy === this.props.uid) {
+          this.setState(() => ({
+            reservedItems: [...this.state.reservedItems, item.id]
+          }));
+        }
+      });
+    }
+    getItemsFromCurrentEvent();
+
+    //create a promise doing + add control checks for the 5 scenarios
+    // + see if I can put the 4 functions outside componentDidMount so I don't have to declare them in each mounting.
+    // + test everything.
+
+    // getItemsFromCurrentEvent()
+    // .then(identifyLinkedWishlists())
+    // .then(getItemsFromLinkedWishlists())
+    // .then(updateStateWithLockedAndBookedItems())
+
   }
 
   render () {
