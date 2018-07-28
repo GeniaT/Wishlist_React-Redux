@@ -46,14 +46,14 @@ class EventDisplay extends React.Component {
 
   reserveItemInDB = (item) => {
     const userId = firebase.auth().currentUser.uid;
-    const itemRef = firebase.database().ref(`items/${item.id}/item`);
+    const itemRef = firebase.database().ref(`items/${item.id}`);
     itemRef.update({reservedBy: userId});
 
   }
 
   dereserveItemInDB = (item) => {
     const userId = firebase.auth().currentUser.uid;
-    const itemRef = firebase.database().ref(`items/${item.id}/item`);
+    const itemRef = firebase.database().ref(`items/${item.id}`);
     itemRef.update({reservedBy: ''});
   }
   // Modal functions
@@ -94,24 +94,31 @@ class EventDisplay extends React.Component {
 
   componentDidMount() {
     const itemsFromEventArray = [];
-    let globalItemsArray;
+    let globalItemsArray = [];
     const linkedwishlists = [];
     const itemsFromWishlistsArray = [];
+    // const participation = this.props.location.state.event;
+    const props = this.props;
 
     function getItemsFromCurrentEvent() {
-      const participation = this.props.location.state.event;
-      participation.items.forEach((item) => {
-        const itemId = item.id;
-        const itemRef = firebase.database().ref(`items/${itemId}/item`);
-        itemRef.once("value").then(snapshot => {
-          itemsFromEventArray.push(snapshot.val());
-        }).then(() => console.log('itemsFromEventArray: ', itemsFromEventArray))
-      })
+      console.log('props: ', props);
+      const participation = props.location.state.event;
+      if (participation.items) {
+        participation.items.forEach((item) => {
+          const itemId = item.id;
+          const itemRef = firebase.database().ref(`items/${itemId}`);
+          itemRef.once("value").then(snapshot => {
+            itemsFromEventArray.push(snapshot.val());
+          }).then(() => console.log('itemsFromEventArray: ', itemsFromEventArray))
+        })
+      } else {
+        console.log('itemsFromEventArray: ', itemsFromEventArray);
+      }
     }
 
     function identifyLinkedWishlists() {
-      const creator = this.props.location.state.event.createdBy;
-      const eventId = this.props.location.state.event.id;
+      const creator = props.location.state.event.createdBy;
+      const eventId = props.location.state.event.id;
       const linksMatrixRef = firebase.database().ref(`users/${creator}/eventsWishlistsLinksMatrix`);
       let matrix;
       //Start identifying the line of the opened event
@@ -131,53 +138,81 @@ class EventDisplay extends React.Component {
           }
         });
       })
+      .then(() => console.log("linkedWishlists: ", linkedwishlists))
     }
 
     function getItemsFromLinkedWishlists() {
-      linkedwishlists.forEach((wishlistId) => {
-        const wishlistItemsRef = firebase.database().ref(`wishlists/${wishlistId}/items`);
-        wishlistItemsRef.once('value')
-        .then(snapshot => {
-          snapshot.forEach(childSnapshot => {
-              const childData = childSnapshot.val();
-              const itemRef = firebase.database().ref(`items/${childData.id}/item`);
-              itemRef.once("value")
-              .then(snapshot => {
-                itemsFromWishlistsArray.push(snapshot.val());
-              })
-              .then(() => globalItemsArray = itemsFromEventArray.concat(itemsFromWishlistsArray))
-          });
+      if (linkedwishlists.length > 0) {
+        linkedwishlists.forEach((wishlistId) => {
+          const wishlistItemsRef = firebase.database().ref(`wishlists/${wishlistId}/items`);
+          wishlistItemsRef.once('value')
+          .then(snapshot => {
+            snapshot.forEach(childSnapshot => {
+                const childData = childSnapshot.val();
+                const itemRef = firebase.database().ref(`items/${childData.id}`);
+                itemRef.once("value")
+                .then(snapshot => {
+                  itemsFromWishlistsArray.push(snapshot.val());
+                })
+                .then(() => globalItemsArray = itemsFromEventArray.concat(itemsFromWishlistsArray))
+                .then(() => console.log('global items array: ', globalItemsArray))
+            });
+          })
         })
-      })
+      } else {
+        globalItemsArray = itemsFromEventArray;
+      }
     }
 
-    function updateStateWithLockedAndBookedItems () {
-      this.setState(() => ({
-        allItems: globalItemsArray
-      }))
-      globalItemsArray.forEach((item) => {
-        if (item.reservedBy !== this.props.uid && item.reservedBy !== "" && this.state.lockedItems.indexOf(item.id) === -1) {
-          this.setState(() => ({
-            lockedItems: [...this.state.lockedItems, item.id]
-          }))
-        } else if (this.state.reservedItems.indexOf(item.id) === -1 && item.reservedBy === this.props.uid) {
-          this.setState(() => ({
-            reservedItems: [...this.state.reservedItems, item.id]
-          }));
-        }
-      });
+    const updateStateWithItems = () => {
+      setTimeout(() => {
+        this.setState(() => ({
+          allItems: globalItemsArray
+        }))
+        globalItemsArray.forEach((item) => {
+          if (item.reservedBy !== this.props.uid && item.reservedBy !== "" && this.state.lockedItems.indexOf(item.id) === -1) {
+            this.setState(() => ({
+              lockedItems: [...this.state.lockedItems, item.id]
+            }))
+          } else if (this.state.reservedItems.indexOf(item.id) === -1 && item.reservedBy === this.props.uid) {
+            this.setState(() => ({
+              reservedItems: [...this.state.reservedItems, item.id]
+            }));
+          }
+        });
+      }, 600);
     }
-    getItemsFromCurrentEvent();
 
-    //create a promise doing + add control checks for the 5 scenarios
-    // + see if I can put the 4 functions outside componentDidMount so I don't have to declare them in each mounting.
-    // + test everything.
-
-    // getItemsFromCurrentEvent()
-    // .then(identifyLinkedWishlists())
-    // .then(getItemsFromLinkedWishlists())
-    // .then(updateStateWithLockedAndBookedItems())
-
+    function getAllItemsToDisplayInEvent() {
+      const itemsFromCurrentEvent = function() {
+        const promise = new Promise(function(resolve, reject) {
+            setTimeout(function() {
+               resolve(getItemsFromCurrentEvent())
+            }, 0);
+         });
+         return promise;
+      }
+      const linkedWishlists = function() {
+        const promise = new Promise(function(resolve, reject) {
+            setTimeout(function() {
+            resolve(identifyLinkedWishlists());
+            }, 100);
+         });
+         return promise;
+      }
+      const itemsFromLinkedWishlists = function() {
+        const promise = new Promise(function(resolve, reject) {
+            setTimeout(function() {
+               resolve(getItemsFromLinkedWishlists())
+            }, 500);
+         })
+        .then(updateStateWithItems)
+      }
+      itemsFromCurrentEvent()
+      .then(linkedWishlists)
+      .then(itemsFromLinkedWishlists)
+    }
+    getAllItemsToDisplayInEvent();
   }
 
   render () {
