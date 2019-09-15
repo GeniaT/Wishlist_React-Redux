@@ -9,5 +9,5 @@ app.get('*', (req, res) => { //to be able to render a certain url even after a r
   res.sendFile(path.join(publicPath, 'index.html'));
 })
 app.listen(port, () => {
-  console.log('Server running!');
+  console.log('Server running on port ' + port);
 });
