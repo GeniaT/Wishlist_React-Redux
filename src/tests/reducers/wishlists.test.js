@@ -39,7 +39,8 @@ test('Should add the wishlist to state if the id is different from other wishlis
       category: 'Shoes',
       eventLinksIds: ['adc34','tui56'],
       items: []
-    }
+    },
+    operation: 'wishlistCreation'
   };
   const state = wishlistsReducer(myWishlists, action);
   expect(state).toEqual([...myWishlists.concat(action.wishlist)]);
@@ -66,7 +67,8 @@ test('Should modify an existing wishlist if the id matches an wishlist from stat
           note: "written by Tion Douglas"
         }
       ]
-    }
+    },
+    operation: 'wishlistUpdate'
   };
   const state = wishlistsReducer(myWishlists, action);
   expect(state[0].createdAt).toBe('20131020');
