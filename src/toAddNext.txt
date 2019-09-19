@@ -1,1 +1,0 @@
-- Erase the state when user logsOut so the app is fresh on new login. 
